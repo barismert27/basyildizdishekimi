@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yönetim Paneli | Dr. Muhammed Emin Başyıldız</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="icon" href="/favicon.jpg" type="image/jpeg">
+    <link rel="stylesheet" href="/style.css">
+</head>
+
+<body>
+
+    <!-- HEADER -->
+    <header class="panel-topbar">
+        <div class="panel-topbar-inner">
+            <div class="logo-container">
+                <div class="logo-circle">MB</div>
+                <div class="panel-brand">
+                    <h1 class="logo">Dr. Muhammed Emin Başyıldız<span>.</span></h1>
+                    <span class="panel-brand-sub">Yönetim Paneli</span>
+                </div>
+            </div>
+            <nav class="panel-nav-actions">
+                <a href="/index.html" class="panel-nav-link">
+                    <i class="fa-solid fa-arrow-left"></i>
+                    Siteye Dön
+                </a>
+                <button id="logout-btn" class="panel-nav-link panel-nav-logout">
+                    <i class="fa-solid fa-right-from-bracket"></i>
+                    Çıkış
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <main class="main panel-main">
+        <div class="page active">
+            <div class="panel-container">
+
+                <!-- STATS -->
+                <div class="stats-grid">
+                    <div class="stat-box">
+                        <div class="stat-icon-wrap stat-icon-total">
+                            <i class="fa-solid fa-calendar-check"></i>
+                        </div>
+                        <div class="stat-info">
+                            <span class="stat-val" id="toplam-randevu">0</span>
+                            <span class="stat-key">Toplam Randevu</span>
+                        </div>
+                    </div>
+                    <div class="stat-box pending">
+                        <div class="stat-icon-wrap stat-icon-pending">
+                            <i class="fa-solid fa-hourglass-half"></i>
+                        </div>
+                        <div class="stat-info">
+                            <span class="stat-val" id="bekleyen-randevu">0</span>
+                            <span class="stat-key">Bekleyen</span>
+                        </div>
+                    </div>
+                    <div class="stat-box approved">
+                        <div class="stat-icon-wrap stat-icon-approved">
+                            <i class="fa-solid fa-circle-check"></i>
+                        </div>
+                        <div class="stat-info">
+                            <span class="stat-val" id="onaylanan-randevu">0</span>
+                            <span class="stat-key">Onaylanan</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- KONTROL BARI -->
+                <div class="panel-toolbar">
+                    <div class="kontrol-arama">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                        <input type="text" id="arama-input" placeholder="Hasta adı veya telefon ara..."
+                            autocomplete="off">
+                    </div>
+                    <div class="panel-filters">
+                        <div class="filtre-group">
+                            <i class="fa-solid fa-filter filtre-icon"></i>
+                            <select id="durum-filtre">
+                                <option value="">Tüm Durumlar</option>
+                                <option value="approved">Onaylanan</option>
+                                <option value="pending">Bekleyen</option>
+                                <option value="cancelled">İptal</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- RANDEVU LİSTESİ -->
+                <div id="randevu-listesi" class="randevu-listesi">
+                    <div class="empty-state">Yükleniyor...</div>
+                </div>
+
+                <!-- SAYFALAMA -->
+                <div id="pagination-container" class="pagination-container"></div>
+
+            </div>
+        </div>
+    </main>
+
+    <script src="/script.js?v=3.0"></script>
+</body>
+
+</html>

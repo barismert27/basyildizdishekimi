@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yönetici Girişi | Dr. Muhammed Emin Başyıldız</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="icon" href="favicon.jpg" type="image/jpeg">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- HEADER -->
+    <header class="header">
+        <div class="container header-content">
+            <div class="logo-container">
+                <div class="logo-circle">MB</div>
+                <h1 class="logo">Dr. Muhammed Emin Başyıldız<span>.</span></h1>
+            </div>
+            <nav class="nav">
+                <a href="index.html" class="nav-btn">Ana Sayfa</a>
+                <a href="hakkimizda.html" class="nav-btn">Hakkımızda</a>
+                <a href="hizmetler.html" class="nav-btn">Hizmetler</a>
+                <a href="galeri.html" class="nav-btn">Galeri</a>
+                <a href="#contact" class="nav-btn">İletişim</a>
+
+            </nav>
+        </div>
+    </header>
+
+    <main class="main">
+        <div class="page active">
+            <div class="login-wrapper">
+                <div class="login-box">
+                    <div class="login-header">
+                        <h2>Yönetici Girişi</h2>
+                        <p>Güvenli erişim noktası</p>
+                    </div>
+                    <form id="login-form">
+                        <div class="form-group">
+                            <label>Kullanıcı Adı</label>
+                            <input type="text" id="username" name="username" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Şifre</label>
+                            <input type="password" id="password" name="password" required>
+                        </div>
+                        <button type="submit" class="btn-primary">Giriş Yap</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="script.js?v=3.0"></script>
+</body>
+
+</html>

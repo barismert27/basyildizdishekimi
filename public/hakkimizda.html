@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hakkımızda | Dr. Muhammed Emin Başyıldız</title>
+    <!-- Google Fonts: Poppins (Display) & Inter (Body) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="icon" href="favicon.jpg" type="image/jpeg">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .about-section {
+            padding: 80px 0;
+        }
+
+        .mission-vision {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            margin-top: 50px;
+        }
+
+        .mv-card {
+            background: white;
+            padding: 40px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-sm);
+            border: 1px solid #e2e8f0;
+            text-align: center;
+            transition: 0.3s;
+        }
+
+        .mv-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .mv-icon {
+            font-size: 48px;
+            color: var(--secondary);
+            margin-bottom: 20px;
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 40px;
+        }
+
+        .gallery-item {
+            position: relative;
+            border-radius: var(--radius);
+            overflow: hidden;
+            aspect-ratio: 4/3;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.4s;
+        }
+
+        .gallery-item:hover img {
+            transform: scale(1.05);
+        }
+
+        .gallery-caption {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0, 59, 92, 0.85);
+            /* Primary with opacity */
+            color: white;
+            padding: 15px;
+            transform: translateY(100%);
+            transition: 0.3s;
+        }
+
+        .gallery-item:hover .gallery-caption {
+            transform: translateY(0);
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- HEADER -->
+    <header class="header">
+        <div class="container header-content">
+            <div class="logo-container">
+                <div class="logo-circle">MB</div>
+                <h1 class="logo">Dr. Muhammed Emin Başyıldız<span>.</span></h1>
+            </div>
+            <nav class="nav">
+                <a href="index.html" class="nav-btn" data-i18n="nav-home">Ana Sayfa</a>
+                <a href="hakkimizda.html" class="nav-btn active" data-i18n="nav-about">Hakkımızda</a>
+                <a href="hizmetler.html" class="nav-btn" data-i18n="nav-services">Hizmetler</a>
+                <a href="galeri.html" class="nav-btn" data-i18n="nav-gallery">Galeri</a>
+                <a href="#contact" class="nav-btn" data-i18n="nav-contact">İletişim</a>
+            </nav>
+            <div class="header-right">
+
+                <div class="lang-selector">
+                    <button class="lang-btn" id="lang-menu-btn">
+                        <i class="fa-solid fa-globe"></i> <span id="current-lang">TR</span> <i class="fa-solid fa-chevron-down"></i>
+                    </button>
+                    <div class="lang-dropdown" id="lang-dropdown">
+                        <a href="#" onclick="changeLanguage('tr'); return false;">Türkçe</a>
+                        <a href="#" onclick="changeLanguage('en'); return false;">English</a>
+                        <a href="#" onclick="changeLanguage('ar'); return false;">العربية</a>
+                        <a href="#" onclick="changeLanguage('de'); return false;">Deutsch</a>
+                    </div>
+                </div>
+                <a href="tel:05350645684" class="header-phone"><i class="fa-solid fa-phone"></i> 0535 064 56 84</a>
+                <a href="randevu.html" class="btn-cta" data-i18n="btn-cta">Hemen Randevu Al</a>
+            </div>
+        </div>
+    </header>
+
+    <main class="main">
+        <div class="page active">
+            <!-- PAGE HEADER -->
+            <section class="section-header-bg" style="padding: 60px 0 20px; text-align: center;">
+                <div class="container">
+                    <span class="badge" data-i18n="about-header-badge">✨ Biz Kimiz?</span>
+                    <h1 data-i18n="about-header-title">Hakkımızda</h1>
+                    <p style="max-width: 600px; margin: 10px auto; color: var(--gray);" data-i18n="about-header-desc">
+                        Dr. Muhammed Emin Başyıldız Diş Sağlığı olarak yılların deneyimini modern teknolojiyle birleştiriyor, size
+                        özel çözümler
+                        sunuyoruz.
+                    </p>
+                </div>
+            </section>
+
+            <!-- ABOUT & MISSION SECTION -->
+            <section class="about-section">
+                <div class="container">
+                    <div class="row">
+                        <div style="max-width: 800px; margin: 0 auto; text-align: center; margin-bottom: 60px;">
+                            <h2 data-i18n="about-family-title">Dr. Muhammed Emin Başyıldız Diş Sağlığı Ailesi</h2>
+                            <p style="color: var(--gray); font-size: 18px; margin-top: 20px;" data-i18n="about-family-desc">
+                                2010 yılında kurulan kliniğimiz, Gaziantep Şahinbey'de, uluslararası standartlarda
+                                diş hekimliği hizmeti sunmaktadır.
+                                Alanında uzman kadromuz, güler yüzlü ekibimiz ve en son teknoloji cihazlarımızla
+                                misafirlerimize konforlu bir tedavi süreci yaşatmayı hedefliyoruz.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="mission-vision">
+                        <div class="mv-card">
+                            <div class="mv-icon"><i class="fa-solid fa-bullseye"></i></div>
+                            <h3 data-i18n="about-mission-title">Misyonumuz</h3>
+                            <p data-i18n="about-mission-desc">Etik değerlere bağlı kalarak, hasta memnuniyetini en üst düzeyde tutmak; koruyucu ve
+                                tedavi edici diş hekimliği hizmetlerini en güncel teknolojilerle sunmaktır.</p>
+                        </div>
+                        <div class="mv-card">
+                            <div class="mv-icon"><i class="fa-solid fa-eye"></i></div>
+                            <h3 data-i18n="about-vision-title">Vizyonumuz</h3>
+                            <p data-i18n="about-vision-desc">Ağız ve diş sağlığı alanında referans gösterilen, ulusal ve uluslararası platformda
+                                tercih edilen, yenilikçi ve öncü bir sağlık kuruluşu olmaktır.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+
+        </div>
+    </main>
+
+    <footer class="footer" id="contact">
+        <div class="container footer-content">
+            <div class="footer-col">
+                <h3>Dr. Muhammed Emin Başyıldız.</h3>
+                <p>Modern diş hekimliğinin güvenilir adresi.</p>
+                <div class="footer-social">
+                    <a href="https://www.instagram.com/basyildizdis/" target="_blank" class="social-icon"><i
+                            class="fa-brands fa-instagram"></i></a>
+                    <a href="#" class="social-icon"><i class="fa-brands fa-facebook-f"></i></a>
+                    <a href="#" class="social-icon"><i class="fa-brands fa-linkedin-in"></i></a>
+                </div>
+            </div>
+            <div class="footer-col">
+                <h4 data-i18n="footer-quick">Hızlı Bağlantılar</h4>
+                <ul>
+                    <li><a href="index.html" data-i18n="nav-home">Ana Sayfa</a></li>
+                    <li><a href="hakkimizda.html" data-i18n="nav-about">Hakkımızda</a></li>
+                    <li><a href="galeri.html" data-i18n="nav-gallery">Galeri</a></li>
+                    <li><a href="/yonetim-paneli">Yönetim Paneli</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4 data-i18n="footer-contact">İletişim</h4>
+                <ul>
+                    <li><i class="fa-solid fa-phone"></i> +90 535 064 56 84</li>
+                    <li><i class="fa-solid fa-envelope"></i> info@dentsmile.com</li>
+                    <li><i class="fa-solid fa-location-dot"></i> Pırlanta düğün salonu yanı, 60. Yıl, Yavuz Sultan Selim Cd. No:107A, 27100
+                        Şahinbey/Gaziantep</li>
+                    <li><i class="fa-solid fa-clock"></i> Hafta içi: 09:30 - 23:00</li>
+                    <li><i class="fa-solid fa-clock" style="visibility: hidden;"></i> Pazar: 10:00 - 18:00</li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 Dr. Muhammed Emin Başyıldız Diş Polikliniği. <span data-i18n="footer-copyright">Tüm hakları saklıdır.</span></p>
+        </div>
+    </footer>
+
+    <!-- Fixed Floating Phone Button -->
+    <a href="tel:05350645684" class="phone-float-btn" title="Hemen Arayın">
+        <i class="fa-solid fa-phone"></i>
+    </a>
+
+    <!-- Fixed WhatsApp Button -->
+    <a href="https://wa.me/905350645684" target="_blank" class="whatsapp-btn">
+        <span>💬</span>
+    </a>
+
+    <script src="translations.js"></script>
+    <script src="theme-lang.js"></script>
+    <script src="script.js?v=3.0"></script>
+</body>
+
+</html>

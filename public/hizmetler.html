@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hizmetlerimiz | Dr. Muhammed Emin Başyıldız</title>
+    <!-- Google Fonts: Poppins (Display) & Inter (Body) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="icon" href="favicon.jpg" type="image/jpeg">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- HEADER -->
+    <header class="header">
+        <div class="container header-content">
+            <div class="logo-container">
+                <div class="logo-circle">MB</div>
+                <h1 class="logo">Dr. Muhammed Emin Başyıldız<span>.</span></h1>
+            </div>
+            <nav class="nav">
+                <a href="index.html" class="nav-btn" data-i18n="nav-home">Ana Sayfa</a>
+                <a href="hakkimizda.html" class="nav-btn" data-i18n="nav-about">Hakkımızda</a>
+                <a href="hizmetler.html" class="nav-btn active" data-i18n="nav-services">Hizmetler</a>
+                <a href="galeri.html" class="nav-btn" data-i18n="nav-gallery">Galeri</a>
+                <a href="#contact" class="nav-btn" data-i18n="nav-contact">İletişim</a>
+            </nav>
+            <div class="header-right">
+
+                <div class="lang-selector">
+                    <button class="lang-btn" id="lang-menu-btn">
+                        <i class="fa-solid fa-globe"></i> <span id="current-lang">TR</span> <i class="fa-solid fa-chevron-down"></i>
+                    </button>
+                    <div class="lang-dropdown" id="lang-dropdown">
+                        <a href="#" onclick="changeLanguage('tr'); return false;">Türkçe</a>
+                        <a href="#" onclick="changeLanguage('en'); return false;">English</a>
+                        <a href="#" onclick="changeLanguage('ar'); return false;">العربية</a>
+                        <a href="#" onclick="changeLanguage('de'); return false;">Deutsch</a>
+                    </div>
+                </div>
+                <a href="tel:05350645684" class="header-phone"><i class="fa-solid fa-phone"></i> 0535 064 56 84</a>
+                <a href="randevu.html" class="btn-cta" data-i18n="btn-cta">Hemen Randevu Al</a>
+            </div>
+        </div>
+    </header>
+
+    <main class="main">
+        <div class="page active">
+            <!-- PAGE HEADER -->
+            <section class="section-header-bg" style="padding: 60px 0 20px; text-align: center;">
+                <div class="container">
+                    <span class="badge" data-i18n="services-header-badge">✨ Tedavilerimiz</span>
+                    <h1 data-i18n="services-header-title">Hizmetlerimiz</h1>
+                    <p style="max-width: 600px; margin: 10px auto; color: var(--gray);" data-i18n="services-header-desc">
+                        Uzman hekim kadromuzla sunduğumuz tüm teşhis ve tedavi seçeneklerini inceleyin.
+                    </p>
+                </div>
+            </section>
+
+            <!-- SERVICES SECTION (ALL ITEMS) -->
+            <section class="services">
+                <div class="container">
+                    <div class="service-grid">
+                        <!-- 1. Muayene ve Teşhis -->
+                        <div class="service-card">
+                            <div class="icon-box">🩺</div>
+                            <h3 data-i18n="s-muayene">Muayene ve Teşhis</h3>
+                            <p data-i18n="s-muayene-desc">Detaylı ağız içi muayene ve radyolojik görüntüleme ile erken teşhis.</p>
+                            <button class="service-link" onclick="openModal('muayene')" data-i18n="btn-detail">Detaylı Bilgi →</button>
+                        </div>
+                        <!-- 2. Dental İmplant -->
+                        <div class="service-card">
+                            <div class="icon-box">🔩</div>
+                            <h3 data-i18n="s-implant">Dental İmplant</h3>
+                            <p data-i18n="s-implant-desc">Eksik dişlerin yerine uygulanan, doğal dişe en yakın yapay kök tedavisi.</p>
+                            <button class="service-link" onclick="openModal('implant')" data-i18n="btn-detail">Detaylı Bilgi →</button>
+                        </div>
+                        <!-- 3. Gülüş Tasarımı -->
+                        <div class="service-card">
+                            <div class="icon-box">✨</div>
+                            <h3 data-i18n="s-gulus">Gülüş Tasarımı</h3>
+                            <p data-i18n="s-gulus-desc">Yüz hatlarınıza en uygun, estetik ve doğal bir gülüşün dijital olarak tasarlanması.</p>
+                            <button class="service-link" onclick="openModal('gulus')" data-i18n="btn-detail">Detaylı Bilgi →</button>
+                        </div>
+                        <!-- 4. Zirkonyum-Laminate -->
+                        <div class="service-card">
+                            <div class="icon-box">💎</div>
+                            <h3 data-i18n="s-zirkonyum">Zirkonyum-Laminate</h3>
+                            <p data-i18n="s-zirkonyum-desc">Estetik ve dayanıklılığı bir arada sunan, doğal görünümlü kaplama çözümleri.</p>
+                            <button class="service-link" onclick="openModal('zirkonyum')" data-i18n="btn-detail">Detaylı Bilgi →</button>
+                        </div>
+                        <!-- 5. Lamina Veneer -->
+                        <div class="service-card">
+                            <div class="icon-box">🦷</div>
+                            <h3 data-i18n="s-lamina">Lamina Veneer</h3>
+                            <p data-i18n="s-lamina-desc">Diş yüzeyine yapıştırılan ince yaprak porselenlerle mükemmel estetik.</p>
+                            <button class="service-link" onclick="openModal('lamina')" data-i18n="btn-detail">Detaylı Bilgi →</button>
+                        </div>
+                        <!-- 6. Endodontik Cerrahi -->
+                        <div class="service-card">
+                            <div class="icon-box">🔬</div>
+                            <h3 data-i18n="s-endo">Endodontik Cerrahi</h3>
+                            <p data-i18n="s-endo-desc">Kök ucu rezeksiyonu ve inatçı enfeksiyonların cerrahi olarak tedavisi.</p>
+                            <button class="service-link" onclick="openModal('endo_cerrahi')" data-i18n="btn-detail">Detaylı Bilgi →</button>
+                        </div>
+                        <!-- 7. Kanal Tedavisi -->
+                        <div class="service-card">
+                            <div class="icon-box">🛡️</div>
+                            <h3 data-i18n="s-kanal">Kanal Tedavisi</h3>
+                            <p data-i18n="s-kanal-desc">İltihaplı dişin sinirlerinin temizlenerek dişin ağızda tutulmasını sağlayan tedavi.</p>
+                            <button class="service-link" onclick="openModal('kanal')" data-i18n="btn-detail">Detaylı Bilgi →</button>
+                        </div>
+                        <!-- 8. Gömülü Diş -->
+                        <div class="service-card">
+                            <div class="icon-box">🚑</div>
+                            <h3 data-i18n="s-gomulu">Gömülü Diş</h3>
+                            <p data-i18n="s-gomulu-desc">Sürmemiş veya yarı gömülü yirmi yaş dişlerinin ağrısız cerrahi çekimi.</p>
+                            <button class="service-link" onclick="openModal('gomulu')" data-i18n="btn-detail">Detaylı Bilgi →</button>
+                        </div>
+                        <!-- 9. Çene Eklemi (TME) -->
+                        <div class="service-card">
+                            <div class="icon-box">🤐</div>
+                            <h3 data-i18n="s-tme">Çene Eklemi (TME)</h3>
+                            <p data-i18n="s-tme-desc">Çene eklemi ağrıları, ses gelmesi ve çene kilitlenmesi tedavileri.</p>
+                            <button class="service-link" onclick="openModal('tme')" data-i18n="btn-detail">Detaylı Bilgi →</button>
+                        </div>
+                        <!-- 10. Diş Dolguları -->
+                        <div class="service-card">
+                            <div class="icon-box">🔧</div>
+                            <h3 data-i18n="s-dolgu">Diş Dolguları</h3>
+                            <p data-i18n="s-dolgu-desc">Çürük dişlerin temizlenip kompozit (estetik) malzemelerle restore edilmesi.</p>
+                            <button class="service-link" onclick="openModal('dolgu')" data-i18n="btn-detail">Detaylı Bilgi →</button>
+                        </div>
+                        <!-- 11. Ortodontik Tedavi -->
+                        <div class="service-card">
+                            <div class="icon-box">😬</div>
+                            <h3 data-i18n="s-orto">Ortodontik Tedavi</h3>
+                            <p data-i18n="s-orto-desc">Diş çapraşıklıklarının diş telleri ile düzeltilmesi.</p>
+                            <button class="service-link" onclick="openModal('ortodonti')" data-i18n="btn-detail">Detaylı Bilgi →</button>
+                        </div>
+                        <!-- 12. Çocuk Diş (Pedodonti) -->
+                        <div class="service-card">
+                            <div class="icon-box">🧸</div>
+                            <h3 data-i18n="s-pedodonti">Çocuk Diş Hekimliği</h3>
+                            <p data-i18n="s-pedodonti-desc">0-13 yaş grubu çocukların süt ve daimi dişlerinin korunması ve tedavisi.</p>
+                            <button class="service-link" onclick="openModal('pedodonti')" data-i18n="btn-detail">Detaylı Bilgi →</button>
+                        </div>
+                        <!-- 13. Diş Eti Hastalıkları -->
+                        <div class="service-card">
+                            <div class="icon-box">🩸</div>
+                            <h3 data-i18n="s-diseti">Diş Eti Hastalıkları</h3>
+                            <p data-i18n="s-diseti-desc">Diş eti kanaması, çekilmesi ve periodontitis tedavileri.</p>
+                            <button class="service-link" onclick="openModal('dis_eti')" data-i18n="btn-detail">Detaylı Bilgi →</button>
+                        </div>
+                        <!-- 14. Hareketli Protezler -->
+                        <div class="service-card">
+                            <div class="icon-box">👴</div>
+                            <h3 data-i18n="s-protez">Hareketli Protezler</h3>
+                            <p data-i18n="s-protez-desc">Tam veya yarım damak protezleri ile kaybedilen fonksiyonun geri kazanılması.</p>
+                            <button class="service-link" onclick="openModal('protez')" data-i18n="btn-detail">Detaylı Bilgi →</button>
+                        </div>
+                        <!-- 15. Lazer Uygulamaları -->
+                        <div class="service-card">
+                            <div class="icon-box">💡</div>
+                            <h3 data-i18n="s-lazer">Lazer Uygulamaları</h3>
+                            <p data-i18n="s-lazer-desc">Diş eti şekillendirme ve aft-uçuk tedavilerinde ağrısız lazer teknolojisi.</p>
+                            <button class="service-link" onclick="openModal('lazer')" data-i18n="btn-detail">Detaylı Bilgi →</button>
+                        </div>
+                        <!-- 16. Kist-Tümör -->
+                        <div class="service-card">
+                            <div class="icon-box">🦠</div>
+                            <h3 data-i18n="s-kist">Kist-Tümör Tedavileri</h3>
+                            <p data-i18n="s-kist-desc">Çene kemiği ve yumuşak dokudaki kistik oluşumların cerrahi tedavisi.</p>
+                            <button class="service-link" onclick="openModal('kist')" data-i18n="btn-detail">Detaylı Bilgi →</button>
+                        </div>
+                        <!-- 17. Diş Beyazlatma -->
+                        <div class="service-card">
+                            <div class="icon-box">🌟</div>
+                            <h3 data-i18n="s-beyazlatma">Diş Beyazlatma</h3>
+                            <p data-i18n="s-beyazlatma-desc">Lazer destekli ofis tipi beyazlatma ile bembeyaz bir gülüş.</p>
+                            <button class="service-link" onclick="openModal('beyazlatma')" data-i18n="btn-detail">Detaylı Bilgi →</button>
+                        </div>
+                        <!-- 18. Şeffaf Plak -->
+                        <div class="service-card">
+                            <div class="icon-box">🧼</div>
+                            <h3 data-i18n="s-invisalign">Şeffaf Plak (Invisalign)</h3>
+                            <p data-i18n="s-invisalign-desc">Telsiz, görünmez plaklarla yapılan konforlu ortodontik tedavi.</p>
+                            <button class="service-link" onclick="openModal('invisalign')" data-i18n="btn-detail">Detaylı Bilgi →</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <footer class="footer" id="contact">
+        <div class="container footer-content">
+            <div class="footer-col">
+                <h3>Dr. Muhammed Emin Başyıldız.</h3>
+                <p>Modern diş hekimliğinin güvenilir adresi.</p>
+                <div class="footer-social">
+                    <a href="https://www.instagram.com/basyildizdis/" target="_blank" class="social-icon"><i
+                            class="fa-brands fa-instagram"></i></a>
+                    <a href="#" class="social-icon"><i class="fa-brands fa-facebook-f"></i></a>
+                    <a href="#" class="social-icon"><i class="fa-brands fa-linkedin-in"></i></a>
+                </div>
+            </div>
+            <div class="footer-col">
+                <h4 data-i18n="footer-quick">Hızlı Bağlantılar</h4>
+                <ul>
+                    <li><a href="index.html" data-i18n="nav-home">Ana Sayfa</a></li>
+                    <li><a href="hakkimizda.html" data-i18n="nav-about">Hakkımızda</a></li>
+                    <li><a href="galeri.html" data-i18n="nav-gallery">Galeri</a></li>
+                    <li><a href="/yonetim-paneli">Yönetim Paneli</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4 data-i18n="footer-contact">İletişim</h4>
+                <ul>
+                    <li><i class="fa-solid fa-phone"></i> +90 535 064 56 84</li>
+                    <li><i class="fa-solid fa-envelope"></i> info@dentsmile.com</li>
+                    <li><i class="fa-solid fa-location-dot"></i> Pırlanta düğün salonu yanı, 60. Yıl, Yavuz Sultan Selim Cd. No:107A, 27100
+                        Şahinbey/Gaziantep</li>
+                    <li><i class="fa-solid fa-clock"></i> Hafta içi: 09:30 - 23:00</li>
+                    <li><i class="fa-solid fa-clock" style="visibility: hidden;"></i> Pazar: 10:00 - 18:00</li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 Dr. Muhammed Emin Başyıldız Diş Polikliniği. <span data-i18n="footer-copyright">Tüm hakları saklıdır.</span></p>
+        </div>
+    </footer>
+
+    <!-- Fixed Floating Phone Button -->
+    <a href="tel:05350645684" class="phone-float-btn" title="Hemen Arayın">
+        <i class="fa-solid fa-phone"></i>
+    </a>
+
+    <!-- Fixed WhatsApp Button -->
+    <a href="https://wa.me/905350645684" target="_blank" class="whatsapp-btn">
+        <span>💬</span>
+    </a>
+
+    <!-- Service Details Modal -->
+    <div id="service-modal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-close" onclick="closeModal()">✕</div>
+            <h3 id="modal-title" class="modal-title">Hizmet Detayı</h3>
+            <div id="modal-body" class="modal-body">
+                <!-- İçerik JS ile gelecek -->
+            </div>
+        </div>
+    </div>
+
+    <script src="translations.js"></script>
+    <script src="theme-lang.js"></script>
+    <script src="script.js?v=3.0"></script>
+</body>
+
+</html>
