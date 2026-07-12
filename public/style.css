@@ -2137,12 +2137,32 @@ body.dark-mode .saat-btn.disabled {
 
 /* MOBILE RESPONSIVE */
 @media(max-width: 900px) {
+    .top-bar-content {
+        flex-direction: column;
+        justify-content: center;
+        gap: 12px;
+        text-align: center;
+    }
+
+    .contact-info,
+    .social-links {
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 12px;
+    }
+
     .header-content {
         display: flex;
         height: auto;
-        padding: 16px 0;
+        padding: 16px 15px;
         flex-direction: column;
-        gap: 14px;
+        gap: 16px;
+    }
+
+    .logo-container {
+        justify-content: center;
+        flex-wrap: wrap;
+        text-align: center;
     }
 
     .header-content .nav {
@@ -2150,6 +2170,8 @@ body.dark-mode .saat-btn.disabled {
         margin: 0;
         width: 100%;
         justify-content: center;
+        flex-wrap: wrap;
+        gap: 8px;
     }
 
     .header-content .header-right {
@@ -2157,11 +2179,26 @@ body.dark-mode .saat-btn.disabled {
         margin-left: 0;
         width: 100%;
         justify-content: center;
+        flex-wrap: wrap;
+        gap: 12px;
+        margin-top: 5px;
     }
 
     .nav-btn {
         padding: 8px 12px;
-        font-size: 12px;
+        font-size: 13px;
+        flex: 1 1 auto;
+        text-align: center;
+    }
+
+    .btn-cta {
+        padding: 10px 18px;
+        font-size: 13px;
+    }
+
+    .header-phone {
+        padding: 8px 12px;
+        font-size: 13px;
     }
 
     .hero-container {
@@ -2172,10 +2209,12 @@ body.dark-mode .saat-btn.disabled {
 
     .hero-buttons {
         justify-content: center;
+        flex-wrap: wrap;
+        gap: 12px;
     }
 
     .hero-text h1 {
-        font-size: 42px;
+        font-size: 36px;
     }
 
     .split-layout {
@@ -2189,11 +2228,13 @@ body.dark-mode .saat-btn.disabled {
     .footer-content {
         grid-template-columns: 1fr;
         text-align: center;
+        gap: 35px;
     }
 
     .trust-indicators {
         justify-content: center;
         flex-wrap: wrap;
+        gap: 20px;
     }
 
     .nav {
@@ -2208,7 +2249,7 @@ body.dark-mode .saat-btn.disabled {
 
     .home-about-container {
         grid-template-columns: 1fr;
-        gap: 60px;
+        gap: 40px;
     }
 
     .experience-badge {
@@ -2219,11 +2260,11 @@ body.dark-mode .saat-btn.disabled {
     }
 
     .experience-badge h3 {
-        font-size: 26px;
+        font-size: 24px;
     }
 
     .home-about-text h2 {
-        font-size: 30px;
+        font-size: 28px;
     }
 
     /* MOBILE ADJUSTMENTS FOR TOGGLE & LANG Selector */
@@ -2231,7 +2272,7 @@ body.dark-mode .saat-btn.disabled {
         display: flex;
         justify-content: center;
         align-items: center;
-        gap: 10px;
+        gap: 12px;
         width: 100%;
         margin-top: 10px;
         flex-wrap: wrap;
