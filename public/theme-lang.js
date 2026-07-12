@@ -75,6 +75,15 @@ document.addEventListener('DOMContentLoaded', () => {
             currentLangText.textContent = lang.toUpperCase();
         }
 
+        // Update active class on language links
+        document.querySelectorAll('[data-lang]').forEach(el => {
+            if (el.getAttribute('data-lang') === lang) {
+                el.classList.add('active');
+            } else {
+                el.classList.remove('active');
+            }
+        });
+
         // Apply translations
         const trans = window.translations ? window.translations[lang] : null;
         if (!trans) return;

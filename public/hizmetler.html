@@ -56,6 +56,43 @@
         </div>
     </header>
 
+    <!-- MOBILE MENU DRAWER & OVERLAY -->
+    <div class="mobile-overlay" id="mobile-overlay"></div>
+    <div class="mobile-drawer" id="mobile-drawer">
+        <div class="drawer-header">
+            <div class="logo-container">
+                <div class="logo-circle">MB</div>
+                <span class="logo">Dr. Muhammed Emin Başyıldız<span>.</span></span>
+            </div>
+            <button class="drawer-close-btn" id="drawer-close-btn" aria-label="Kapat">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+        <div class="drawer-body">
+            <nav class="drawer-nav">
+                <a href="index.html" class="drawer-nav-btn" data-i18n-nav="home"><i class="fa-solid fa-house"></i> <span data-i18n="nav-home">Ana Sayfa</span></a>
+                <a href="hakkimizda.html" class="drawer-nav-btn" data-i18n-nav="about"><i class="fa-solid fa-circle-info"></i> <span data-i18n="nav-about">Hakkımızda</span></a>
+                <a href="hizmetler.html" class="drawer-nav-btn active" data-i18n-nav="services"><i class="fa-solid fa-tooth"></i> <span data-i18n="nav-services">Hizmetler</span></a>
+                <a href="galeri.html" class="drawer-nav-btn" data-i18n-nav="gallery"><i class="fa-solid fa-image"></i> <span data-i18n="nav-gallery">Galeri</span></a>
+                <a href="#contact" class="drawer-nav-btn" data-i18n-nav="contact"><i class="fa-solid fa-location-dot"></i> <span data-i18n="nav-contact">İletişim</span></a>
+            </nav>
+            
+            <div class="drawer-lang-section">
+                <div class="lang-title"><i class="fa-solid fa-globe"></i> Dil / Language</div>
+                <div class="drawer-lang-links">
+                    <a href="#" data-lang="tr" onclick="changeLanguage('tr'); return false;">Türkçe</a>
+                    <a href="#" data-lang="en" onclick="changeLanguage('en'); return false;">English</a>
+                    <a href="#" data-lang="ar" onclick="changeLanguage('ar'); return false;">العربية</a>
+                    <a href="#" data-lang="de" onclick="changeLanguage('de'); return false;">Deutsch</a>
+                </div>
+            </div>
+        </div>
+        <div class="drawer-footer">
+            <a href="tel:05350645684" class="drawer-phone"><i class="fa-solid fa-phone"></i> 0535 064 56 84</a>
+            <a href="randevu.html" class="drawer-btn-cta" data-i18n="btn-cta">Hemen Randevu Al</a>
+        </div>
+    </div>
+
     <main class="main">
         <div class="page active">
             <!-- PAGE HEADER -->

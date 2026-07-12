@@ -108,54 +108,61 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // 8. Mobile Menu Logic (Hamburger Menu)
+    // 8. Mobile Menu Logic (Drawer & Overlay)
     const mobileMenuBtn = document.getElementById('mobile-menu-btn');
-    const navElement = document.querySelector('.nav');
+    const mobileDrawer = document.getElementById('mobile-drawer');
+    const mobileOverlay = document.getElementById('mobile-overlay');
+    const drawerCloseBtn = document.getElementById('drawer-close-btn');
 
-    if (mobileMenuBtn && navElement) {
+    function openMobileMenu() {
+        if (mobileDrawer && mobileOverlay) {
+            mobileDrawer.classList.add('open');
+            mobileOverlay.classList.add('open');
+            if (mobileMenuBtn) mobileMenuBtn.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+    }
+
+    function closeMobileMenu() {
+        if (mobileDrawer && mobileOverlay) {
+            mobileDrawer.classList.remove('open');
+            mobileOverlay.classList.remove('open');
+            if (mobileMenuBtn) mobileMenuBtn.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+    }
+
+    if (mobileMenuBtn) {
         mobileMenuBtn.addEventListener('click', () => {
-            const isOpen = navElement.classList.toggle('mobile-menu-open');
-            
-            const icon = mobileMenuBtn.querySelector('i');
-            if (icon) {
-                if (isOpen) {
-                    icon.classList.remove('fa-bars');
-                    icon.classList.add('fa-xmark');
-                    document.body.style.overflow = 'hidden';
-                } else {
-                    icon.classList.remove('fa-xmark');
-                    icon.classList.add('fa-bars');
-                    document.body.style.overflow = '';
-                }
-            }
-        });
-
-        // Close menu when clicking nav links
-        navElement.querySelectorAll('.nav-btn').forEach(btn => {
-            btn.addEventListener('click', () => {
-                navElement.classList.remove('mobile-menu-open');
-                document.body.style.overflow = '';
-                const icon = mobileMenuBtn.querySelector('i');
-                if (icon) {
-                    icon.classList.remove('fa-xmark');
-                    icon.classList.add('fa-bars');
-                }
-            });
-        });
-
-        // Reset state on screen resize
-        window.addEventListener('resize', () => {
-            if (window.innerWidth > 900) {
-                navElement.classList.remove('mobile-menu-open');
-                document.body.style.overflow = '';
-                const icon = mobileMenuBtn.querySelector('i');
-                if (icon) {
-                    icon.classList.remove('fa-xmark');
-                    icon.classList.add('fa-bars');
-                }
+            if (mobileDrawer && mobileDrawer.classList.contains('open')) {
+                closeMobileMenu();
+            } else {
+                openMobileMenu();
             }
         });
     }
+
+    if (drawerCloseBtn) {
+        drawerCloseBtn.addEventListener('click', closeMobileMenu);
+    }
+
+    if (mobileOverlay) {
+        mobileOverlay.addEventListener('click', closeMobileMenu);
+    }
+
+    // Close menu when clicking drawer nav links
+    if (mobileDrawer) {
+        mobileDrawer.querySelectorAll('.drawer-nav-btn').forEach(btn => {
+            btn.addEventListener('click', closeMobileMenu);
+        });
+    }
+
+    // Reset state on screen resize
+    window.addEventListener('resize', () => {
+        if (window.innerWidth > 900) {
+            closeMobileMenu();
+        }
+    });
 });
 
 
