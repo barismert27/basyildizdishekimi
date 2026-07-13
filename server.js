@@ -30,12 +30,16 @@ app.use('/api/auth', authRoutes);
 app.use('/api/appointments', appointmentRoutes);
 
 // Veritabanını Başlat ve Sunucuyu Dinle
-initDb().then(() => {
-    app.listen(PORT, () => {
-        console.log(`🚀 Server çalışıyor: http://localhost:${PORT}`);
-        console.log(`🔒 Admin paneli: http://localhost:${PORT}/yonetim-paneli`);
-        console.log(`🔑 Login sayfası: http://localhost:${PORT}/login`);
+initDb()
+    .then(() => {
+        console.log('✅ Veritabanı başarıyla başlatıldı.');
+    })
+    .catch(err => {
+        console.error('⚠️ Veritabanı bağlantısı kurulamadı (Çevrimdışı modda çalışılıyor):', err.message);
     });
-}).catch(err => {
-    console.error('Veritabanı başlatılamadı, sunucu durduruluyor:', err);
+
+app.listen(PORT, () => {
+    console.log(`🚀 Server çalışıyor: http://localhost:${PORT}`);
+    console.log(`🔒 Admin paneli: http://localhost:${PORT}/yonetim-paneli`);
+    console.log(`🔑 Login sayfası: http://localhost:${PORT}/login`);
 });
