@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+Disallow: /api/
+Disallow: /yonetim-paneli
+Disallow: /login
+Disallow: /tmp/
+Disallow: /*?*
+
+Sitemap: https://www.dentsmile.com/sitemap.xml

@@ -593,6 +593,7 @@ button {
 .split-layout {
     display: block;
     /* Remove grid */
+    width: 100%;
     max-width: 600px;
     margin: 0 auto;
     background: white;
@@ -2684,5 +2685,235 @@ body.dark-mode .saat-btn.disabled {
 
     .mobile-menu-btn.active i {
         transform: rotate(90deg);
+    }
+}
+
+/* =====================================================
+   MOBILE RESPONSIVE UPDATES FOR PANEL AND APPOINTMENT FORM
+   ===================================================== */
+@media (max-width: 768px) {
+    /* Topbar */
+    .panel-topbar-inner {
+        flex-direction: column;
+        height: auto;
+        padding: 12px 16px;
+        gap: 12px;
+    }
+    .panel-brand {
+        align-items: center;
+        text-align: center;
+    }
+    .panel-brand .logo {
+        font-size: 15px;
+    }
+    .panel-nav-actions {
+        width: 100%;
+        justify-content: stretch;
+        gap: 8px;
+    }
+    .panel-nav-link {
+        flex: 1;
+        justify-content: center;
+        padding: 8px 12px;
+        font-size: 12px;
+    }
+
+    /* Container */
+    .panel-container {
+        padding: 16px 12px 40px;
+    }
+
+    /* Stats Grid */
+    .stats-grid {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+    .stat-box {
+        padding: 16px 20px;
+    }
+    .stat-val {
+        font-size: 26px;
+    }
+
+    /* Toolbar */
+    .panel-toolbar {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 12px;
+        padding: 12px;
+    }
+    .kontrol-arama {
+        width: 100%;
+    }
+    .panel-filters {
+        width: 100%;
+        display: flex;
+        gap: 8px;
+    }
+    .filtre-group {
+        flex: 1;
+        justify-content: center;
+        padding: 8px 10px;
+    }
+    .filtre-group select {
+        width: 100%;
+        font-size: 12px;
+    }
+
+    /* Appointment List Table to Card conversion */
+    .randevu-table-header {
+        display: none !important;
+    }
+    .randevu-satir {
+        grid-template-columns: 1fr !important;
+        padding: 16px;
+        gap: 12px;
+        border-bottom: 2px solid #e2e8f0;
+        background: white;
+        border-radius: 12px;
+        margin-bottom: 12px;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02);
+    }
+    .randevu-satir:last-child {
+        margin-bottom: 0;
+    }
+    .rt-col {
+        padding-right: 0;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        gap: 12px;
+    }
+
+    /* Column-specific card details */
+    .rt-col-hasta {
+        border-bottom: 1px dashed #e2e8f0;
+        padding-bottom: 10px;
+        margin-bottom: 4px;
+        align-items: center;
+    }
+    .rt-col-hasta .hasta-bilgi {
+        flex-direction: row;
+        justify-content: space-between;
+        width: 100%;
+        align-items: center;
+    }
+    .rt-col-hasta .hasta-ad {
+        font-size: 15px;
+    }
+
+    /* Subgrid-like structure using CSS grid for 2-line fields */
+    .rt-col-tarih {
+        display: grid;
+        grid-template-columns: auto 1fr;
+        align-items: center;
+        width: 100%;
+    }
+    .rt-col-tarih::before {
+        content: "Tarih & Saat";
+        font-size: 12px;
+        font-weight: 600;
+        color: #64748b;
+        grid-row: span 2;
+    }
+    .rt-col-tarih .tarih-gun {
+        grid-column: 2;
+        justify-self: end;
+        text-align: right;
+        font-size: 13px;
+    }
+    .rt-col-tarih .tarih-saat {
+        grid-column: 2;
+        justify-self: end;
+        text-align: right;
+        font-size: 12px;
+    }
+
+    .rt-col-iletisim {
+        display: grid;
+        grid-template-columns: auto 1fr;
+        align-items: center;
+        width: 100%;
+    }
+    .rt-col-iletisim::before {
+        content: "İletişim";
+        font-size: 12px;
+        font-weight: 600;
+        color: #64748b;
+        grid-row: span 2;
+    }
+    .rt-col-iletisim .iletisim-link {
+        grid-column: 2;
+        justify-self: end;
+        text-align: right;
+        font-size: 13px;
+    }
+    .rt-col-iletisim .iletisim-email {
+        grid-column: 2;
+        justify-self: end;
+        text-align: right;
+        font-size: 12px;
+    }
+
+    .rt-col-durum {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+    }
+    .rt-col-durum::before {
+        content: "Durum";
+        font-size: 12px;
+        font-weight: 600;
+        color: #64748b;
+    }
+
+    .rt-col-islem {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-top: 1px solid #f1f5f9;
+        padding-top: 12px;
+        margin-top: 4px;
+        width: 100%;
+    }
+    .rt-col-islem::before {
+        content: "İşlem";
+        font-size: 12px;
+        font-weight: 600;
+        color: #64748b;
+    }
+}
+
+@media (max-width: 500px) {
+    /* Appointment Booking Form */
+    .split-layout {
+        width: 100%;
+        max-width: 100%;
+        border-radius: 16px;
+    }
+    .split-form {
+        padding: 24px 16px;
+    }
+    .form-wrapper h3 {
+        font-size: 22px;
+    }
+    .form-wrapper p.form-subtitle {
+        font-size: 13px;
+        margin-bottom: 20px;
+    }
+    .form-row {
+        grid-template-columns: 1fr;
+        gap: 0;
+    }
+    
+    /* Login Page */
+    .login-wrapper {
+        padding: 16px;
+    }
+    .login-box {
+        padding: 30px 20px;
+        border-radius: 16px;
     }
 }
