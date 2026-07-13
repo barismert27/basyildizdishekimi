@@ -40,7 +40,7 @@ exports.login = async (req, res) => {
 
     } catch (err) {
         console.error('Login hatası: ', err);
-        res.status(500).json({ success: false, message: 'Login hatası' });
+        res.status(500).json({ success: false, message: `Login hatası: ${err.message}` });
     }
 };
 
