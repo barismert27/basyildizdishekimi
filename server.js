@@ -29,6 +29,18 @@ app.use('/', pageRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api/appointments', appointmentRoutes);
 
+// Health Check / Uyanık Kal Endpoint'i
+app.get('/ping', async (req, res) => {
+    try {
+        const { pool } = require('./config/db');
+        await pool.query('SELECT 1');
+        res.status(200).send('Sunucu ve Veritabanı Ayakta!');
+    } catch (error) {
+        console.error('Healthcheck hatası: ', error.message);
+        res.status(500).send('Hata: ' + error.message);
+    }
+});
+
 // Veritabanını Başlat ve Sunucuyu Dinle
 initDb()
     .then(() => {
