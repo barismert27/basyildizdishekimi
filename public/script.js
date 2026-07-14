@@ -91,6 +91,57 @@ document.addEventListener('DOMContentLoaded', () => {
                 yukleRandevular();
             });
         }
+
+        // Görünüm değiştici sekme (Tab) kontrolü
+        const tabAgendaBtn = document.getElementById('tab-agenda-btn');
+        const tabCalendarBtn = document.getElementById('tab-calendar-btn');
+        const viewAgenda = document.getElementById('view-agenda');
+        const viewCalendar = document.getElementById('view-calendar');
+        const toolbarEl = document.getElementById('panel-toolbar-el');
+
+        if (tabAgendaBtn && tabCalendarBtn && viewAgenda && viewCalendar) {
+            tabAgendaBtn.addEventListener('click', () => {
+                tabAgendaBtn.classList.add('active');
+                tabCalendarBtn.classList.remove('active');
+                viewAgenda.classList.add('active');
+                viewCalendar.classList.remove('active');
+                if (toolbarEl) toolbarEl.style.display = 'flex';
+                yukleRandevular();
+            });
+
+            tabCalendarBtn.addEventListener('click', () => {
+                tabCalendarBtn.classList.add('active');
+                tabAgendaBtn.classList.remove('active');
+                viewCalendar.classList.add('active');
+                viewAgenda.classList.remove('active');
+                if (toolbarEl) toolbarEl.style.display = 'none';
+                yukleTakvimRandevulari();
+            });
+        }
+
+        // Takvim Navigasyon Butonları
+        const prevBtn = document.getElementById('cal-prev-btn');
+        const nextBtn = document.getElementById('cal-next-btn');
+
+        if (prevBtn && nextBtn) {
+            prevBtn.addEventListener('click', () => {
+                calendarDate.setMonth(calendarDate.getMonth() - 1);
+                renderCalendar();
+                const detailList = document.getElementById('selected-day-appointments');
+                const detailTitle = document.getElementById('selected-day-title');
+                if (detailList) detailList.innerHTML = '<div class="empty-state-sm">Randevuları görmek için takvimden bir gün seçin.</div>';
+                if (detailTitle) detailTitle.innerHTML = 'Randevuları görmek için takvimden bir gün seçin';
+            });
+
+            nextBtn.addEventListener('click', () => {
+                calendarDate.setMonth(calendarDate.getMonth() + 1);
+                renderCalendar();
+                const detailList = document.getElementById('selected-day-appointments');
+                const detailTitle = document.getElementById('selected-day-title');
+                if (detailList) detailList.innerHTML = '<div class="empty-state-sm">Randevuları görmek için takvimden bir gün seçin.</div>';
+                if (detailTitle) detailTitle.innerHTML = 'Randevuları görmek için takvimden bir gün seçin';
+            });
+        }
     }
 
 
@@ -394,6 +445,11 @@ async function handleLoginSubmit(e) {
     }
 }
 
+// Takvim Görünümü Durum Değişkenleri
+let calendarDate = new Date();
+let calendarAppointments = [];
+let selectedDateStr = "";
+
 // Panel durumu (filtreler + sayfa)
 const panelState = {
     sayfa: 1,
@@ -478,6 +534,7 @@ async function yukleGenelIstatistikler() {
 
 function renderRandevular(randevular) {
     const listDiv = document.getElementById('randevu-listesi');
+    if (!listDiv) return;
     listDiv.innerHTML = '';
 
     if (randevular.length === 0) {
@@ -485,129 +542,430 @@ function renderRandevular(randevular) {
         return;
     }
 
-    // Table header
-    const header = document.createElement('div');
-    header.className = 'randevu-table-header';
-    header.innerHTML = `
+    // Group appointments by date (tarih)
+    const groups = {};
+    randevular.forEach(r => {
+        const dateKey = r.tarih.split('T')[0];
+        if (!groups[dateKey]) {
+            groups[dateKey] = [];
+        }
+        groups[dateKey].push(r);
+    });
+
+    // In desktop view, we can display the table headers once at the top of the entire list.
+    const tableHeader = document.createElement('div');
+    tableHeader.className = 'randevu-table-header';
+    tableHeader.innerHTML = `
         <div class="rt-col rt-col-hasta">Hasta</div>
         <div class="rt-col rt-col-tarih">Tarih &amp; Saat</div>
         <div class="rt-col rt-col-iletisim">İletişim</div>
         <div class="rt-col rt-col-durum">Durum</div>
         <div class="rt-col rt-col-islem">İşlem</div>
     `;
-    listDiv.appendChild(header);
+    listDiv.appendChild(tableHeader);
 
-    randevular.forEach(r => {
+    // Iterate through date groups (they are already sorted in ascending order from the server)
+    Object.keys(groups).forEach(dateKey => {
+        const dayAppointments = groups[dateKey];
+        
+        // Create group container
+        const groupContainer = document.createElement('div');
+        groupContainer.className = 'agenda-day-group';
+
+        // Create day header
+        const dayHeader = document.createElement('div');
+        dayHeader.className = 'agenda-day-header';
+        
+        // Calculate date prefix
+        const dateObj = new Date(dateKey);
+        const today = new Date();
+        const tomorrow = new Date();
+        tomorrow.setDate(today.getDate() + 1);
+
+        const todayKey = today.toISOString().split('T')[0];
+        const tomorrowKey = tomorrow.toISOString().split('T')[0];
+
+        let prefix = "";
+        if (dateKey === todayKey) {
+            prefix = "Bugün - ";
+        } else if (dateKey === tomorrowKey) {
+            prefix = "Yarın - ";
+        }
+
+        const dateStr = dateObj.toLocaleDateString('tr-TR', { day: '2-digit', month: 'long', year: 'numeric', weekday: 'long' });
+        dayHeader.innerHTML = `<i class="fa-solid fa-calendar-day"></i> <span>${prefix}${dateStr}</span>`;
+        groupContainer.appendChild(dayHeader);
+
+        // Render each appointment row inside the day group
+        dayAppointments.forEach(r => {
+            const durumText = { 'pending': 'Beklemede', 'approved': 'Onaylandı', 'cancelled': 'İptal' };
+            const durumClass = { 'pending': 'durum-beklemede', 'approved': 'durum-onaylandi', 'cancelled': 'durum-iptal' };
+            const durumIcon = { 'pending': 'fa-hourglass-half', 'approved': 'fa-circle-check', 'cancelled': 'fa-circle-xmark' };
+
+            // Format date to local format
+            const tObj = new Date(r.tarih);
+            const tStr = tObj.toLocaleDateString('tr-TR', { day: '2-digit', month: 'short', year: 'numeric' });
+
+            const satir = document.createElement('div');
+            satir.className = 'randevu-satir';
+
+            // --- Hasta sütunu ---
+            const colHasta = document.createElement('div');
+            colHasta.className = 'rt-col rt-col-hasta';
+            const hastaDiv = document.createElement('div');
+            hastaDiv.className = 'hasta-bilgi';
+            const hastaAd = document.createElement('strong');
+            hastaAd.className = 'hasta-ad';
+            hastaAd.textContent = r.ad;
+            hastaDiv.appendChild(hastaAd);
+            if (r.notlar) {
+                const notBtn = document.createElement('button');
+                notBtn.className = 'hasta-not-btn';
+                notBtn.innerHTML = '<i class="fa-solid fa-note-sticky"></i> Notu Gör';
+                notBtn.addEventListener('click', () => notGosterText(r.notlar));
+                hastaDiv.appendChild(notBtn);
+            }
+            colHasta.appendChild(hastaDiv);
+            satir.appendChild(colHasta);
+
+            // --- Tarih sütunu ---
+            const colTarih = document.createElement('div');
+            colTarih.className = 'rt-col rt-col-tarih';
+            const tarihGun = document.createElement('span');
+            tarihGun.className = 'tarih-gun';
+            tarihGun.textContent = tStr;
+            const tarihSaat = document.createElement('span');
+            tarihSaat.className = 'tarih-saat';
+            tarihSaat.innerHTML = `<i class="fa-regular fa-clock"></i> ${r.saat}`;
+            colTarih.appendChild(tarihGun);
+            colTarih.appendChild(tarihSaat);
+            satir.appendChild(colTarih);
+
+            // --- İletişim sütunu ---
+            const colIletisim = document.createElement('div');
+            colIletisim.className = 'rt-col rt-col-iletisim';
+            const telLink = document.createElement('a');
+            telLink.className = 'iletisim-link';
+            telLink.href = `tel:${r.telefon}`;
+            telLink.innerHTML = `<i class="fa-solid fa-phone"></i> ${r.telefon}`;
+            const emailSpan = document.createElement('span');
+            emailSpan.className = 'iletisim-email';
+            const emailText = r.email ? (r.email.length > 20 ? r.email.substring(0, 20) + '…' : r.email) : '—';
+            emailSpan.innerHTML = `<i class="fa-regular fa-envelope"></i> ${emailText}`;
+            if (r.email) emailSpan.title = r.email;
+            colIletisim.appendChild(telLink);
+            colIletisim.appendChild(emailSpan);
+            satir.appendChild(colIletisim);
+
+            // --- Durum sütunu ---
+            const colDurum = document.createElement('div');
+            colDurum.className = 'rt-col rt-col-durum';
+            const badge = document.createElement('span');
+            badge.className = `durum-badge ${durumClass[r.durum]}`;
+            badge.innerHTML = `<i class="fa-solid ${durumIcon[r.durum]}"></i> ${durumText[r.durum]}`;
+            colDurum.appendChild(badge);
+            satir.appendChild(colDurum);
+
+            // --- İşlem sütunu ---
+            const colIslem = document.createElement('div');
+            colIslem.className = 'rt-col rt-col-islem';
+            const islemBtns = document.createElement('div');
+            islemBtns.className = 'islem-btns';
+
+            if (r.durum === 'pending') {
+                const onaylaBtn = document.createElement('button');
+                onaylaBtn.className = 'btn-icon btn-icon-onayla';
+                onaylaBtn.title = 'Onayla';
+                onaylaBtn.innerHTML = '<i class="fa-solid fa-check"></i>';
+                onaylaBtn.addEventListener('click', () => randevuDurumGuncelle(r.id, 'approved'));
+                islemBtns.appendChild(onaylaBtn);
+
+                const reddetBtn = document.createElement('button');
+                reddetBtn.className = 'btn-icon btn-icon-iptal';
+                reddetBtn.title = 'Reddet';
+                reddetBtn.innerHTML = '<i class="fa-solid fa-xmark"></i>';
+                reddetBtn.addEventListener('click', () => randevuDurumGuncelle(r.id, 'cancelled'));
+                islemBtns.appendChild(reddetBtn);
+            }
+
+            if (r.durum === 'approved') {
+                const iptalBtn = document.createElement('button');
+                iptalBtn.className = 'btn-icon btn-icon-iptal';
+                iptalBtn.title = 'İptal Et';
+                iptalBtn.innerHTML = '<i class="fa-solid fa-ban"></i>';
+                iptalBtn.addEventListener('click', () => randevuDurumGuncelle(r.id, 'cancelled'));
+                islemBtns.appendChild(iptalBtn);
+            }
+
+            const silBtn = document.createElement('button');
+            silBtn.className = 'btn-icon btn-icon-sil';
+            silBtn.title = 'Sil';
+            silBtn.innerHTML = '<i class="fa-solid fa-trash"></i>';
+            silBtn.addEventListener('click', () => randevuSil(r.id));
+            islemBtns.appendChild(silBtn);
+
+            colIslem.appendChild(islemBtns);
+            satir.appendChild(colIslem);
+
+            groupContainer.appendChild(satir);
+        });
+
+        listDiv.appendChild(groupContainer);
+    });
+}
+
+// TAKVİM GÖRÜNÜMÜ YARDIMCI FONKSİYONLARI
+
+async function yukleTakvimRandevulari() {
+    const daysGrid = document.getElementById('calendar-days');
+    if (!daysGrid) return;
+    
+    daysGrid.innerHTML = '<div class="empty-state-sm" style="grid-column: span 7;"><i class="fa-solid fa-spinner fa-spin"></i> Yükleniyor...</div>';
+    
+    try {
+        const token = localStorage.getItem('adminToken');
+        const headers = {};
+        if (token) headers['Authorization'] = `Bearer ${token}`;
+
+        // Calendarda tüm ay detayını görmek için sayfalama yapmadan yüksek limitli çekiyoruz
+        const response = await fetch(`${API_URL}/appointments?limit=1000`, {
+            credentials: 'include',
+            headers: headers
+        });
+
+        const result = await response.json();
+        if (result.success) {
+            calendarAppointments = result.data;
+            renderCalendar();
+            
+            // Eğer seçili bir tarih varsa alt taraftaki detay listesini de güncelle
+            if (selectedDateStr) {
+                const targetDate = new Date(selectedDateStr);
+                const dayApps = calendarAppointments.filter(app => app.tarih.split('T')[0] === selectedDateStr);
+                renderSelectedDayAppointments(dayApps, targetDate);
+            }
+        }
+    } catch (err) {
+        console.error('Takvim verisi yüklenirken hata oluştu:', err);
+        daysGrid.innerHTML = '<div class="empty-state-sm" style="grid-column: span 7;">Yükleme hatası.</div>';
+    }
+}
+
+function renderCalendar() {
+    const daysGrid = document.getElementById('calendar-days');
+    const monthTitle = document.getElementById('cal-month-title');
+    if (!daysGrid || !monthTitle) return;
+
+    daysGrid.innerHTML = '';
+
+    const year = calendarDate.getFullYear();
+    const month = calendarDate.getMonth(); // 0-indexed
+
+    const monthsTr = [
+        "Ocak", "Şubat", "Mart", "Nisan", "Mayıs", "Haziran", 
+        "Temmuz", "Ağustos", "Eylül", "Ekim", "Kasım", "Aralık"
+    ];
+    monthTitle.textContent = `${monthsTr[month]} ${year}`;
+
+    // Haftanın ilk gününü pazartesi olarak ayarlayalım
+    const firstDayIndex = new Date(year, month, 1).getDay(); // 0: Pazar, 1: Pzt, vb.
+    const startDayOffset = firstDayIndex === 0 ? 6 : firstDayIndex - 1;
+
+    const totalDays = new Date(year, month + 1, 0).getDate();
+    const prevMonthTotalDays = new Date(year, month, 0).getDate();
+
+    // Önceki aydan kalan boş günleri çiz
+    for (let i = startDayOffset; i > 0; i--) {
+        const dayNum = prevMonthTotalDays - i + 1;
+        const dayBox = createDayBox(year, month - 1, dayNum, true);
+        daysGrid.appendChild(dayBox);
+    }
+
+    // Aktif ayın günlerini çiz
+    for (let i = 1; i <= totalDays; i++) {
+        const dayBox = createDayBox(year, month, i, false);
+        daysGrid.appendChild(dayBox);
+    }
+
+    // Sonraki aydan gelecek günleri çizerek gridi tamamla
+    const totalRendered = startDayOffset + totalDays;
+    const remaining = totalRendered % 7 === 0 ? 0 : 7 - (totalRendered % 7);
+    for (let i = 1; i <= remaining; i++) {
+        const dayBox = createDayBox(year, month + 1, i, true);
+        daysGrid.appendChild(dayBox);
+    }
+}
+
+function createDayBox(year, month, day, isOtherMonth) {
+    const targetDate = new Date(year, month, day);
+    const yStr = targetDate.getFullYear();
+    const mStr = String(targetDate.getMonth() + 1).padStart(2, '0');
+    const dStr = String(targetDate.getDate()).padStart(2, '0');
+    const dateKeyStr = `${yStr}-${mStr}-${dStr}`;
+
+    const dayBox = document.createElement('div');
+    dayBox.className = 'calendar-day-box';
+    if (isOtherMonth) {
+        dayBox.classList.add('other-month');
+    }
+
+    const todayStr = new Date().toISOString().split('T')[0];
+    if (dateKeyStr === todayStr) {
+        dayBox.classList.add('today');
+    }
+
+    if (selectedDateStr === dateKeyStr) {
+        dayBox.classList.add('selected');
+    }
+
+    const numEl = document.createElement('span');
+    numEl.className = 'day-number';
+    numEl.textContent = day;
+    dayBox.appendChild(numEl);
+
+    // Bu güne ait randevuları bul
+    const dayAppointments = calendarAppointments.filter(app => {
+        return app.tarih.split('T')[0] === dateKeyStr;
+    });
+
+    // Saat sırasına göre sırala
+    dayAppointments.sort((a, b) => a.saat.localeCompare(b.saat));
+
+    // Masaüstü listesi
+    const eventsEl = document.createElement('div');
+    eventsEl.className = 'calendar-day-events';
+
+    // Mobil noktaları
+    const dotsEl = document.createElement('div');
+    dotsEl.className = 'calendar-day-dots';
+
+    dayAppointments.forEach(app => {
+        const eventEl = document.createElement('div');
+        eventEl.className = `calendar-day-event ${app.durum}`;
+        eventEl.textContent = `${app.saat} ${app.ad}`;
+        eventsEl.appendChild(eventEl);
+
+        const dotEl = document.createElement('span');
+        dotEl.className = `cal-dot ${app.durum}`;
+        dotsEl.appendChild(dotEl);
+    });
+
+    dayBox.appendChild(eventsEl);
+    dayBox.appendChild(dotsEl);
+
+    dayBox.addEventListener('click', () => {
+        const prevSelected = document.querySelector('.calendar-day-box.selected');
+        if (prevSelected) prevSelected.classList.remove('selected');
+
+        dayBox.classList.add('selected');
+        selectedDateStr = dateKeyStr;
+
+        renderSelectedDayAppointments(dayAppointments, targetDate);
+    });
+
+    return dayBox;
+}
+
+function renderSelectedDayAppointments(appointments, date) {
+    const detailList = document.getElementById('selected-day-appointments');
+    const detailTitle = document.getElementById('selected-day-title');
+    if (!detailList || !detailTitle) return;
+
+    const dateStr = date.toLocaleDateString('tr-TR', { day: '2-digit', month: 'long', year: 'numeric', weekday: 'long' });
+    detailTitle.innerHTML = `<i class="fa-solid fa-calendar-day" style="color:#00b4d8;margin-right:8px;"></i> ${dateStr} Randevuları`;
+
+    detailList.innerHTML = '';
+
+    if (appointments.length === 0) {
+        detailList.innerHTML = '<div class="empty-state-sm">Seçilen gün için kayıtlı randevu bulunmuyor.</div>';
+        return;
+    }
+
+    appointments.forEach(r => {
         const durumText = { 'pending': 'Beklemede', 'approved': 'Onaylandı', 'cancelled': 'İptal' };
         const durumClass = { 'pending': 'durum-beklemede', 'approved': 'durum-onaylandi', 'cancelled': 'durum-iptal' };
         const durumIcon = { 'pending': 'fa-hourglass-half', 'approved': 'fa-circle-check', 'cancelled': 'fa-circle-xmark' };
 
-        // Tarih format
-        const tarihObj = new Date(r.tarih);
-        const tarihStr = tarihObj.toLocaleDateString('tr-TR', { day: '2-digit', month: 'short', year: 'numeric' });
+        const card = document.createElement('div');
+        card.className = 'randevu-satir';
+        card.style.gridTemplateColumns = '1fr'; // Mobildeki gibi kart görünümlü zorla
+        card.style.marginBottom = '12px';
+        card.style.padding = '16px';
+        card.style.borderRadius = '12px';
+        card.style.boxShadow = '0 2px 8px rgba(0,0,0,0.02)';
+        card.style.border = '1px solid #e2e8f0';
 
-        const satir = document.createElement('div');
-        satir.className = 'randevu-satir';
+        card.innerHTML = `
+            <div class="rt-col rt-col-hasta" style="border-bottom:1px dashed #e2e8f0;padding-bottom:10px;margin-bottom:8px;display:flex;justify-content:space-between;width:100%;align-items:center;">
+                <div class="hasta-bilgi" style="display:flex;flex-direction:column;gap:4px;">
+                    <strong class="hasta-ad" style="font-size:15px;font-weight:600;color:#0f172a;">${r.ad}</strong>
+                    ${r.notlar ? `<button class="hasta-not-btn" type="button"><i class="fa-solid fa-note-sticky"></i> Notu Gör</button>` : ''}
+                </div>
+                <span class="durum-badge ${durumClass[r.durum]}">
+                    <i class="fa-solid ${durumIcon[r.durum]}"></i> ${durumText[r.durum]}
+                </span>
+            </div>
+            
+            <div class="rt-col rt-col-tarih" style="display:flex;justify-content:space-between;align-items:center;width:100%;padding:4px 0;">
+                <span style="font-size:12px;font-weight:600;color:#64748b;">Saat:</span>
+                <span class="tarih-saat" style="font-size:13px;font-weight:600;color:#0f172a;"><i class="fa-regular fa-clock"></i> ${r.saat}</span>
+            </div>
 
-        // --- Hasta sütunu ---
-        const colHasta = document.createElement('div');
-        colHasta.className = 'rt-col rt-col-hasta';
-        const hastaDiv = document.createElement('div');
-        hastaDiv.className = 'hasta-bilgi';
-        const hastaAd = document.createElement('strong');
-        hastaAd.className = 'hasta-ad';
-        hastaAd.textContent = r.ad;
-        hastaDiv.appendChild(hastaAd);
-        if (r.notlar) {
-            const notBtn = document.createElement('button');
-            notBtn.className = 'hasta-not-btn';
-            notBtn.innerHTML = '<i class="fa-solid fa-note-sticky"></i> Notu Gör';
+            <div class="rt-col rt-col-iletisim" style="display:flex;justify-content:space-between;align-items:center;width:100%;padding:4px 0;">
+                <span style="font-size:12px;font-weight:600;color:#64748b;">Telefon:</span>
+                <a href="tel:${r.telefon}" class="iletisim-link" style="font-size:13px;color:#00b4d8;font-weight:500;"><i class="fa-solid fa-phone"></i> ${r.telefon}</a>
+            </div>
+
+            <div class="rt-col rt-col-iletisim" style="display:flex;justify-content:space-between;align-items:center;width:100%;padding:4px 0;">
+                <span style="font-size:12px;font-weight:600;color:#64748b;">E-posta:</span>
+                <span class="iletisim-email" style="font-size:12px;color:#475569;">${r.email || '—'}</span>
+            </div>
+
+            <div class="rt-col rt-col-islem" style="border-top:1px solid #f1f5f9;padding-top:12px;margin-top:10px;display:flex;justify-content:flex-end;gap:8px;width:100%;align-items:center;">
+                <div class="islem-btns" style="display:flex;gap:8px;">
+                    ${r.durum === 'pending' ? `
+                        <button class="btn-icon btn-icon-onayla" title="Onayla" type="button"><i class="fa-solid fa-check"></i></button>
+                        <button class="btn-icon btn-icon-iptal" title="Reddet" type="button"><i class="fa-solid fa-xmark"></i></button>
+                    ` : ''}
+                    ${r.durum === 'approved' ? `
+                        <button class="btn-icon btn-icon-iptal" title="İptal Et" type="button"><i class="fa-solid fa-ban"></i></button>
+                    ` : ''}
+                    <button class="btn-icon btn-icon-sil" title="Sil" type="button"><i class="fa-solid fa-trash"></i></button>
+                </div>
+            </div>
+        `;
+
+        // Olay dinleyicilerini dinamik bağlayalım ( onclick yerine )
+        const notBtn = card.querySelector('.hasta-not-btn');
+        if (notBtn) {
             notBtn.addEventListener('click', () => notGosterText(r.notlar));
-            hastaDiv.appendChild(notBtn);
-        }
-        colHasta.appendChild(hastaDiv);
-        satir.appendChild(colHasta);
-
-        // --- Tarih sütunu ---
-        const colTarih = document.createElement('div');
-        colTarih.className = 'rt-col rt-col-tarih';
-        const tarihGun = document.createElement('span');
-        tarihGun.className = 'tarih-gun';
-        tarihGun.textContent = tarihStr;
-        const tarihSaat = document.createElement('span');
-        tarihSaat.className = 'tarih-saat';
-        tarihSaat.innerHTML = `<i class="fa-regular fa-clock"></i> ${r.saat}`;
-        colTarih.appendChild(tarihGun);
-        colTarih.appendChild(tarihSaat);
-        satir.appendChild(colTarih);
-
-        // --- İletişim sütunu ---
-        const colIletisim = document.createElement('div');
-        colIletisim.className = 'rt-col rt-col-iletisim';
-        const telLink = document.createElement('a');
-        telLink.className = 'iletisim-link';
-        telLink.href = `tel:${r.telefon}`;
-        telLink.innerHTML = `<i class="fa-solid fa-phone"></i> ${r.telefon}`;
-        const emailSpan = document.createElement('span');
-        emailSpan.className = 'iletisim-email';
-        const emailText = r.email ? (r.email.length > 20 ? r.email.substring(0, 20) + '…' : r.email) : '—';
-        emailSpan.innerHTML = `<i class="fa-regular fa-envelope"></i> ${emailText}`;
-        if (r.email) emailSpan.title = r.email;
-        colIletisim.appendChild(telLink);
-        colIletisim.appendChild(emailSpan);
-        satir.appendChild(colIletisim);
-
-        // --- Durum sütunu ---
-        const colDurum = document.createElement('div');
-        colDurum.className = 'rt-col rt-col-durum';
-        const badge = document.createElement('span');
-        badge.className = `durum-badge ${durumClass[r.durum]}`;
-        badge.innerHTML = `<i class="fa-solid ${durumIcon[r.durum]}"></i> ${durumText[r.durum]}`;
-        colDurum.appendChild(badge);
-        satir.appendChild(colDurum);
-
-        // --- İşlem sütunu ---
-        const colIslem = document.createElement('div');
-        colIslem.className = 'rt-col rt-col-islem';
-        const islemBtns = document.createElement('div');
-        islemBtns.className = 'islem-btns';
-
-        if (r.durum === 'pending') {
-            const onaylaBtn = document.createElement('button');
-            onaylaBtn.className = 'btn-icon btn-icon-onayla';
-            onaylaBtn.title = 'Onayla';
-            onaylaBtn.innerHTML = '<i class="fa-solid fa-check"></i>';
-            onaylaBtn.addEventListener('click', () => randevuDurumGuncelle(r.id, 'approved'));
-            islemBtns.appendChild(onaylaBtn);
-
-            const reddetBtn = document.createElement('button');
-            reddetBtn.className = 'btn-icon btn-icon-iptal';
-            reddetBtn.title = 'Reddet';
-            reddetBtn.innerHTML = '<i class="fa-solid fa-xmark"></i>';
-            reddetBtn.addEventListener('click', () => randevuDurumGuncelle(r.id, 'cancelled'));
-            islemBtns.appendChild(reddetBtn);
         }
 
-        if (r.durum === 'approved') {
-            const iptalBtn = document.createElement('button');
-            iptalBtn.className = 'btn-icon btn-icon-iptal';
-            iptalBtn.title = 'İptal Et';
-            iptalBtn.innerHTML = '<i class="fa-solid fa-ban"></i>';
-            iptalBtn.addEventListener('click', () => randevuDurumGuncelle(r.id, 'cancelled'));
-            islemBtns.appendChild(iptalBtn);
+        const onaylaBtn = card.querySelector('.btn-icon-onayla');
+        if (onaylaBtn) {
+            onaylaBtn.addEventListener('click', async () => {
+                await randevuDurumGuncelle(r.id, 'approved');
+                await yukleTakvimRandevulari();
+            });
         }
 
-        const silBtn = document.createElement('button');
-        silBtn.className = 'btn-icon btn-icon-sil';
-        silBtn.title = 'Sil';
-        silBtn.innerHTML = '<i class="fa-solid fa-trash"></i>';
-        silBtn.addEventListener('click', () => randevuSil(r.id));
-        islemBtns.appendChild(silBtn);
+        const reddetBtn = card.querySelector('.btn-icon-iptal');
+        if (reddetBtn) {
+            reddetBtn.addEventListener('click', async () => {
+                await randevuDurumGuncelle(r.id, 'cancelled');
+                await yukleTakvimRandevulari();
+            });
+        }
 
-        colIslem.appendChild(islemBtns);
-        satir.appendChild(colIslem);
+        const silBtn = card.querySelector('.btn-icon-sil');
+        if (silBtn) {
+            silBtn.addEventListener('click', async () => {
+                await randevuSil(r.id);
+                await yukleTakvimRandevulari();
+            });
+        }
 
-        listDiv.appendChild(satir);
+        detailList.appendChild(card);
     });
 }
 

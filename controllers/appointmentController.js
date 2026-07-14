@@ -93,7 +93,7 @@ exports.getTimesByDate = async (req, res) => {
 // PROTECTED: Tüm randevuları listele (Server-Side Pagination + Arama + Filtre)
 exports.getAllAppointments = async (req, res) => {
     try {
-        const sayfaBasina = 10;
+        const sayfaBasina = parseInt(req.query.limit) || 10;
         const sayfa = Math.max(1, parseInt(req.query.sayfa) || 1);
         const offset = (sayfa - 1) * sayfaBasina;
 
@@ -145,7 +145,7 @@ exports.getAllAppointments = async (req, res) => {
 
         // Sayfalı veriyi çek
         const [dbRows] = await pool.query(
-            `SELECT * FROM randevular ${whereSQL} ORDER BY tarih DESC, saat DESC LIMIT ? OFFSET ?`,
+            `SELECT * FROM randevular ${whereSQL} ORDER BY tarih ASC, saat ASC LIMIT ? OFFSET ?`,
             [...params, sayfaBasina, offset]
         );
 

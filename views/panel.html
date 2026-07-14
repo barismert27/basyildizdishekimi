@@ -75,8 +75,20 @@
                     </div>
                 </div>
 
+                <!-- GÖRÜNÜM DEĞİŞTİRİCİ (TABS) -->
+                <div class="panel-view-tabs">
+                    <button class="view-tab-btn active" data-view="agenda" id="tab-agenda-btn">
+                        <i class="fa-solid fa-list-ul"></i>
+                        <span>Ajanda / Liste Görünümü</span>
+                    </button>
+                    <button class="view-tab-btn" data-view="calendar" id="tab-calendar-btn">
+                        <i class="fa-solid fa-calendar-days"></i>
+                        <span>Takvim Görünümü</span>
+                    </button>
+                </div>
+
                 <!-- KONTROL BARI -->
-                <div class="panel-toolbar">
+                <div class="panel-toolbar" id="panel-toolbar-el">
                     <div class="kontrol-arama">
                         <i class="fa-solid fa-magnifying-glass"></i>
                         <input type="text" id="arama-input" placeholder="Hasta adı veya telefon ara..."
@@ -95,13 +107,44 @@
                     </div>
                 </div>
 
-                <!-- RANDEVU LİSTESİ -->
-                <div id="randevu-listesi" class="randevu-listesi">
-                    <div class="empty-state">Yükleniyor...</div>
-                </div>
+                <!-- GÖRÜNÜM İÇERİKLERİ -->
+                <div class="panel-view-content">
+                    <!-- 1. AJANDA / LİSTE GÖRÜNÜMÜ -->
+                    <div id="view-agenda" class="view-panel-pane active">
+                        <!-- RANDEVU LİSTESİ -->
+                        <div id="randevu-listesi" class="randevu-listesi">
+                            <div class="empty-state">Yükleniyor...</div>
+                        </div>
+                        <!-- SAYFALAMA -->
+                        <div id="pagination-container" class="pagination-container"></div>
+                    </div>
 
-                <!-- SAYFALAMA -->
-                <div id="pagination-container" class="pagination-container"></div>
+                    <!-- 2. TAKVİM GÖRÜNÜMÜ -->
+                    <div id="view-calendar" class="view-panel-pane">
+                        <div class="calendar-container">
+                            <div class="calendar-header">
+                                <button id="cal-prev-btn" class="cal-nav-btn" type="button"><i class="fa-solid fa-chevron-left"></i></button>
+                                <h3 id="cal-month-title" class="cal-month-title">-</h3>
+                                <button id="cal-next-btn" class="cal-nav-btn" type="button"><i class="fa-solid fa-chevron-right"></i></button>
+                            </div>
+                            <div class="calendar-grid-wrapper">
+                                <div class="calendar-weekdays">
+                                    <div>Pzt</div><div>Sal</div><div>Çar</div><div>Per</div><div>Cum</div><div>Cmt</div><div>Paz</div>
+                                </div>
+                                <div id="calendar-days" class="calendar-days-grid"></div>
+                            </div>
+                        </div>
+                        <!-- Takvim Detay Alanı (Mobilde/Masaüstünde tıklanan günün randevuları) -->
+                        <div id="calendar-day-details" class="calendar-day-details">
+                            <div class="day-details-header">
+                                <h4 id="selected-day-title">Randevuları görmek için takvimden bir gün seçin</h4>
+                            </div>
+                            <div id="selected-day-appointments" class="selected-day-appointments-list">
+                                <div class="empty-state-sm">Seçilen gün için randevu bulunmuyor.</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
             </div>
         </div>

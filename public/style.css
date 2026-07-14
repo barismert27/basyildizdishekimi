@@ -2947,3 +2947,410 @@ body.dark-mode .saat-btn.disabled {
         border-radius: 16px;
     }
 }
+
+/* ==========================================================================
+   RANDUVU YÖNETİM ALANI YENİ BİLEŞEN STİLLERİ (Tabs & Calendar)
+   ========================================================================= */
+
+/* Görünüm Değiştirici (Tabs) */
+.panel-view-tabs {
+    display: flex;
+    gap: 8px;
+    background: #f1f5f9;
+    padding: 6px;
+    border-radius: 12px;
+    margin-bottom: 24px;
+    border: 1px solid #e2e8f0;
+}
+
+.view-tab-btn {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 12px 20px;
+    border: none;
+    background: transparent;
+    color: #475569;
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.view-tab-btn:hover {
+    color: #0f172a;
+    background: rgba(255, 255, 255, 0.5);
+}
+
+.view-tab-btn.active {
+    background: white;
+    color: #002B45;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+}
+
+/* Görünüm İçerik Panelleri */
+.view-panel-pane {
+    display: none;
+}
+
+.view-panel-pane.active {
+    display: block;
+}
+
+/* Gün Gruplama Başlıkları (Ajanda Görünümü) */
+.agenda-day-group {
+    margin-bottom: 28px;
+}
+
+.agenda-day-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    background: #f8fafc;
+    border-left: 4px solid var(--secondary, #00e0ff);
+    border-radius: 0 8px 8px 0;
+    font-family: 'Poppins', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    color: #1e293b;
+    margin-bottom: 12px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+}
+
+.agenda-day-header i {
+    color: #002b45;
+}
+
+/* Takvim Görünümü */
+.calendar-container {
+    background: white;
+    border-radius: 16px;
+    border: 1px solid #e8eef4;
+    box-shadow: 0 4px 12px rgba(0, 43, 69, 0.04);
+    padding: 24px;
+    margin-bottom: 24px;
+    overflow: hidden;
+}
+
+.calendar-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.cal-month-title {
+    font-family: 'Poppins', sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+    color: #0f172a;
+    margin: 0;
+}
+
+.cal-nav-btn {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 1px solid #e2e8f0;
+    background: white;
+    color: #334155;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.cal-nav-btn:hover {
+    background: #f8fafc;
+    color: var(--secondary, #00e0ff);
+    border-color: var(--secondary, #00e0ff);
+}
+
+.calendar-weekdays {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    text-align: center;
+    font-size: 13px;
+    font-weight: 600;
+    color: #64748b;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.calendar-days-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 6px;
+    padding-top: 10px;
+}
+
+.calendar-day-box {
+    min-height: 100px;
+    border-radius: 10px;
+    border: 1px solid #f1f5f9;
+    padding: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    background: white;
+    cursor: pointer;
+    transition: all 0.2s;
+    position: relative;
+}
+
+.calendar-day-box:hover {
+    background: #f8fafc;
+    border-color: #cbd5e1;
+}
+
+.calendar-day-box.selected {
+    border-color: #00b4d8;
+    background: rgba(0, 180, 216, 0.02);
+    box-shadow: inset 0 0 0 1px #00b4d8;
+}
+
+.calendar-day-box.today {
+    background: rgba(0, 224, 255, 0.05);
+}
+
+.calendar-day-box.today .day-number {
+    background: var(--secondary, #00e0ff);
+    color: #002B45;
+    font-weight: 700;
+}
+
+.calendar-day-box.other-month {
+    background: #fafafa;
+    opacity: 0.5;
+}
+
+.day-number {
+    font-size: 13px;
+    font-weight: 600;
+    color: #475569;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+}
+
+.calendar-day-events {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    flex-grow: 1;
+    overflow-y: auto;
+    max-height: 70px;
+}
+
+.calendar-day-event {
+    font-size: 10px;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-weight: 600;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+.calendar-day-event.approved {
+    background: #DCFCE7;
+    color: #15803D;
+    border-left: 2px solid #16A34A;
+}
+
+.calendar-day-event.pending {
+    background: #FEF9C3;
+    color: #A16207;
+    border-left: 2px solid #CA8A04;
+}
+
+.calendar-day-event.cancelled {
+    background: #FEE2E2;
+    color: #B91C1C;
+    border-left: 2px solid #DC2626;
+}
+
+.calendar-day-dots {
+    display: none;
+    justify-content: center;
+    gap: 3px;
+    margin-top: auto;
+    padding-bottom: 2px;
+}
+
+.cal-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+}
+
+.cal-dot.approved { background: #16A34A; }
+.cal-dot.pending { background: #CA8A04; }
+.cal-dot.cancelled { background: #DC2626; }
+
+/* Takvim Altı Randevu Detay Listesi */
+.calendar-day-details {
+    background: white;
+    border-radius: 16px;
+    border: 1px solid #e8eef4;
+    box-shadow: 0 4px 12px rgba(0, 43, 69, 0.04);
+    padding: 24px;
+}
+
+.day-details-header {
+    border-bottom: 1.5px solid #f1f5f9;
+    padding-bottom: 14px;
+    margin-bottom: 18px;
+}
+
+.day-details-header h4 {
+    font-family: 'Poppins', sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    color: #1e293b;
+    margin: 0;
+}
+
+.empty-state-sm {
+    text-align: center;
+    padding: 30px 20px;
+    color: #64748b;
+    font-size: 13px;
+    font-weight: 500;
+}
+
+/* Rozetler ve Aksiyon Butonları Modernleştirmesi */
+.durum-badge {
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    width: fit-content;
+}
+
+.durum-onaylandi {
+    background: #DCFCE7 !important;
+    color: #16A34A !important;
+}
+
+.durum-beklemede {
+    background: #FEF9C3 !important;
+    color: #D97706 !important;
+}
+
+.durum-iptal {
+    background: #FEE2E2 !important;
+    color: #DC2626 !important;
+}
+
+.islem-btns {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.btn-icon {
+    min-width: 44px;
+    min-height: 44px;
+    border-radius: 10px;
+    border: 1px solid #e2e8f0;
+    background: white;
+    color: #475569;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    transition: all 0.2s;
+}
+
+.btn-icon-onayla:hover {
+    background: #16A34A;
+    color: white;
+    border-color: #16A34A;
+    box-shadow: 0 4px 12px rgba(22, 163, 74, 0.2);
+}
+
+.btn-icon-iptal:hover {
+    background: #DC2626;
+    color: white;
+    border-color: #DC2626;
+    box-shadow: 0 4px 12px rgba(220, 38, 38, 0.2);
+}
+
+.btn-icon-sil:hover {
+    background: #0f172a;
+    color: white;
+    border-color: #0f172a;
+    box-shadow: 0 4px 12px rgba(15, 23, 42, 0.2);
+}
+
+/* MOBİL GÜNCELLEMELERİ */
+@media (max-width: 768px) {
+    .panel-view-tabs {
+        flex-direction: column;
+        padding: 4px;
+        gap: 4px;
+    }
+    
+    .view-tab-btn {
+        width: 100%;
+        padding: 14px;
+        font-size: 14px;
+        height: 48px;
+    }
+
+    .calendar-container {
+        padding: 16px 8px;
+    }
+
+    .calendar-day-box {
+        min-height: 58px;
+        padding: 4px;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .day-number {
+        font-size: 14px;
+    }
+
+    .calendar-day-events {
+        display: none !important;
+    }
+
+    .calendar-day-dots {
+        display: flex !important;
+    }
+
+    .islem-btns {
+        width: 100%;
+        justify-content: flex-end;
+        gap: 12px;
+        margin-top: 8px;
+    }
+
+    .btn-icon {
+        width: 48px;
+        height: 48px;
+        font-size: 18px;
+        border-radius: 12px;
+    }
+
+    /* Mobilde dikey sütunlar arası taşmayı önleme */
+    .rt-col {
+        padding: 6px 0;
+    }
+}
