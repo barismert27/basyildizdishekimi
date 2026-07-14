@@ -16,26 +16,39 @@ document.addEventListener('DOMContentLoaded', () => {
         const tryPlay = () => {
             const playPromise = heroVideo.play();
             if (playPromise !== undefined) {
-                playPromise.catch(err => {
-                    console.log("Mobile video autoplay prevented initially. Waiting for user interaction.", err);
-                    
-                    // Fallback: Play on first touch, click, or scroll
-                    const playOnUserAction = () => {
-                        heroVideo.play().then(() => {
-                            document.removeEventListener('click', playOnUserAction);
-                            document.removeEventListener('touchstart', playOnUserAction);
-                            document.removeEventListener('scroll', playOnUserAction);
-                        }).catch(e => console.error("Play on user action failed:", e));
-                    };
-                    
-                    document.addEventListener('click', playOnUserAction);
-                    document.addEventListener('touchstart', playOnUserAction);
-                    document.addEventListener('scroll', playOnUserAction);
+                playPromise.then(() => {
+                    console.log("Video started playing successfully.");
+                }).catch(err => {
+                    console.log("Mobile video autoplay prevented. Setting up interaction handlers.", err);
                 });
             }
         };
         
+        // Try playing immediately
         tryPlay();
+        
+        // Try playing on standard media events
+        heroVideo.addEventListener('loadedmetadata', tryPlay);
+        heroVideo.addEventListener('loadeddata', tryPlay);
+        heroVideo.addEventListener('canplay', tryPlay);
+        heroVideo.addEventListener('canplaythrough', tryPlay);
+        
+        // Fallback: Play on first touch, click, scroll or mouse movement
+        const playOnUserAction = () => {
+            heroVideo.play().then(() => {
+                document.removeEventListener('click', playOnUserAction);
+                document.removeEventListener('touchstart', playOnUserAction);
+                document.removeEventListener('touchend', playOnUserAction);
+                document.removeEventListener('scroll', playOnUserAction);
+                document.removeEventListener('mousemove', playOnUserAction);
+            }).catch(e => console.error("Play on user action failed:", e));
+        };
+        
+        document.addEventListener('click', playOnUserAction, { passive: true });
+        document.addEventListener('touchstart', playOnUserAction, { passive: true });
+        document.addEventListener('touchend', playOnUserAction, { passive: true });
+        document.addEventListener('scroll', playOnUserAction, { passive: true });
+        document.addEventListener('mousemove', playOnUserAction, { passive: true });
     }
 
     // 1. Panel Sayfası Güvenlik Kontrolü (/yonetim-paneli)

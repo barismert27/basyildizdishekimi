@@ -461,6 +461,14 @@ button {
     display: block;
 }
 
+/* Hide iOS Safari/Chrome native play button overlay and controls */
+.hero-video::-webkit-media-controls-start-playback-button,
+.hero-video::-webkit-media-controls-overlay-play-button,
+.hero-video::-webkit-media-controls {
+    display: none !important;
+    -webkit-appearance: none;
+}
+
 /* SERVICES SECTION */
 .services {
     padding: 100px 0;

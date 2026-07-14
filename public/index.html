@@ -206,7 +206,23 @@
                     <div class="hero-visual">
                         <!-- Hero Video Container -->
                         <div class="hero-video-container">
-                            <video src="video/kliinik1.mp4" autoplay loop muted playsinline webkit-playsinline class="hero-video"></video>
+                            <video id="hero-video-el" src="video/kliinik1.mp4" autoplay loop muted playsinline webkit-playsinline class="hero-video"></video>
+                            <script>
+                                (function() {
+                                    var v = document.getElementById('hero-video-el');
+                                    if (v) {
+                                        v.muted = true;
+                                        v.playsInline = true;
+                                        v.loop = true;
+                                        var p = v.play();
+                                        if (p !== undefined) {
+                                            p.catch(function(err) {
+                                                console.log("Inline play attempt prevented", err);
+                                            });
+                                        }
+                                    }
+                                })();
+                            </script>
                         </div>
                     </div>
                 </div>
