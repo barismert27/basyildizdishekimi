@@ -2835,29 +2835,21 @@ body.dark-mode .saat-btn.disabled {
 
     /* Subgrid-like structure using CSS grid for 2-line fields */
     .rt-col-tarih {
-        display: grid;
-        grid-template-columns: auto 1fr;
+        display: flex;
+        justify-content: space-between;
         align-items: center;
         width: 100%;
     }
     .rt-col-tarih::before {
-        content: "Tarih & Saat";
+        content: "Saat";
         font-size: 12px;
         font-weight: 600;
         color: #64748b;
-        grid-row: span 2;
-    }
-    .rt-col-tarih .tarih-gun {
-        grid-column: 2;
-        justify-self: end;
-        text-align: right;
-        font-size: 13px;
     }
     .rt-col-tarih .tarih-saat {
-        grid-column: 2;
-        justify-self: end;
-        text-align: right;
-        font-size: 12px;
+        font-size: 13px;
+        font-weight: 600;
+        color: #0f172a;
     }
 
     .rt-col-iletisim {
@@ -3353,4 +3345,39 @@ body.dark-mode .saat-btn.disabled {
     .rt-col {
         padding: 6px 0;
     }
+}
+
+/* Custom card styling for calendar details to prevent vertical layout on desktop */
+.calendar-detail-card {
+    background: white;
+    margin-bottom: 12px;
+    padding: 16px 20px;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+    border: 1px solid #e2e8f0;
+}
+
+.card-info-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+    font-size: 13px;
+    border-bottom: 1px solid #f8fafc;
+}
+
+.card-info-row:last-of-type {
+    border-bottom: none;
+}
+
+.card-info-row span {
+    color: #64748b;
+    font-weight: 500;
+}
+
+.card-info-row strong,
+.card-info-row a,
+.card-info-row .tarih-saat {
+    color: #0f172a;
+    font-weight: 600;
 }

@@ -557,7 +557,7 @@ function renderRandevular(randevular) {
     tableHeader.className = 'randevu-table-header';
     tableHeader.innerHTML = `
         <div class="rt-col rt-col-hasta">Hasta</div>
-        <div class="rt-col rt-col-tarih">Tarih &amp; Saat</div>
+        <div class="rt-col rt-col-tarih">Saat</div>
         <div class="rt-col rt-col-iletisim">İletişim</div>
         <div class="rt-col rt-col-durum">Durum</div>
         <div class="rt-col rt-col-islem">İşlem</div>
@@ -628,16 +628,12 @@ function renderRandevular(randevular) {
             colHasta.appendChild(hastaDiv);
             satir.appendChild(colHasta);
 
-            // --- Tarih sütunu ---
+            // --- Saat sütunu ---
             const colTarih = document.createElement('div');
             colTarih.className = 'rt-col rt-col-tarih';
-            const tarihGun = document.createElement('span');
-            tarihGun.className = 'tarih-gun';
-            tarihGun.textContent = tStr;
             const tarihSaat = document.createElement('span');
             tarihSaat.className = 'tarih-saat';
             tarihSaat.innerHTML = `<i class="fa-regular fa-clock"></i> ${r.saat}`;
-            colTarih.appendChild(tarihGun);
             colTarih.appendChild(tarihSaat);
             satir.appendChild(colTarih);
 
@@ -887,16 +883,10 @@ function renderSelectedDayAppointments(appointments, date) {
         const durumIcon = { 'pending': 'fa-hourglass-half', 'approved': 'fa-circle-check', 'cancelled': 'fa-circle-xmark' };
 
         const card = document.createElement('div');
-        card.className = 'randevu-satir';
-        card.style.gridTemplateColumns = '1fr'; // Mobildeki gibi kart görünümlü zorla
-        card.style.marginBottom = '12px';
-        card.style.padding = '16px';
-        card.style.borderRadius = '12px';
-        card.style.boxShadow = '0 2px 8px rgba(0,0,0,0.02)';
-        card.style.border = '1px solid #e2e8f0';
+        card.className = 'calendar-detail-card';
 
         card.innerHTML = `
-            <div class="rt-col rt-col-hasta" style="border-bottom:1px dashed #e2e8f0;padding-bottom:10px;margin-bottom:8px;display:flex;justify-content:space-between;width:100%;align-items:center;">
+            <div style="border-bottom:1px dashed #e2e8f0;padding-bottom:10px;margin-bottom:8px;display:flex;justify-content:space-between;width:100%;align-items:center;">
                 <div class="hasta-bilgi" style="display:flex;flex-direction:column;gap:4px;">
                     <strong class="hasta-ad" style="font-size:15px;font-weight:600;color:#0f172a;">${r.ad}</strong>
                     ${r.notlar ? `<button class="hasta-not-btn" type="button"><i class="fa-solid fa-note-sticky"></i> Notu Gör</button>` : ''}
@@ -906,23 +896,23 @@ function renderSelectedDayAppointments(appointments, date) {
                 </span>
             </div>
             
-            <div class="rt-col rt-col-tarih" style="display:flex;justify-content:space-between;align-items:center;width:100%;padding:4px 0;">
-                <span style="font-size:12px;font-weight:600;color:#64748b;">Saat:</span>
-                <span class="tarih-saat" style="font-size:13px;font-weight:600;color:#0f172a;"><i class="fa-regular fa-clock"></i> ${r.saat}</span>
+            <div class="card-info-row">
+                <span>Saat:</span>
+                <span class="tarih-saat"><i class="fa-regular fa-clock"></i> ${r.saat}</span>
             </div>
 
-            <div class="rt-col rt-col-iletisim" style="display:flex;justify-content:space-between;align-items:center;width:100%;padding:4px 0;">
-                <span style="font-size:12px;font-weight:600;color:#64748b;">Telefon:</span>
-                <a href="tel:${r.telefon}" class="iletisim-link" style="font-size:13px;color:#00b4d8;font-weight:500;"><i class="fa-solid fa-phone"></i> ${r.telefon}</a>
+            <div class="card-info-row">
+                <span>Telefon:</span>
+                <a href="tel:${r.telefon}"><i class="fa-solid fa-phone"></i> ${r.telefon}</a>
             </div>
 
-            <div class="rt-col rt-col-iletisim" style="display:flex;justify-content:space-between;align-items:center;width:100%;padding:4px 0;">
-                <span style="font-size:12px;font-weight:600;color:#64748b;">E-posta:</span>
-                <span class="iletisim-email" style="font-size:12px;color:#475569;">${r.email || '—'}</span>
+            <div class="card-info-row">
+                <span>E-posta:</span>
+                <span>${r.email || '—'}</span>
             </div>
 
-            <div class="rt-col rt-col-islem" style="border-top:1px solid #f1f5f9;padding-top:12px;margin-top:10px;display:flex;justify-content:flex-end;gap:8px;width:100%;align-items:center;">
-                <div class="islem-btns" style="display:flex;gap:8px;">
+            <div style="border-top:1px solid #f1f5f9;padding-top:12px;margin-top:10px;display:flex;justify-content:flex-end;gap:8px;width:100%;align-items:center;">
+                <div class="islem-btns">
                     ${r.durum === 'pending' ? `
                         <button class="btn-icon btn-icon-onayla" title="Onayla" type="button"><i class="fa-solid fa-check"></i></button>
                         <button class="btn-icon btn-icon-iptal" title="Reddet" type="button"><i class="fa-solid fa-xmark"></i></button>
