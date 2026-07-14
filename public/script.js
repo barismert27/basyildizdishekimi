@@ -6,6 +6,38 @@ var API_URL = window.location.protocol === 'file:' ? 'http://localhost:3000/api'
 
 document.addEventListener('DOMContentLoaded', () => {
 
+    // Mobile Autoplay/Loop fix for hero video
+    const heroVideo = document.querySelector('.hero-video');
+    if (heroVideo) {
+        heroVideo.muted = true;
+        heroVideo.playsInline = true;
+        heroVideo.loop = true;
+        
+        const tryPlay = () => {
+            const playPromise = heroVideo.play();
+            if (playPromise !== undefined) {
+                playPromise.catch(err => {
+                    console.log("Mobile video autoplay prevented initially. Waiting for user interaction.", err);
+                    
+                    // Fallback: Play on first touch, click, or scroll
+                    const playOnUserAction = () => {
+                        heroVideo.play().then(() => {
+                            document.removeEventListener('click', playOnUserAction);
+                            document.removeEventListener('touchstart', playOnUserAction);
+                            document.removeEventListener('scroll', playOnUserAction);
+                        }).catch(e => console.error("Play on user action failed:", e));
+                    };
+                    
+                    document.addEventListener('click', playOnUserAction);
+                    document.addEventListener('touchstart', playOnUserAction);
+                    document.addEventListener('scroll', playOnUserAction);
+                });
+            }
+        };
+        
+        tryPlay();
+    }
+
     // 1. Panel Sayfası Güvenlik Kontrolü (/yonetim-paneli)
     if (window.location.pathname.includes('/yonetim-paneli') || window.location.pathname.includes('panel.html')) {
         // Sunucu zaten doğruladı; token kontrolü server-side yapılıyor.
