@@ -147,9 +147,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 2. Login Sayfası — zaten giriş yapmışsa panele yönlendir
     if (window.location.pathname.includes('/login') || window.location.pathname.includes('login.html')) {
-        const token = localStorage.getItem('adminToken');
-        if (token) {
-            window.location.href = window.location.protocol === 'file:' ? 'panel.html' : '/yonetim-paneli';
+        if (window.location.protocol === 'file:') {
+            const token = localStorage.getItem('adminToken');
+            if (token) {
+                window.location.href = 'panel.html';
+            }
+        } else {
+            localStorage.removeItem('adminToken');
         }
     }
 
@@ -572,29 +576,8 @@ function renderRandevular(randevular) {
         const groupContainer = document.createElement('div');
         groupContainer.className = 'agenda-day-group';
 
-        // Create day header
-        const dayHeader = document.createElement('div');
-        dayHeader.className = 'agenda-day-header';
-        
-        // Calculate date prefix
-        const dateObj = new Date(dateKey);
-        const today = new Date();
-        const tomorrow = new Date();
-        tomorrow.setDate(today.getDate() + 1);
-
-        const todayKey = today.toISOString().split('T')[0];
-        const tomorrowKey = tomorrow.toISOString().split('T')[0];
-
-        let prefix = "";
-        if (dateKey === todayKey) {
-            prefix = "Bugün - ";
-        } else if (dateKey === tomorrowKey) {
-            prefix = "Yarın - ";
-        }
-
-        const dateStr = dateObj.toLocaleDateString('tr-TR', { day: '2-digit', month: 'long', year: 'numeric', weekday: 'long' });
-        dayHeader.innerHTML = `<i class="fa-solid fa-calendar-day"></i> <span>${prefix}${dateStr}</span>`;
-        groupContainer.appendChild(dayHeader);
+        // Date grouping logic simplified, removed the visual header.
+        // groupContainer.appendChild(dayHeader);
 
         // Render each appointment row inside the day group
         dayAppointments.forEach(r => {
