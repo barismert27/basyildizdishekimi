@@ -51,12 +51,16 @@ async function initDb() {
             )
         `);
 
-        // Eski sistemde kalan hatalı UNIQUE kısıtlamasını kaldır ki iptal edilen saate tekrar randevu alınabilsin.
+        // Eski sistemde kalan tüm UNIQUE kısıtlamalarını dinamik olarak bulup kaldırıyoruz.
+        // Bu sayede aynı saate (biri iptal edilmişse) tekrar randevu kaydı (INSERT) atılabilir.
         try {
-            await pool.query('ALTER TABLE randevular DROP INDEX uk_tarih_saat');
-            console.log('✅ uk_tarih_saat indexi kaldırıldı (İptal edilen saatler tekrar alınabilir).');
+            const [indexes] = await pool.query("SHOW INDEX FROM randevular WHERE Non_unique = 0 AND Key_name != 'PRIMARY'");
+            for (let idx of indexes) {
+                await pool.query(`ALTER TABLE randevular DROP INDEX \`${idx.Key_name}\``);
+                console.log(`✅ UNIQUE index kaldırıldı: ${idx.Key_name}`);
+            }
         } catch (e) {
-            // Index zaten silinmişse veya yoksa hatayı yoksay
+            console.log("Index temizleme işlemi atlandı veya hata oluştu:", e.message);
         }
 
         console.log('✅ Veritabanı tabloları başarılı şekilde kontrol edildi/oluşturuldu.');

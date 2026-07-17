@@ -55,30 +55,12 @@ exports.createAppointment = async (req, res) => {
         // 3. Veritabanına Kayıt (Pending olarak)
         const temizNotlar = notlar ? notlar.trim().replace(/[<>]/g, '').substring(0, 300) : null;
 
-        // Daha önceden aynı tarih ve saatte 'iptal edilmiş' (cancelled) bir randevu var mı kontrol et.
-        // Veritabanındaki UNIQUE kısıtlamasına (tarih, saat) takılmamak için varsa o satırı güncelleyeceğiz.
-        const [cancelledSlot] = await pool.query(
-            `SELECT id FROM randevular WHERE tarih = ? AND saat = ? AND durum = 'cancelled'`,
-            [tarih, saat]
+        // Her zaman yeni bir randevu satırı oluştur (Eski iptal edilenler tarihte kalır)
+        const [result] = await pool.query(
+            `INSERT INTO randevular (ad, telefon, email, tarih, saat, notlar, durum) VALUES (?, ?, ?, ?, ?, ?, 'pending')`,
+            [temizAd, temizTelefon, email ? email.trim() : null, tarih, saat, temizNotlar]
         );
-
-        let insertId;
-
-        if (cancelledSlot.length > 0) {
-            // İptal edilmiş eski satırın üzerine yeni hastanın bilgilerini yaz
-            await pool.query(
-                `UPDATE randevular SET ad = ?, telefon = ?, email = ?, notlar = ?, durum = 'pending', olusturma_tarihi = CURRENT_TIMESTAMP WHERE id = ?`,
-                [temizAd, temizTelefon, email ? email.trim() : null, temizNotlar, cancelledSlot[0].id]
-            );
-            insertId = cancelledSlot[0].id;
-        } else {
-            // İptal edilmiş veya herhangi bir kayıt yoksa, sıfırdan ekle
-            const [result] = await pool.query(
-                `INSERT INTO randevular (ad, telefon, email, tarih, saat, notlar, durum) VALUES (?, ?, ?, ?, ?, ?, 'pending')`,
-                [temizAd, temizTelefon, email ? email.trim() : null, tarih, saat, temizNotlar]
-            );
-            insertId = result.insertId;
-        }
+        const insertId = result.insertId;
 
         // Randevu başarıyla veritabanına kaydedildikten sonra arka planda mail gönder
         sendAppointmentEmail(temizAd, email ? email.trim() : null, tarih, saat);
