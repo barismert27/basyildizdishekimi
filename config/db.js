@@ -51,10 +51,17 @@ async function initDb() {
                 saat VARCHAR(5) NOT NULL,
                 notlar TEXT,
                 durum ENUM('pending', 'approved', 'cancelled') DEFAULT 'pending',
-                olusturma_tarihi TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-                UNIQUE KEY uk_tarih_saat (tarih, saat)
+                olusturma_tarihi TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             )
         `);
+
+        // Eski sistemde kalan hatalı UNIQUE kısıtlamasını kaldır ki iptal edilen saate tekrar randevu alınabilsin.
+        try {
+            await pool.query('ALTER TABLE randevular DROP INDEX uk_tarih_saat');
+            console.log('✅ uk_tarih_saat indexi kaldırıldı (İptal edilen saatler tekrar alınabilir).');
+        } catch (e) {
+            // Index zaten silinmişse veya yoksa hatayı yoksay
+        }
 
         console.log('✅ Veritabanı tabloları başarılı şekilde kontrol edildi/oluşturuldu.');
     } catch (err) {
