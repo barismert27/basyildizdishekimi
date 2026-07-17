@@ -6,6 +6,24 @@ var API_URL = window.location.protocol === 'file:' ? 'http://localhost:3000/api'
 
 document.addEventListener('DOMContentLoaded', () => {
 
+    // PRELOADER LOGIC
+    // Sayfa tam yüklendiğinde ve en az 2.5 saniye geçtiğinde preloader'ı kaldır
+    const preloader = document.getElementById('preloader');
+    if (preloader) {
+        const minLoadingTime = 2500; // 2.5 saniye animasyon garantisi
+        const startTime = Date.now();
+        
+        window.addEventListener('load', () => {
+            const elapsedTime = Date.now() - startTime;
+            const remainingTime = Math.max(0, minLoadingTime - elapsedTime);
+            
+            setTimeout(() => {
+                preloader.classList.add('hidden');
+                setTimeout(() => { preloader.remove(); }, 500); // Animasyon bitince DOM'dan tamamen sil
+            }, remainingTime);
+        });
+    }
+
     // Mobile Autoplay/Loop fix for hero video
     const heroVideo = document.querySelector('.hero-video');
     if (heroVideo) {

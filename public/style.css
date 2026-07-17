@@ -459,6 +459,7 @@ button {
     height: 100%;
     object-fit: cover;
     display: block;
+    pointer-events: none; /* Mobilde çıkan play butonuna tıklanmasını ve videonun durdurulmasını engeller */
 }
 
 /* Hide iOS Safari/Chrome native play button overlay and controls */
@@ -3380,4 +3381,48 @@ body.dark-mode .saat-btn.disabled {
 .card-info-row .tarih-saat {
     color: #0f172a;
     font-weight: 600;
+}
+
+/* PRELOADER */
+.preloader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: var(--white);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 999999;
+    transition: opacity 0.5s ease, visibility 0.5s ease;
+}
+
+.preloader.hidden {
+    opacity: 0;
+    visibility: hidden;
+}
+
+.preloader-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid rgba(0, 180, 216, 0.2);
+    border-top-color: var(--primary);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+@keyframes pulse {
+    from { transform: scale(1); opacity: 0.8; }
+    to { transform: scale(1.1); opacity: 1; }
 }
