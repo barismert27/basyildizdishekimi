@@ -6,22 +6,28 @@ var API_URL = window.location.protocol === 'file:' ? 'http://localhost:3000/api'
 
 document.addEventListener('DOMContentLoaded', () => {
 
-    // PRELOADER LOGIC
-    // Sayfa tam yüklendiğinde ve en az 2.5 saniye geçtiğinde preloader'ı kaldır
+    // PRELOADER LOGIC (Sadece ilk girişte göster)
     const preloader = document.getElementById('preloader');
     if (preloader) {
-        const minLoadingTime = 2500; // 2.5 saniye animasyon garantisi
-        const startTime = Date.now();
-        
-        window.addEventListener('load', () => {
-            const elapsedTime = Date.now() - startTime;
-            const remainingTime = Math.max(0, minLoadingTime - elapsedTime);
+        if (!sessionStorage.getItem('preloaderShown')) {
+            const minLoadingTime = 2500; // 2.5 saniye animasyon garantisi
+            const startTime = Date.now();
             
-            setTimeout(() => {
-                preloader.classList.add('hidden');
-                setTimeout(() => { preloader.remove(); }, 500); // Animasyon bitince DOM'dan tamamen sil
-            }, remainingTime);
-        });
+            window.addEventListener('load', () => {
+                const elapsedTime = Date.now() - startTime;
+                const remainingTime = Math.max(0, minLoadingTime - elapsedTime);
+                
+                setTimeout(() => {
+                    preloader.classList.add('hidden');
+                    setTimeout(() => { preloader.remove(); }, 800);
+                    sessionStorage.setItem('preloaderShown', 'true');
+                }, remainingTime);
+            });
+        } else {
+            // Bu oturumda zaten gösterilmiş, direkt sil
+            preloader.style.display = 'none';
+            preloader.remove();
+        }
     }
 
     // Mobile Autoplay/Loop fix for hero video
