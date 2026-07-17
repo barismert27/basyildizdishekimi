@@ -69,6 +69,18 @@ document.addEventListener('DOMContentLoaded', () => {
         document.addEventListener('mousemove', playOnUserAction, { passive: true });
     }
 
+    // Sticky Header Scroll effect (Mobilde .header-right'ı gizlemek için)
+    const header = document.querySelector('.header');
+    if (header) {
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 40) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        }, { passive: true });
+    }
+
     // 1. Panel Sayfası Güvenlik Kontrolü (/yonetim-paneli)
     if (window.location.pathname.includes('/yonetim-paneli') || window.location.pathname.includes('panel.html')) {
         // Sunucu zaten doğruladı; token kontrolü server-side yapılıyor.

@@ -2258,6 +2258,20 @@ body.dark-mode .saat-btn.disabled {
         margin-top: 6px;
         margin-bottom: 4px;
         flex-wrap: wrap;
+        
+        /* Drawer Transition Properties */
+        max-height: 150px;
+        opacity: 1;
+        overflow: hidden;
+        transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease, margin 0.4s ease;
+    }
+
+    .header.scrolled .header-content .header-right {
+        max-height: 0;
+        opacity: 0;
+        margin-top: 0;
+        margin-bottom: 0;
+        pointer-events: none;
     }
 
     .nav.mobile-menu-open {
