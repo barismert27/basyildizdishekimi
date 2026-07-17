@@ -177,19 +177,19 @@ button {
     gap: 14px;
 }
 
-.logo-circle {
-    width: 40px;
-    height: 40px;
-    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
-    color: var(--white);
-    border-radius: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: 800;
-    font-size: 14px;
-    letter-spacing: 0.5px;
-    box-shadow: 0 4px 12px rgba(0, 43, 69, 0.25);
+.logo-img {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    object-fit: cover;
+    box-shadow: 0 0 15px rgba(0, 180, 216, 0.7);
+    border: 2px solid rgba(255, 255, 255, 0.9);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.logo-img:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 20px rgba(0, 180, 216, 0.9);
 }
 
 .logo {
