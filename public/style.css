@@ -3388,14 +3388,16 @@ body.dark-mode .saat-btn.disabled {
     position: fixed;
     top: 0;
     left: 0;
-    width: 100vw;
-    height: 100vh;
-    background-color: var(--white);
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #ffffff;
     display: flex;
     justify-content: center;
     align-items: center;
     z-index: 999999;
-    transition: opacity 0.5s ease, visibility 0.5s ease;
+    transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.8s;
 }
 
 .preloader.hidden {
@@ -3403,26 +3405,32 @@ body.dark-mode .saat-btn.disabled {
     visibility: hidden;
 }
 
-.preloader-content {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
 .spinner {
-    width: 40px;
-    height: 40px;
-    border: 4px solid rgba(0, 180, 216, 0.2);
-    border-top-color: var(--primary);
+    width: 50px;
+    height: 50px;
     border-radius: 50%;
-    animation: spin 1s linear infinite;
+    border: 2px solid transparent;
+    border-top-color: #004d7a;
+    border-bottom-color: #00b4d8;
+    animation: spin-modern 1.2s cubic-bezier(0.6, 0.2, 0.4, 0.8) infinite;
+    position: relative;
 }
 
-@keyframes spin {
-    to { transform: rotate(360deg); }
+.spinner::before {
+    content: '';
+    position: absolute;
+    top: 6px;
+    left: 6px;
+    right: 6px;
+    bottom: 6px;
+    border-radius: 50%;
+    border: 2px solid transparent;
+    border-top-color: #00b4d8;
+    border-bottom-color: #004d7a;
+    animation: spin-modern 0.8s linear infinite reverse;
 }
 
-@keyframes pulse {
-    from { transform: scale(1); opacity: 0.8; }
-    to { transform: scale(1.1); opacity: 1; }
+@keyframes spin-modern {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
 }
