@@ -10,11 +10,7 @@ const pool = mysql.createPool({
     database: process.env.DB_NAME || 'randevu',
     waitForConnections: true,
     connectionLimit: 10,
-    queueLimit: 0,
-
-    ssl: {
-        rejectUnauthorized: false
-    }
+    queueLimit: 0
 });
 
 async function initDb() {
