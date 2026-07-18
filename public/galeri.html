@@ -183,56 +183,148 @@
             <!-- GALLERY SECTION -->
             <section class="services" style="background: var(--light); padding: 60px 0;">
                 <div class="container">
-                    <div class="gallery-grid">
-                        <!-- 1. Bekleme Salonu -->
-                        <div class="gallery-item">
-                            <img src="https://images.unsplash.com/photo-1629909613654-28e377c37b09?q=80&w=800&auto=format&fit=crop"
-                                alt="Bekleme Salonu">
-                            <div class="gallery-caption">Ferah Bekleme Salonumuz</div>
+                    <style>
+                        .ba-grid {
+                            display: grid;
+                            grid-template-columns: 1fr;
+                            gap: 40px;
+                            margin-top: 40px;
+                            margin-bottom: 60px;
+                        }
+                        
+                        @media (min-width: 768px) {
+                            .ba-grid {
+                                grid-template-columns: 1fr 1fr;
+                            }
+                        }
+
+                        .ba-slider {
+                            position: relative;
+                            width: 100%;
+                            aspect-ratio: 3/4;
+                            overflow: hidden;
+                            border-radius: var(--radius);
+                            box-shadow: var(--shadow-sm);
+                        }
+
+                        .ba-slider img {
+                            display: block;
+                            width: 100%;
+                            height: 100%;
+                            object-fit: cover;
+                            pointer-events: none;
+                        }
+
+                        .ba-after, .ba-before {
+                            position: absolute;
+                            top: 0;
+                            left: 0;
+                            width: 100%;
+                            height: 100%;
+                        }
+
+                        .ba-before {
+                            clip-path: polygon(0 0, 50% 0, 50% 100%, 0 100%);
+                        }
+
+                        .ba-range {
+                            position: absolute;
+                            top: 0;
+                            left: 0;
+                            width: 100%;
+                            height: 100%;
+                            opacity: 0;
+                            cursor: ew-resize;
+                            z-index: 10;
+                        }
+
+                        .ba-handle {
+                            position: absolute;
+                            top: 0;
+                            left: 50%;
+                            width: 4px;
+                            height: 100%;
+                            background: white;
+                            pointer-events: none;
+                            transform: translateX(-50%);
+                            z-index: 5;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                        }
+
+                        .ba-handle::after {
+                            content: '< >';
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            width: 40px;
+                            height: 40px;
+                            background: white;
+                            color: var(--primary);
+                            border-radius: 50%;
+                            font-weight: bold;
+                            letter-spacing: -2px;
+                            box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+                        }
+
+                        .ba-label {
+                            position: absolute;
+                            top: 20px;
+                            padding: 5px 15px;
+                            background: rgba(0, 59, 92, 0.85);
+                            color: white;
+                            border-radius: 20px;
+                            font-size: 0.9rem;
+                            z-index: 4;
+                            font-weight: 500;
+                            pointer-events: none;
+                        }
+                        
+                        .ba-label.before { left: 20px; }
+                        .ba-label.after { right: 20px; }
+                    </style>
+
+                    <div class="ba-grid">
+                        <!-- Before/After Slider 1 -->
+                        <div class="ba-slider">
+                            <div class="ba-after">
+                                <img src="video/23232323232.JPG" alt="Yeni Hali">
+                            </div>
+                            <div class="ba-before">
+                                <img src="video/232323.JPG" alt="Eski Hali">
+                            </div>
+                            <div class="ba-label before">Eski Hali</div>
+                            <div class="ba-label after">Yeni Hali</div>
+                            <input type="range" min="0" max="100" value="50" class="ba-range" oninput="updateSlider(this)">
+                            <div class="ba-handle"></div>
                         </div>
-                        <!-- 2. Tedavi Odası -->
-                        <div class="gallery-item">
-                            <img src="https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?q=80&w=800&auto=format&fit=crop"
-                                alt="Tedavi Odası">
-                            <div class="gallery-caption">Steril Tedavi Odalarımız</div>
-                        </div>
-                        <!-- 3. Teknoloji -->
-                        <div class="gallery-item">
-                            <img src="https://images.unsplash.com/photo-1581594693702-fbdc51b2763b?q=80&w=800&auto=format&fit=crop"
-                                alt="Teknoloji">
-                            <div class="gallery-caption">Son Teknoloji Cihazlar</div>
-                        </div>
-                        <!-- 4. Dental Ekipman -->
-                        <div class="gallery-item">
-                            <img src="https://images.unsplash.com/photo-1598256989800-fe5f95da9787?q=80&w=800&auto=format&fit=crop"
-                                alt="Dental Ekipman">
-                            <div class="gallery-caption">Dental Ekipmanlar</div>
-                        </div>
-                        <!-- 5. Gülüş Tasarımı -->
-                        <div class="gallery-item">
-                            <img src="https://images.unsplash.com/photo-1606811971618-4486d14f3f99?q=80&w=800&auto=format&fit=crop"
-                                alt="Gülüş Tasarımı">
-                            <div class="gallery-caption">Gülüş Tasarımı Stüdyosu</div>
-                        </div>
-                        <!-- 6. Laboratuvar -->
-                        <div class="gallery-item">
-                            <img src="https://images.unsplash.com/photo-1579684385127-1ef15d508118?q=80&w=800&auto=format&fit=crop"
-                                alt="Laboratuvar">
-                            <div class="gallery-caption">Klinik İçi Dijital Laboratuvar</div>
-                        </div>
-                        <!-- 7. Uzman Kadro -->
-                        <div class="gallery-item">
-                            <img src="https://images.unsplash.com/photo-1559839734-2b71ea197ec2?q=80&w=800&auto=format&fit=crop"
-                                alt="Uzman Kadro">
-                            <div class="gallery-caption">Uzman Hekim Kadromuz</div>
-                        </div>
-                        <!-- 8. Resepsiyon -->
-                        <div class="gallery-item">
-                            <img src="https://images.unsplash.com/photo-1504813184591-01572f98c85f?q=80&w=800&auto=format&fit=crop"
-                                alt="Resepsiyon">
-                            <div class="gallery-caption">Karşılama ve Danışma</div>
+
+                        <!-- Before/After Slider 2 -->
+                        <div class="ba-slider">
+                            <div class="ba-after">
+                                <img src="video/Ekran Alıntısı.JPG" alt="Yeni Hali">
+                            </div>
+                            <div class="ba-before">
+                                <img src="video/w232323.JPG" alt="Eski Hali">
+                            </div>
+                            <div class="ba-label before">Eski Hali</div>
+                            <div class="ba-label after">Yeni Hali</div>
+                            <input type="range" min="0" max="100" value="50" class="ba-range" oninput="updateSlider(this)">
+                            <div class="ba-handle"></div>
                         </div>
                     </div>
+
+                    <script>
+                        function updateSlider(element) {
+                            const slider = element.parentElement;
+                            const beforeImg = slider.querySelector('.ba-before');
+                            const handle = slider.querySelector('.ba-handle');
+                            const val = element.value;
+                            beforeImg.style.clipPath = `polygon(0 0, ${val}% 0, ${val}% 100%, 0 100%)`;
+                            handle.style.left = `${val}%`;
+                        }
+                    </script>
                 </div>
             </section>
         </div>
