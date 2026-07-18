@@ -201,18 +201,11 @@
                         .ba-slider {
                             position: relative;
                             width: 100%;
-                            aspect-ratio: 3/4;
+                            aspect-ratio: 3/4; /* resimler dik */
                             overflow: hidden;
                             border-radius: var(--radius);
                             box-shadow: var(--shadow-sm);
-                        }
-
-                        .ba-slider img {
-                            display: block;
-                            width: 100%;
-                            height: 100%;
-                            object-fit: cover;
-                            pointer-events: none;
+                            background-color: #f0f0f0;
                         }
 
                         .ba-after, .ba-before {
@@ -221,10 +214,17 @@
                             left: 0;
                             width: 100%;
                             height: 100%;
+                            background-size: 100% 200%;
+                            background-repeat: no-repeat;
                         }
 
                         .ba-before {
+                            background-position: top; /* üst kısım öncesi */
                             clip-path: polygon(0 0, 50% 0, 50% 100%, 0 100%);
+                        }
+
+                        .ba-after {
+                            background-position: bottom; /* alt kısım sonrası */
                         }
 
                         .ba-range {
@@ -286,28 +286,40 @@
                     </style>
 
                     <div class="ba-grid">
-                        <!-- Before/After Slider 1 -->
+                        <!-- Slider 1 -->
                         <div class="ba-slider">
-                            <div class="ba-after">
-                                <img src="video/23232323232.JPG" alt="Yeni Hali">
-                            </div>
-                            <div class="ba-before">
-                                <img src="video/232323.JPG" alt="Eski Hali">
-                            </div>
+                            <div class="ba-after" style="background-image: url('video/232323.JPG');"></div>
+                            <div class="ba-before" style="background-image: url('video/232323.JPG');"></div>
                             <div class="ba-label before">Eski Hali</div>
                             <div class="ba-label after">Yeni Hali</div>
                             <input type="range" min="0" max="100" value="50" class="ba-range" oninput="updateSlider(this)">
                             <div class="ba-handle"></div>
                         </div>
 
-                        <!-- Before/After Slider 2 -->
+                        <!-- Slider 2 -->
                         <div class="ba-slider">
-                            <div class="ba-after">
-                                <img src="video/Ekran Alıntısı.JPG" alt="Yeni Hali">
-                            </div>
-                            <div class="ba-before">
-                                <img src="video/w232323.JPG" alt="Eski Hali">
-                            </div>
+                            <div class="ba-after" style="background-image: url('video/23232323232.JPG');"></div>
+                            <div class="ba-before" style="background-image: url('video/23232323232.JPG');"></div>
+                            <div class="ba-label before">Eski Hali</div>
+                            <div class="ba-label after">Yeni Hali</div>
+                            <input type="range" min="0" max="100" value="50" class="ba-range" oninput="updateSlider(this)">
+                            <div class="ba-handle"></div>
+                        </div>
+
+                        <!-- Slider 3 -->
+                        <div class="ba-slider">
+                            <div class="ba-after" style="background-image: url('video/Ekran Alıntısı.JPG');"></div>
+                            <div class="ba-before" style="background-image: url('video/Ekran Alıntısı.JPG');"></div>
+                            <div class="ba-label before">Eski Hali</div>
+                            <div class="ba-label after">Yeni Hali</div>
+                            <input type="range" min="0" max="100" value="50" class="ba-range" oninput="updateSlider(this)">
+                            <div class="ba-handle"></div>
+                        </div>
+
+                        <!-- Slider 4 -->
+                        <div class="ba-slider">
+                            <div class="ba-after" style="background-image: url('video/w232323.JPG');"></div>
+                            <div class="ba-before" style="background-image: url('video/w232323.JPG');"></div>
                             <div class="ba-label before">Eski Hali</div>
                             <div class="ba-label after">Yeni Hali</div>
                             <input type="range" min="0" max="100" value="50" class="ba-range" oninput="updateSlider(this)">
