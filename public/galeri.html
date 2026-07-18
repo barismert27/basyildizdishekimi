@@ -187,9 +187,9 @@
                         .ba-grid {
                             display: grid;
                             grid-template-columns: 1fr;
-                            gap: 30px;
-                            margin: 40px auto 60px;
-                            max-width: 700px; /* Resimleri küçültmek için maksimum genişlik eklendi */
+                            gap: 40px;
+                            margin: 20px auto 80px;
+                            max-width: 1000px; /* Daha premium, ferah bir genişlik */
                         }
                         
                         @media (min-width: 768px) {
@@ -201,11 +201,11 @@
                         .ba-slider {
                             position: relative;
                             width: 100%;
-                            aspect-ratio: 3/4; /* resimler dik */
+                            aspect-ratio: 4/5; /* Dikey ama dengeli bir oran */
                             overflow: hidden;
-                            border-radius: var(--radius);
-                            box-shadow: var(--shadow-sm);
-                            background-color: #f0f0f0;
+                            border-radius: 20px;
+                            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1); /* Yumuşak premium gölge */
+                            background-color: #f8fafc;
                         }
 
                         .ba-after, .ba-before {
@@ -214,17 +214,27 @@
                             left: 0;
                             width: 100%;
                             height: 100%;
-                            background-size: 100% 200%;
-                            background-repeat: no-repeat;
+                        }
+
+                        .ba-slider img {
+                            display: block;
+                            width: 100%;
+                            height: 200%; /* Konteynerin iki katı, böylece %50'si crop edilir */
+                            object-fit: cover;
+                            pointer-events: none;
                         }
 
                         .ba-before {
-                            background-position: top; /* üst kısım öncesi */
                             clip-path: polygon(0 0, 50% 0, 50% 100%, 0 100%);
+                            z-index: 2;
                         }
 
-                        .ba-after {
-                            background-position: bottom; /* alt kısım sonrası */
+                        .ba-before img {
+                            object-position: top; /* Fotoğrafın tam üst yarısını alır */
+                        }
+
+                        .ba-after img {
+                            object-position: bottom; /* Fotoğrafın tam alt yarısını alır */
                         }
 
                         .ba-range {
@@ -242,43 +252,53 @@
                             position: absolute;
                             top: 0;
                             left: 50%;
-                            width: 4px;
+                            width: 3px;
                             height: 100%;
-                            background: white;
+                            background: rgba(255, 255, 255, 0.9);
                             pointer-events: none;
                             transform: translateX(-50%);
                             z-index: 5;
-                            display: flex;
-                            align-items: center;
-                            justify-content: center;
+                            box-shadow: 0 0 15px rgba(0,0,0,0.2);
                         }
 
                         .ba-handle::after {
-                            content: '< >';
-                            display: flex;
-                            align-items: center;
-                            justify-content: center;
-                            width: 40px;
-                            height: 40px;
-                            background: white;
-                            color: var(--primary);
+                            content: '';
+                            position: absolute;
+                            top: 50%;
+                            left: 50%;
+                            transform: translate(-50%, -50%);
+                            width: 44px;
+                            height: 44px;
+                            background: rgba(255, 255, 255, 0.2);
+                            backdrop-filter: blur(8px);
+                            -webkit-backdrop-filter: blur(8px);
+                            border: 2px solid white;
                             border-radius: 50%;
-                            font-weight: bold;
-                            letter-spacing: -2px;
-                            box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+                            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+                            background-image: 
+                                url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="white" viewBox="0 0 24 24"><path d="M15.41 16.59L10.83 12l4.58-4.59L14 6l-6 6 6 6 1.41-1.41z"/></svg>'), 
+                                url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="white" viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg>');
+                            background-position: left 4px center, right 4px center;
+                            background-repeat: no-repeat;
+                            background-size: 16px;
                         }
 
                         .ba-label {
                             position: absolute;
                             top: 20px;
-                            padding: 5px 15px;
-                            background: rgba(0, 59, 92, 0.85);
+                            padding: 8px 16px;
+                            background: rgba(0, 0, 0, 0.4);
+                            backdrop-filter: blur(6px);
+                            -webkit-backdrop-filter: blur(6px);
                             color: white;
-                            border-radius: 20px;
-                            font-size: 0.9rem;
+                            border-radius: 30px;
+                            font-size: 0.8rem;
+                            font-weight: 600;
+                            letter-spacing: 0.5px;
                             z-index: 4;
-                            font-weight: 500;
                             pointer-events: none;
+                            text-transform: uppercase;
+                            border: 1px solid rgba(255,255,255,0.2);
                         }
                         
                         .ba-label.before { left: 20px; }
@@ -288,8 +308,8 @@
                     <div class="ba-grid">
                         <!-- Slider 1 -->
                         <div class="ba-slider">
-                            <div class="ba-after" style="background-image: url('video/232323.JPG');"></div>
-                            <div class="ba-before" style="background-image: url('video/232323.JPG');"></div>
+                            <div class="ba-after"><img src="video/232323.JPG" alt="Yeni Hali"></div>
+                            <div class="ba-before"><img src="video/232323.JPG" alt="Eski Hali"></div>
                             <div class="ba-label before">Eski Hali</div>
                             <div class="ba-label after">Yeni Hali</div>
                             <input type="range" min="0" max="100" value="50" class="ba-range" oninput="updateSlider(this)">
@@ -298,8 +318,8 @@
 
                         <!-- Slider 2 -->
                         <div class="ba-slider">
-                            <div class="ba-after" style="background-image: url('video/23232323232.JPG');"></div>
-                            <div class="ba-before" style="background-image: url('video/23232323232.JPG');"></div>
+                            <div class="ba-after"><img src="video/23232323232.JPG" alt="Yeni Hali"></div>
+                            <div class="ba-before"><img src="video/23232323232.JPG" alt="Eski Hali"></div>
                             <div class="ba-label before">Eski Hali</div>
                             <div class="ba-label after">Yeni Hali</div>
                             <input type="range" min="0" max="100" value="50" class="ba-range" oninput="updateSlider(this)">
@@ -308,8 +328,8 @@
 
                         <!-- Slider 3 -->
                         <div class="ba-slider">
-                            <div class="ba-after" style="background-image: url('video/Ekran Alıntısı.JPG');"></div>
-                            <div class="ba-before" style="background-image: url('video/Ekran Alıntısı.JPG');"></div>
+                            <div class="ba-after"><img src="video/Ekran Alıntısı.JPG" alt="Yeni Hali"></div>
+                            <div class="ba-before"><img src="video/Ekran Alıntısı.JPG" alt="Eski Hali"></div>
                             <div class="ba-label before">Eski Hali</div>
                             <div class="ba-label after">Yeni Hali</div>
                             <input type="range" min="0" max="100" value="50" class="ba-range" oninput="updateSlider(this)">
@@ -318,8 +338,8 @@
 
                         <!-- Slider 4 -->
                         <div class="ba-slider">
-                            <div class="ba-after" style="background-image: url('video/w232323.JPG');"></div>
-                            <div class="ba-before" style="background-image: url('video/w232323.JPG');"></div>
+                            <div class="ba-after"><img src="video/w232323.JPG" alt="Yeni Hali"></div>
+                            <div class="ba-before"><img src="video/w232323.JPG" alt="Eski Hali"></div>
                             <div class="ba-label before">Eski Hali</div>
                             <div class="ba-label after">Yeni Hali</div>
                             <input type="range" min="0" max="100" value="50" class="ba-range" oninput="updateSlider(this)">
