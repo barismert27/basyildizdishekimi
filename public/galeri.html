@@ -208,33 +208,27 @@
                             background-color: #f8fafc;
                         }
 
-                        .ba-after, .ba-before {
+                        .ba-after {
+                            position: relative;
+                            width: 100%;
+                        }
+
+                        .ba-before {
                             position: absolute;
                             top: 0;
                             left: 0;
                             width: 100%;
                             height: 100%;
+                            clip-path: polygon(0 0, 50% 0, 50% 100%, 0 100%);
+                            z-index: 2;
                         }
 
                         .ba-slider img {
                             display: block;
                             width: 100%;
-                            height: 200%; /* Konteynerin iki katı, böylece %50'si crop edilir */
+                            height: 100%;
                             object-fit: cover;
                             pointer-events: none;
-                        }
-
-                        .ba-before {
-                            clip-path: polygon(0 0, 50% 0, 50% 100%, 0 100%);
-                            z-index: 2;
-                        }
-
-                        .ba-before img {
-                            object-position: top; /* Fotoğrafın tam üst yarısını alır */
-                        }
-
-                        .ba-after img {
-                            object-position: bottom; /* Fotoğrafın tam alt yarısını alır */
                         }
 
                         .ba-range {
@@ -305,41 +299,11 @@
                         .ba-label.after { right: 20px; }
                     </style>
 
-                    <div class="ba-grid">
-                        <!-- Slider 1 -->
-                        <div class="ba-slider">
-                            <div class="ba-after"><img src="video/232323.JPG" alt="Yeni Hali"></div>
-                            <div class="ba-before"><img src="video/232323.JPG" alt="Eski Hali"></div>
-                            <div class="ba-label before">Eski Hali</div>
-                            <div class="ba-label after">Yeni Hali</div>
-                            <input type="range" min="0" max="100" value="50" class="ba-range" oninput="updateSlider(this)">
-                            <div class="ba-handle"></div>
-                        </div>
-
-                        <!-- Slider 2 -->
-                        <div class="ba-slider">
-                            <div class="ba-after"><img src="video/23232323232.JPG" alt="Yeni Hali"></div>
-                            <div class="ba-before"><img src="video/23232323232.JPG" alt="Eski Hali"></div>
-                            <div class="ba-label before">Eski Hali</div>
-                            <div class="ba-label after">Yeni Hali</div>
-                            <input type="range" min="0" max="100" value="50" class="ba-range" oninput="updateSlider(this)">
-                            <div class="ba-handle"></div>
-                        </div>
-
-                        <!-- Slider 3 -->
-                        <div class="ba-slider">
-                            <div class="ba-after"><img src="video/Ekran Alıntısı.JPG" alt="Yeni Hali"></div>
-                            <div class="ba-before"><img src="video/Ekran Alıntısı.JPG" alt="Eski Hali"></div>
-                            <div class="ba-label before">Eski Hali</div>
-                            <div class="ba-label after">Yeni Hali</div>
-                            <input type="range" min="0" max="100" value="50" class="ba-range" oninput="updateSlider(this)">
-                            <div class="ba-handle"></div>
-                        </div>
-
-                        <!-- Slider 4 -->
-                        <div class="ba-slider">
-                            <div class="ba-after"><img src="video/w232323.JPG" alt="Yeni Hali"></div>
-                            <div class="ba-before"><img src="video/w232323.JPG" alt="Eski Hali"></div>
+                    <div class="ba-grid" style="grid-template-columns: 1fr; max-width: 800px;">
+                        <!-- Tekli Slider -->
+                        <div class="ba-slider" style="aspect-ratio: auto;">
+                            <div class="ba-after"><img src="video/image copy.png" alt="Yeni Hali"></div>
+                            <div class="ba-before"><img src="video/image.png" alt="Eski Hali"></div>
                             <div class="ba-label before">Eski Hali</div>
                             <div class="ba-label after">Yeni Hali</div>
                             <input type="range" min="0" max="100" value="50" class="ba-range" oninput="updateSlider(this)">
