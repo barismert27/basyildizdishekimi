@@ -6,4 +6,5 @@ Disallow: /login
 Disallow: /tmp/
 Disallow: /*?*
 
-Sitemap: https://www.dentsmile.com/sitemap.xml
+Sitemap: https://www.muhammeteminbasyildiz.com/sitemap.xml
+
