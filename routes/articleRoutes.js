@@ -2,10 +2,10 @@ const express = require('express');
 const router = express.Router();
 const multer = require('multer');
 const path = require('path');
-const { requireAuth } = require('../middlewares/sessionMiddleware');
 const {
     getMakaleler, getMakale, createMakale, updateMakale, deleteMakale
 } = require('../controllers/articleController');
+const verifyToken = require('../middlewares/authMiddleware');
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
@@ -31,8 +31,8 @@ const upload = multer({
 
 router.get('/', getMakaleler);
 router.get('/:id', getMakale);
-router.post('/', requireAuth, upload.single('kapak'), createMakale);
-router.put('/:id', requireAuth, upload.single('kapak'), updateMakale);
-router.delete('/:id', requireAuth, deleteMakale);
+router.post('/', verifyToken, upload.single('kapak'), createMakale);
+router.put('/:id', verifyToken, upload.single('kapak'), updateMakale);
+router.delete('/:id', verifyToken, deleteMakale);
 
 module.exports = router;

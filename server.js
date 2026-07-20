@@ -3,7 +3,13 @@ const express = require('express');
 const cors = require('cors');
 const path = require('path');
 const cookieParser = require('cookie-parser');
+const fs = require('fs');
 const { initDb } = require('./config/db');
+
+const uploadsDir = path.join(__dirname, 'public/uploads');
+if (!fs.existsSync(uploadsDir)) {
+    fs.mkdirSync(uploadsDir, { recursive: true });
+}
 
 // Rotalar
 const authRoutes = require('./routes/authRoutes');
