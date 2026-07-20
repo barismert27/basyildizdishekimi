@@ -14,7 +14,7 @@ const translations = {
         // index page specific
         "hero-badge": "✨ Yeni Nesil Diş Hekimliği",
         "hero-title": "Sağlıklı Gülüşler,<br>Mutlu Yarınlar.",
-        "hero-desc": "En son teknoloji ve uzman kadromuzla ağız ve diş sağlığınız için premium çözümler sunuyoruz. Benzersiz bir klinik deneyimi.",
+        "hero-desc": "En son teknoloji CBCT ve dijital röntgen cihazlarımız ile alanında uzman kadromuz, ağız ve diş sağlığınız için en doğru teşhis ve premium tedavi çözümlerini sunuyor. Güvenilir ve benzersiz bir klinik deneyimi.",
         "btn-hero-app": "Randevu Oluştur",
         "btn-hero-serv": "Hizmetleri İncele",
         "trust-patients": "Mutlu Hasta",
