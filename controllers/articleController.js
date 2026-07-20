@@ -24,7 +24,6 @@ async function getMakale(req, res) {
         res.status(500).json({ success: false, message: err.message });
     }
 }
-
 async function createMakale(req, res) {
     try {
         const { baslik, icerik } = req.body;
