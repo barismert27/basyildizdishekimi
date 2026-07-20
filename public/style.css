@@ -3449,3 +3449,13 @@ body.dark-mode .saat-btn.disabled {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
 }
+
+.footer-address-link {
+    color: inherit;
+    text-decoration: none;
+    transition: color 0.2s, text-decoration 0.2s;
+}
+.footer-address-link:hover {
+    color: var(--secondary) !important;
+    text-decoration: underline !important;
+}
