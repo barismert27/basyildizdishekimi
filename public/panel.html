@@ -1117,6 +1117,9 @@
             <button class="p-nav-btn" data-section="makaleler" id="nav-makaleler">
                 <i class="fa-solid fa-newspaper"></i> Makaleler
             </button>
+            <button class="p-nav-btn" data-section="odemeler" id="nav-odemeler">
+                <i class="fa-solid fa-wallet"></i> Ödeme Takip
+            </button>
         </nav>
 
         <div class="p-sidebar-footer">
@@ -1238,8 +1241,21 @@
                     <h2 class="p-section-title"><i class="fa-solid fa-newspaper" style="color:var(--accent);margin-right:8px;"></i>Makaleler</h2>
                 </div>
                 <div id="p-article-list" class="p-articles-grid">
-                    <div class="p-empty"><i class="fa-solid fa-spinner fa-spin"></i><p>Yükleniyor...</p></div>
                 </div>
+            </div>
+            <!-- ── ÖDEMELER SEKSİYONU ── -->
+            <div class="p-section" id="section-odemeler">
+                <div class="p-section-header">
+                    <h2 class="p-section-title"><i class="fa-solid fa-wallet" style="color:var(--accent);margin-right:8px;"></i>Ödeme Takip</h2>
+                </div>
+                <div class="p-toolbar">
+                    <div class="p-search">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                        <input type="text" id="odeme-arama-input" placeholder="Hasta adı veya telefon ara..." autocomplete="off">
+                    </div>
+                </div>
+                <div id="odeme-listesi"></div>
+                <div id="odeme-pagination-container" class="p-pagination"></div>
             </div>
 
         </div>
@@ -1418,7 +1434,7 @@
         const sections = document.querySelectorAll('.p-section');
         const makaleYazBtn = document.getElementById('makale-yaz-btn');
         const topbarTitle = document.getElementById('p-topbar-title');
-        const titles = { randevular: 'Randevular', makaleler: 'Makaleler' };
+        const titles = { randevular: 'Randevular', makaleler: 'Makaleler', odemeler: 'Ödeme Takip' };
 
         navBtns.forEach(btn => {
             btn.addEventListener('click', () => {
@@ -1430,6 +1446,7 @@
                 topbarTitle.textContent = titles[sec] || sec;
                 makaleYazBtn.style.display = sec === 'makaleler' ? 'inline-flex' : 'none';
                 if (sec === 'makaleler') yuklePanel_Makaleler();
+                if (sec === 'odemeler') yuklePanel_Odemeler();
                 closeSidebar();
             });
         });
@@ -1854,6 +1871,7 @@
                     if (typeof yukleRandevular === 'function') yukleRandevular();
                     if (typeof yukleTakvimRandevulari === 'function') yukleTakvimRandevulari();
                     if (typeof yukleGenelIstatistikler === 'function') yukleGenelIstatistikler();
+                    if (typeof yuklePanel_Odemeler === 'function') yuklePanel_Odemeler();
                 } else {
                     showToast(result.message || 'Güncelleme başarısız', 'error');
                 }
@@ -1918,6 +1936,155 @@
                 showToast('Bağlantı hatası', 'error');
             }
         });
+
+        // ─── ÖDEMELER PANELİ YÜKLEME VE ARAMA YÖNETİMİ ───
+        let odemeState = { sayfa: 1, arama: '' };
+
+        async function yuklePanel_Odemeler() {
+            const listDiv = document.getElementById('odeme-listesi');
+            if (!listDiv) return;
+
+            listDiv.innerHTML = '<div class="p-empty"><i class="fa-solid fa-spinner fa-spin"></i><p>Yükleniyor...</p></div>';
+
+            try {
+                const token = localStorage.getItem('adminToken');
+                const headers = {};
+                if (token) headers['Authorization'] = 'Bearer ' + token;
+
+                const params = new URLSearchParams({
+                    sayfa: odemeState.sayfa,
+                    arama: odemeState.arama,
+                    limit: 10
+                });
+
+                const res = await fetch(`/api/appointments?${params}`, {
+                    headers,
+                    credentials: 'include'
+                });
+                const result = await res.json();
+
+                if (result.success) {
+                    renderOdemeler(result.data);
+                    renderOdemelerPagination(result.pagination);
+                } else {
+                    listDiv.innerHTML = '<div class="p-empty"><i class="fa-solid fa-triangle-exclamation"></i><p>Hata: ' + result.message + '</p></div>';
+                }
+            } catch (err) {
+                listDiv.innerHTML = '<div class="p-empty"><i class="fa-solid fa-triangle-exclamation"></i><p>Bağlantı hatası</p></div>';
+            }
+        }
+
+        function renderOdemeler(randevular) {
+            const listDiv = document.getElementById('odeme-listesi');
+            if (!listDiv) return;
+            listDiv.innerHTML = '';
+
+            if (randevular.length === 0) {
+                listDiv.innerHTML = '<div class="p-empty"><i class="fa-solid fa-file-invoice"></i><p>Kayıtlı randevu veya ödeme bulunamadı.</p></div>';
+                return;
+            }
+
+            const header = document.createElement('div');
+            header.className = 'p-randevu-table-header';
+            header.innerHTML = '<div>Hasta</div><div>Tarih</div><div>Toplam Tutar</div><div>Ödenen</div><div>Kalan Borç</div><div>İşlem</div>';
+            listDiv.appendChild(header);
+
+            randevular.forEach(r => {
+                const row = document.createElement('div');
+                row.className = 'p-randevu-satir';
+
+                const dateStr = new Date(r.tarih).toLocaleDateString('tr-TR', { day: '2-digit', month: 'long', year: 'numeric' });
+                
+                const toplamVal = r.toplam_tutar ? parseFloat(r.toplam_tutar) : 0;
+                const odenenVal = r.odenen_tutar ? parseFloat(r.odenen_tutar) : 0;
+                const kalanVal = toplamVal - odenenVal;
+
+                const kalanClass = kalanVal > 0 ? 'color: var(--danger); font-weight:700;' : 'color: var(--success); font-weight:700;';
+
+                row.innerHTML = `
+                    <div>
+                        <strong class="p-hasta-ad">${r.ad}</strong>
+                        <div style="font-size:12px;color:var(--text-muted);margin-top:3px;"><i class="fa-solid fa-phone"></i> ${r.telefon}</div>
+                    </div>
+                    <div class="p-tarih-saat"><i class="fa-regular fa-clock"></i> ${dateStr} - ${r.saat}</div>
+                    <div style="font-weight: 600;">${toplamVal.toFixed(2)} TL</div>
+                    <div style="color: var(--success); font-weight: 600;">${odenenVal.toFixed(2)} TL</div>
+                    <div style="${kalanClass}">${kalanVal.toFixed(2)} TL</div>
+                    <div class="p-islem-btns">
+                        <button class="p-btn-icon odeme-btn" title="Ödemeyi Düzenle" data-billing-id="${r.id}" type="button"><i class="fa-solid fa-pen-to-square"></i></button>
+                    </div>
+                `;
+
+                row.querySelector('[data-billing-id]').addEventListener('click', () => {
+                    odemeModalAc(r);
+                });
+
+                listDiv.appendChild(row);
+            });
+        }
+
+        function renderOdemelerPagination(pagination) {
+            const container = document.getElementById('odeme-pagination-container');
+            if (!container) return;
+            container.innerHTML = '';
+            if (!pagination || pagination.toplamSayfa <= 1) return;
+
+            const { sayfa, toplamSayfa, toplam, sayfaBasina } = pagination;
+            const baslangic = (sayfa - 1) * sayfaBasina + 1;
+            const bitis = Math.min(sayfa * sayfaBasina, toplam);
+
+            const info = document.createElement('div');
+            info.className = 'p-pagination-info';
+            info.textContent = `${toplam} hastadan ${baslangic}–${bitis} arası gösteriliyor`;
+            container.appendChild(info);
+
+            const btnGroup = document.createElement('div');
+            btnGroup.className = 'p-pagination-btns';
+
+            const prev = document.createElement('button');
+            prev.className = 'p-page-btn';
+            prev.innerHTML = '<i class="fa-solid fa-chevron-left"></i>';
+            prev.disabled = sayfa === 1;
+            prev.onclick = () => { odemeState.sayfa = sayfa - 1; yuklePanel_Odemeler(); };
+            btnGroup.appendChild(prev);
+
+            for (let i = 1; i <= toplamSayfa; i++) {
+                if (i === 1 || i === toplamSayfa || (i >= sayfa - 2 && i <= sayfa + 2)) {
+                    const btn = document.createElement('button');
+                    btn.className = 'p-page-btn' + (i === sayfa ? ' active' : '');
+                    btn.textContent = i;
+                    btn.onclick = () => { odemeState.sayfa = i; yuklePanel_Odemeler(); };
+                    btnGroup.appendChild(btn);
+                } else if (i === sayfa - 3 || i === sayfa + 3) {
+                    const el = document.createElement('span');
+                    el.style.cssText = 'color:var(--text-muted);padding:0 4px;line-height:34px;';
+                    el.textContent = '…';
+                    btnGroup.appendChild(el);
+                }
+            }
+
+            const next = document.createElement('button');
+            next.className = 'p-page-btn';
+            next.innerHTML = '<i class="fa-solid fa-chevron-right"></i>';
+            next.disabled = sayfa === toplamSayfa;
+            next.onclick = () => { odemeState.sayfa = sayfa + 1; yuklePanel_Odemeler(); };
+            btnGroup.appendChild(next);
+
+            container.appendChild(btnGroup);
+        }
+
+        const odemeAramaInput = document.getElementById('odeme-arama-input');
+        if (odemeAramaInput) {
+            let odemeTimeout = null;
+            odemeAramaInput.addEventListener('input', (e) => {
+                clearTimeout(odemeTimeout);
+                odemeTimeout = setTimeout(() => {
+                    odemeState.arama = e.target.value;
+                    odemeState.sayfa = 1;
+                    yuklePanel_Odemeler();
+                }, 300);
+            });
+        }
     </script>
 </body>
 
