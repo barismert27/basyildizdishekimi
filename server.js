@@ -8,7 +8,8 @@ const { initDb } = require('./config/db');
 // Rotalar
 const authRoutes = require('./routes/authRoutes');
 const appointmentRoutes = require('./routes/appointmentRoutes');
-const pageRoutes = require('./routes/pageRoutes');   // ← Korumalı sayfa rotaları
+const articleRoutes = require('./routes/articleRoutes');
+const pageRoutes = require('./routes/pageRoutes');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -21,6 +22,7 @@ app.use(cookieParser());   // ← Cookie okuma için gerekli
 // Statik Dosyalar (Frontend) — panel.html ve login.html artık burada değil
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/resimler', express.static(path.join(__dirname, 'resimler')));
+app.use('/uploads', express.static(path.join(__dirname, 'public/uploads')));
 
 // Korumalı Sayfa Rotaları (önce gelsin — /login ve /yonetim-paneli)
 app.use('/', pageRoutes);
@@ -28,6 +30,7 @@ app.use('/', pageRoutes);
 // API Rotaları
 app.use('/api/auth', authRoutes);
 app.use('/api/appointments', appointmentRoutes);
+app.use('/api/articles', articleRoutes);
 
 // Health Check / Uyanık Kal Endpoint'i
 app.get('/ping', async (req, res) => {

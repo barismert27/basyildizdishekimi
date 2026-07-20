@@ -63,6 +63,17 @@ async function initDb() {
             console.log("Index temizleme işlemi atlandı veya hata oluştu:", e.message);
         }
 
+        // Makaleler tablosu
+        await pool.query(`
+            CREATE TABLE IF NOT EXISTS makaleler (
+                id INT AUTO_INCREMENT PRIMARY KEY,
+                baslik VARCHAR(255) NOT NULL,
+                icerik TEXT NOT NULL,
+                kapak_resmi VARCHAR(500),
+                olusturma_tarihi TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            )
+        `);
+
         console.log('✅ Veritabanı tabloları başarılı şekilde kontrol edildi/oluşturuldu.');
     } catch (err) {
         console.error('❌ DB Init hatası:', err.message);

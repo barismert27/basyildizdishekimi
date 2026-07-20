@@ -1,22 +1,15 @@
 var API_URL = window.location.protocol === 'file:' ? 'http://localhost:3000/api' : window.location.origin + '/api';
 
-// ---------------------------------------------------------
-// MPA UTILS & LOAD CHECK
-// ---------------------------------------------------------
-
 document.addEventListener('DOMContentLoaded', () => {
 
-    // PRELOADER LOGIC (Sadece ilk girişte göster)
     const preloader = document.getElementById('preloader');
     if (preloader) {
         if (!sessionStorage.getItem('preloaderShown')) {
-            const minLoadingTime = 2500; // 2.5 saniye animasyon garantisi
+            const minLoadingTime = 2500;
             const startTime = Date.now();
-            
             window.addEventListener('load', () => {
                 const elapsedTime = Date.now() - startTime;
                 const remainingTime = Math.max(0, minLoadingTime - elapsedTime);
-                
                 setTimeout(() => {
                     preloader.classList.add('hidden');
                     setTimeout(() => { preloader.remove(); }, 800);
@@ -24,40 +17,30 @@ document.addEventListener('DOMContentLoaded', () => {
                 }, remainingTime);
             });
         } else {
-            // Bu oturumda zaten gösterilmiş, direkt sil
             preloader.style.display = 'none';
             preloader.remove();
         }
     }
 
-    // Mobile Autoplay/Loop fix for hero video
     const heroVideo = document.querySelector('.hero-video');
     if (heroVideo) {
         heroVideo.muted = true;
         heroVideo.playsInline = true;
         heroVideo.loop = true;
-        
+
         const tryPlay = () => {
             const playPromise = heroVideo.play();
             if (playPromise !== undefined) {
-                playPromise.then(() => {
-                    console.log("Video started playing successfully.");
-                }).catch(err => {
-                    console.log("Mobile video autoplay prevented. Setting up interaction handlers.", err);
-                });
+                playPromise.then(() => {}).catch(() => {});
             }
         };
-        
-        // Try playing immediately
+
         tryPlay();
-        
-        // Try playing on standard media events
         heroVideo.addEventListener('loadedmetadata', tryPlay);
         heroVideo.addEventListener('loadeddata', tryPlay);
         heroVideo.addEventListener('canplay', tryPlay);
         heroVideo.addEventListener('canplaythrough', tryPlay);
-        
-        // Fallback: Play on first touch, click, scroll or mouse movement
+
         const playOnUserAction = () => {
             heroVideo.play().then(() => {
                 document.removeEventListener('click', playOnUserAction);
@@ -65,9 +48,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 document.removeEventListener('touchend', playOnUserAction);
                 document.removeEventListener('scroll', playOnUserAction);
                 document.removeEventListener('mousemove', playOnUserAction);
-            }).catch(e => console.error("Play on user action failed:", e));
+            }).catch(() => {});
         };
-        
+
         document.addEventListener('click', playOnUserAction, { passive: true });
         document.addEventListener('touchstart', playOnUserAction, { passive: true });
         document.addEventListener('touchend', playOnUserAction, { passive: true });
@@ -75,7 +58,6 @@ document.addEventListener('DOMContentLoaded', () => {
         document.addEventListener('mousemove', playOnUserAction, { passive: true });
     }
 
-    // Sticky Header Scroll effect (Mobilde .header-right'ı gizlemek için)
     const header = document.querySelector('.header');
     if (header) {
         window.addEventListener('scroll', () => {
@@ -87,14 +69,10 @@ document.addEventListener('DOMContentLoaded', () => {
         }, { passive: true });
     }
 
-    // 1. Panel Sayfası Güvenlik Kontrolü (/yonetim-paneli)
     if (window.location.pathname.includes('/yonetim-paneli') || window.location.pathname.includes('panel.html')) {
-        // Sunucu zaten doğruladı; token kontrolü server-side yapılıyor.
-        // Ek olarak localStorage token da kontrol edelim (API çağrıları için)
         yukleRandevular();
         yukleGenelIstatistikler();
 
-        // Arama kutusu - 400ms debounce
         let aramaTimeout;
         const aramaInput = document.getElementById('arama-input');
         if (aramaInput) {
@@ -108,7 +86,6 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }
 
-        // Durum filtresi
         const durumSelect = document.getElementById('durum-filtre');
         if (durumSelect) {
             durumSelect.addEventListener('change', () => {
@@ -118,7 +95,6 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }
 
-        // Tarih filtresi
         const tarihSelect = document.getElementById('tarih-filtre');
         if (tarihSelect) {
             tarihSelect.addEventListener('change', () => {
@@ -128,7 +104,6 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }
 
-        // Görünüm değiştici sekme (Tab) kontrolü
         const tabAgendaBtn = document.getElementById('tab-agenda-btn');
         const tabCalendarBtn = document.getElementById('tab-calendar-btn');
         const viewAgenda = document.getElementById('view-agenda');
@@ -155,7 +130,6 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }
 
-        // Takvim Navigasyon Butonları
         const prevBtn = document.getElementById('cal-prev-btn');
         const nextBtn = document.getElementById('cal-next-btn');
 
@@ -180,8 +154,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-
-    // 2. Login Sayfası — zaten giriş yapmışsa panele yönlendir
     if (window.location.pathname.includes('/login') || window.location.pathname.includes('login.html')) {
         if (window.location.protocol === 'file:') {
             const token = localStorage.getItem('adminToken');
@@ -193,7 +165,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // 3. Tarih Seçici Min Değer ve Saat Getirme (Randevu Sayfası)
     const tarihInput = document.getElementById('tarih');
     const saatSelect = document.getElementById('saat');
 
@@ -209,32 +180,27 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // 4. Randevu Formu Submit
     const randevuForm = document.getElementById('randevu-form');
     if (randevuForm) {
         randevuForm.addEventListener('submit', handleRandevuSubmit);
     }
 
-    // 5. Login Formu Submit
     const loginForm = document.getElementById('login-form');
     if (loginForm) {
         loginForm.addEventListener('submit', handleLoginSubmit);
     }
 
-    // 6. Logout Butonu
     const logoutBtn = document.getElementById('logout-btn');
     if (logoutBtn) {
         logoutBtn.addEventListener('click', async () => {
             try {
-                // Sunucu tarafında cookie'yi temizle
                 await fetch(`${API_URL}/auth/logout`, { method: 'POST' });
-            } catch (e) { /* sessizce geç */ }
+            } catch (e) {}
             localStorage.removeItem('adminToken');
             window.location.href = window.location.protocol === 'file:' ? 'login.html' : '/login';
         });
     }
 
-    // 7. Modal Dış Tıklama (Ana Sayfa)
     const serviceModal = document.getElementById('service-modal');
     if (serviceModal) {
         serviceModal.addEventListener('click', function (e) {
@@ -244,7 +210,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // 8. Mobile Menu Logic (Drawer & Overlay)
     const mobileMenuBtn = document.getElementById('mobile-menu-btn');
     const mobileDrawer = document.getElementById('mobile-drawer');
     const mobileOverlay = document.getElementById('mobile-overlay');
@@ -286,14 +251,12 @@ document.addEventListener('DOMContentLoaded', () => {
         mobileOverlay.addEventListener('click', closeMobileMenu);
     }
 
-    // Close menu when clicking drawer nav links
     if (mobileDrawer) {
         mobileDrawer.querySelectorAll('.drawer-nav-btn').forEach(btn => {
             btn.addEventListener('click', closeMobileMenu);
         });
     }
 
-    // Reset state on screen resize
     window.addEventListener('resize', () => {
         if (window.innerWidth > 900) {
             closeMobileMenu();
@@ -302,9 +265,6 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 
-// ---------------------------------------------------------
-// TOAST NOTIFICATION SYSTEM
-// ---------------------------------------------------------
 function showToast(message, type = 'info') {
     let container = document.querySelector('.toast-container');
     if (!container) {
@@ -316,7 +276,6 @@ function showToast(message, type = 'info') {
     const toast = document.createElement('div');
     toast.className = `toast ${type}`;
 
-    // Icon seçimi
     let icon = 'fa-info-circle';
     if (type === 'success') icon = 'fa-check-circle';
     if (type === 'error') icon = 'fa-exclamation-circle';
@@ -324,7 +283,6 @@ function showToast(message, type = 'info') {
     toast.innerHTML = `<i class="fa-solid ${icon}"></i> <span>${message}</span>`;
     container.appendChild(toast);
 
-    // 4 saniye sonra kaldır
     setTimeout(() => {
         toast.style.animation = 'fadeOut 0.3s forwards';
         toast.addEventListener('animationend', () => {
@@ -347,7 +305,6 @@ async function saatleriGetir(tarih) {
         const result = await response.json();
 
         if (result.success) {
-            // MySQL TIME "09:00:00" formatında gelebilir — HH:MM'e normalize et
             const doluSaatler = result.data.map(s => String(s).substring(0, 5));
             const calismaSaatleri = [
                 "09:00", "09:30", "10:00", "10:30", "11:00", "11:30",
@@ -358,11 +315,8 @@ async function saatleriGetir(tarih) {
             saatSelect.innerHTML = '<option value="">Seçiniz</option>';
             saatSelect.disabled = false;
 
-            // Tarih kontrolü (Geçmiş saatleri kapatma)
             const bugun = new Date();
             const secilenTarihObj = new Date(tarih);
-
-            // Tarihlerin saat kısımlarını sıfırla ki sadece günleri kıyaslayalım
             const bugunSifir = new Date(bugun.getFullYear(), bugun.getMonth(), bugun.getDate());
             const secilenSifir = new Date(secilenTarihObj.getFullYear(), secilenTarihObj.getMonth(), secilenTarihObj.getDate());
 
@@ -375,7 +329,6 @@ async function saatleriGetir(tarih) {
                 option.value = saat;
                 option.textContent = saat;
 
-                // 1. Geçmiş saat kontrolü (Sadece bugün ise)
                 if (bugunMu) {
                     const [s, d] = saat.split(':').map(Number);
                     if (s < simdikiSaat || (s === simdikiSaat && d <= simdikiDakika)) {
@@ -385,7 +338,6 @@ async function saatleriGetir(tarih) {
                     }
                 }
 
-                // 2. Dolu saat kontrolü
                 if (doluSaatler.includes(saat)) {
                     option.disabled = true;
                     option.textContent += ' (Dolu)';
@@ -395,17 +347,14 @@ async function saatleriGetir(tarih) {
                 saatSelect.appendChild(option);
             });
         } else {
-            console.error('Sunucu hatası:', result.message);
             showToast('Saatler yüklenemedi: ' + result.message, 'error');
             saatSelect.innerHTML = '<option value="">Saatler yüklenemedi</option>';
         }
 
     } catch (err) {
-        console.error('Bağlantı hatası:', err);
         showToast('Sunucu bağlantı hatası!', 'error');
         saatSelect.innerHTML = '<option value="">Bağlantı hatası!</option>';
     } finally {
-        // Her durumda select'i aktif et (hata olsa bile kullanıcı görsün)
         if (saatSelect.disabled && saatSelect.options.length > 0 && saatSelect.options[0].text !== "Yükleniyor...") {
             saatSelect.disabled = false;
         }
@@ -415,7 +364,6 @@ async function saatleriGetir(tarih) {
 async function handleRandevuSubmit(e) {
     e.preventDefault();
 
-    // Telefon Validasyonu (Detaylı)
     const telefon = document.getElementById('telefon').value.replace(/\s/g, '');
     if (!/^\d{11}$/.test(telefon)) {
         showToast("Lütfen geçerli, 11 haneli bir telefon numarası giriniz.", 'error');
@@ -424,7 +372,6 @@ async function handleRandevuSubmit(e) {
 
     const formData = new FormData(e.target);
     const data = Object.fromEntries(formData.entries());
-    // Temizlenmiş telefonu gönder
     data.telefon = telefon;
 
     try {
@@ -446,15 +393,10 @@ async function handleRandevuSubmit(e) {
         }
 
     } catch (err) {
-        console.error('Randevu hatası:', err);
         showToast('Sunucu hatası oluştu.', 'error');
     }
 }
 
-
-// ---------------------------------------------------------
-// 2. AUTH / ADMIN ISLEMLERI
-// ---------------------------------------------------------
 
 async function handleLoginSubmit(e) {
     e.preventDefault();
@@ -480,17 +422,14 @@ async function handleLoginSubmit(e) {
         }
 
     } catch (err) {
-        console.error('Login Error:', err);
         showToast('Sunucu hatası.', 'error');
     }
 }
 
-// Takvim Görünümü Durum Değişkenleri
 let calendarDate = new Date();
 let calendarAppointments = [];
 let selectedDateStr = "";
 
-// Panel durumu (filtreler + sayfa)
 const panelState = {
     sayfa: 1,
     arama: '',
@@ -535,25 +474,18 @@ async function yukleRandevular() {
         }
 
     } catch (err) {
-        console.error('Yükleme hatası:', err);
         listDiv.innerHTML = '<div class="empty-state">Veriler yüklenemedi.</div>';
     }
 }
 
-// İstatistik kartları için ayrı istek (filtresiz toplam veriler)
 async function yukleGenelIstatistikler() {
     try {
         const token = localStorage.getItem('adminToken');
         const response = await fetch(`${API_URL}/appointments?sayfa=1&arama=&durum=&tarihFiltre=`, {
             headers: { 'Authorization': `Bearer ${token}` }
         });
-        // Toplam sayıyı almak için count endpoint yok, istatistikler için tüm veriyi düşük limite çekiyoruz
-        // Daha iyi yaklaşım: backend'de ayrı istatistik endpoint
-        // Şimdilik pagination.toplam'ı kullanıyoruz
         const result = await response.json();
         if (result.success) {
-            // Tüm filtreler kapalıyken toplam sayıyı göster
-            // Durum bazlı sayılar için ayrı istekler
             const bekleyenRes = await fetch(`${API_URL}/appointments?sayfa=1&durum=pending&arama=&tarihFiltre=`, {
                 headers: { 'Authorization': `Bearer ${token}` }
             });
@@ -567,9 +499,7 @@ async function yukleGenelIstatistikler() {
             document.getElementById('bekleyen-randevu').textContent = bekleyenData.success ? bekleyenData.pagination.toplam : 0;
             document.getElementById('onaylanan-randevu').textContent = onaylananData.success ? onaylananData.pagination.toplam : 0;
         }
-    } catch (err) {
-        console.error('İstatistik yükleme hatası:', err);
-    }
+    } catch (err) {}
 }
 
 function renderRandevular(randevular) {
@@ -582,7 +512,6 @@ function renderRandevular(randevular) {
         return;
     }
 
-    // Group appointments by date (tarih)
     const groups = {};
     randevular.forEach(r => {
         const dateKey = r.tarih.split('T')[0];
@@ -592,7 +521,6 @@ function renderRandevular(randevular) {
         groups[dateKey].push(r);
     });
 
-    // In desktop view, we can display the table headers once at the top of the entire list.
     const tableHeader = document.createElement('div');
     tableHeader.className = 'randevu-table-header';
     tableHeader.innerHTML = `
@@ -604,31 +532,20 @@ function renderRandevular(randevular) {
     `;
     listDiv.appendChild(tableHeader);
 
-    // Iterate through date groups (they are already sorted in ascending order from the server)
     Object.keys(groups).forEach(dateKey => {
         const dayAppointments = groups[dateKey];
-        
-        // Create group container
+
         const groupContainer = document.createElement('div');
         groupContainer.className = 'agenda-day-group';
 
-        // Date grouping logic simplified, removed the visual header.
-        // groupContainer.appendChild(dayHeader);
-
-        // Render each appointment row inside the day group
         dayAppointments.forEach(r => {
             const durumText = { 'pending': 'Beklemede', 'approved': 'Onaylandı', 'cancelled': 'İptal' };
             const durumClass = { 'pending': 'durum-beklemede', 'approved': 'durum-onaylandi', 'cancelled': 'durum-iptal' };
             const durumIcon = { 'pending': 'fa-hourglass-half', 'approved': 'fa-circle-check', 'cancelled': 'fa-circle-xmark' };
 
-            // Format date to local format
-            const tObj = new Date(r.tarih);
-            const tStr = tObj.toLocaleDateString('tr-TR', { day: '2-digit', month: 'short', year: 'numeric' });
-
             const satir = document.createElement('div');
             satir.className = 'randevu-satir';
 
-            // --- Hasta sütunu ---
             const colHasta = document.createElement('div');
             colHasta.className = 'rt-col rt-col-hasta';
             const hastaDiv = document.createElement('div');
@@ -647,7 +564,6 @@ function renderRandevular(randevular) {
             colHasta.appendChild(hastaDiv);
             satir.appendChild(colHasta);
 
-            // --- Saat sütunu ---
             const colTarih = document.createElement('div');
             colTarih.className = 'rt-col rt-col-tarih';
             const tarihSaat = document.createElement('span');
@@ -656,7 +572,6 @@ function renderRandevular(randevular) {
             colTarih.appendChild(tarihSaat);
             satir.appendChild(colTarih);
 
-            // --- İletişim sütunu ---
             const colIletisim = document.createElement('div');
             colIletisim.className = 'rt-col rt-col-iletisim';
             const telLink = document.createElement('a');
@@ -672,7 +587,6 @@ function renderRandevular(randevular) {
             colIletisim.appendChild(emailSpan);
             satir.appendChild(colIletisim);
 
-            // --- Durum sütunu ---
             const colDurum = document.createElement('div');
             colDurum.className = 'rt-col rt-col-durum';
             const badge = document.createElement('span');
@@ -681,7 +595,6 @@ function renderRandevular(randevular) {
             colDurum.appendChild(badge);
             satir.appendChild(colDurum);
 
-            // --- İşlem sütunu ---
             const colIslem = document.createElement('div');
             colIslem.className = 'rt-col rt-col-islem';
             const islemBtns = document.createElement('div');
@@ -729,20 +642,17 @@ function renderRandevular(randevular) {
     });
 }
 
-// TAKVİM GÖRÜNÜMÜ YARDIMCI FONKSİYONLARI
-
 async function yukleTakvimRandevulari() {
     const daysGrid = document.getElementById('calendar-days');
     if (!daysGrid) return;
-    
+
     daysGrid.innerHTML = '<div class="empty-state-sm" style="grid-column: span 7;"><i class="fa-solid fa-spinner fa-spin"></i> Yükleniyor...</div>';
-    
+
     try {
         const token = localStorage.getItem('adminToken');
         const headers = {};
         if (token) headers['Authorization'] = `Bearer ${token}`;
 
-        // Calendarda tüm ay detayını görmek için sayfalama yapmadan yüksek limitli çekiyoruz
         const response = await fetch(`${API_URL}/appointments?limit=1000`, {
             credentials: 'include',
             headers: headers
@@ -752,8 +662,7 @@ async function yukleTakvimRandevulari() {
         if (result.success) {
             calendarAppointments = result.data;
             renderCalendar();
-            
-            // Eğer seçili bir tarih varsa alt taraftaki detay listesini de güncelle
+
             if (selectedDateStr) {
                 const targetDate = new Date(selectedDateStr);
                 const dayApps = calendarAppointments.filter(app => app.tarih.split('T')[0] === selectedDateStr);
@@ -761,7 +670,6 @@ async function yukleTakvimRandevulari() {
             }
         }
     } catch (err) {
-        console.error('Takvim verisi yüklenirken hata oluştu:', err);
         daysGrid.innerHTML = '<div class="empty-state-sm" style="grid-column: span 7;">Yükleme hatası.</div>';
     }
 }
@@ -774,40 +682,32 @@ function renderCalendar() {
     daysGrid.innerHTML = '';
 
     const year = calendarDate.getFullYear();
-    const month = calendarDate.getMonth(); // 0-indexed
+    const month = calendarDate.getMonth();
 
     const monthsTr = [
-        "Ocak", "Şubat", "Mart", "Nisan", "Mayıs", "Haziran", 
+        "Ocak", "Şubat", "Mart", "Nisan", "Mayıs", "Haziran",
         "Temmuz", "Ağustos", "Eylül", "Ekim", "Kasım", "Aralık"
     ];
     monthTitle.textContent = `${monthsTr[month]} ${year}`;
 
-    // Haftanın ilk gününü pazartesi olarak ayarlayalım
-    const firstDayIndex = new Date(year, month, 1).getDay(); // 0: Pazar, 1: Pzt, vb.
+    const firstDayIndex = new Date(year, month, 1).getDay();
     const startDayOffset = firstDayIndex === 0 ? 6 : firstDayIndex - 1;
-
     const totalDays = new Date(year, month + 1, 0).getDate();
     const prevMonthTotalDays = new Date(year, month, 0).getDate();
 
-    // Önceki aydan kalan boş günleri çiz
     for (let i = startDayOffset; i > 0; i--) {
         const dayNum = prevMonthTotalDays - i + 1;
-        const dayBox = createDayBox(year, month - 1, dayNum, true);
-        daysGrid.appendChild(dayBox);
+        daysGrid.appendChild(createDayBox(year, month - 1, dayNum, true));
     }
 
-    // Aktif ayın günlerini çiz
     for (let i = 1; i <= totalDays; i++) {
-        const dayBox = createDayBox(year, month, i, false);
-        daysGrid.appendChild(dayBox);
+        daysGrid.appendChild(createDayBox(year, month, i, false));
     }
 
-    // Sonraki aydan gelecek günleri çizerek gridi tamamla
     const totalRendered = startDayOffset + totalDays;
     const remaining = totalRendered % 7 === 0 ? 0 : 7 - (totalRendered % 7);
     for (let i = 1; i <= remaining; i++) {
-        const dayBox = createDayBox(year, month + 1, i, true);
-        daysGrid.appendChild(dayBox);
+        daysGrid.appendChild(createDayBox(year, month + 1, i, true));
     }
 }
 
@@ -820,37 +720,23 @@ function createDayBox(year, month, day, isOtherMonth) {
 
     const dayBox = document.createElement('div');
     dayBox.className = 'calendar-day-box';
-    if (isOtherMonth) {
-        dayBox.classList.add('other-month');
-    }
+    if (isOtherMonth) dayBox.classList.add('other-month');
 
     const todayStr = new Date().toISOString().split('T')[0];
-    if (dateKeyStr === todayStr) {
-        dayBox.classList.add('today');
-    }
-
-    if (selectedDateStr === dateKeyStr) {
-        dayBox.classList.add('selected');
-    }
+    if (dateKeyStr === todayStr) dayBox.classList.add('today');
+    if (selectedDateStr === dateKeyStr) dayBox.classList.add('selected');
 
     const numEl = document.createElement('span');
     numEl.className = 'day-number';
     numEl.textContent = day;
     dayBox.appendChild(numEl);
 
-    // Bu güne ait randevuları bul
-    const dayAppointments = calendarAppointments.filter(app => {
-        return app.tarih.split('T')[0] === dateKeyStr;
-    });
-
-    // Saat sırasına göre sırala
+    const dayAppointments = calendarAppointments.filter(app => app.tarih.split('T')[0] === dateKeyStr);
     dayAppointments.sort((a, b) => a.saat.localeCompare(b.saat));
 
-    // Masaüstü listesi
     const eventsEl = document.createElement('div');
     eventsEl.className = 'calendar-day-events';
 
-    // Mobil noktaları
     const dotsEl = document.createElement('div');
     dotsEl.className = 'calendar-day-dots';
 
@@ -871,10 +757,8 @@ function createDayBox(year, month, day, isOtherMonth) {
     dayBox.addEventListener('click', () => {
         const prevSelected = document.querySelector('.calendar-day-box.selected');
         if (prevSelected) prevSelected.classList.remove('selected');
-
         dayBox.classList.add('selected');
         selectedDateStr = dateKeyStr;
-
         renderSelectedDayAppointments(dayAppointments, targetDate);
     });
 
@@ -914,22 +798,18 @@ function renderSelectedDayAppointments(appointments, date) {
                     <i class="fa-solid ${durumIcon[r.durum]}"></i> ${durumText[r.durum]}
                 </span>
             </div>
-            
             <div class="card-info-row">
                 <span>Saat:</span>
                 <span class="tarih-saat"><i class="fa-regular fa-clock"></i> ${r.saat}</span>
             </div>
-
             <div class="card-info-row">
                 <span>Telefon:</span>
                 <a href="tel:${r.telefon}"><i class="fa-solid fa-phone"></i> ${r.telefon}</a>
             </div>
-
             <div class="card-info-row">
                 <span>E-posta:</span>
                 <span>${r.email || '—'}</span>
             </div>
-
             <div style="border-top:1px solid #f1f5f9;padding-top:12px;margin-top:10px;display:flex;justify-content:flex-end;gap:8px;width:100%;align-items:center;">
                 <div class="islem-btns">
                     ${r.durum === 'pending' ? `
@@ -944,7 +824,6 @@ function renderSelectedDayAppointments(appointments, date) {
             </div>
         `;
 
-        // Olay dinleyicilerini dinamik bağlayalım ( onclick yerine )
         const notBtn = card.querySelector('.hasta-not-btn');
         if (notBtn) {
             notBtn.addEventListener('click', () => notGosterText(r.notlar));
@@ -978,7 +857,6 @@ function renderSelectedDayAppointments(appointments, date) {
     });
 }
 
-// Not metni modal göster (direct call, not via window)
 function notGosterText(not) {
     const eskiModal = document.getElementById('not-modal');
     if (eskiModal) eskiModal.remove();
@@ -995,7 +873,6 @@ function notGosterText(not) {
         </div>
         <p class="not-modal-icerik"></p>
     `;
-    // Güvenli text ata (XSS önlemi)
     box.querySelector('.not-modal-icerik').textContent = not;
 
     const kapatBtn = document.createElement('button');
@@ -1009,7 +886,6 @@ function notGosterText(not) {
     document.body.appendChild(modal);
 }
 
-// window.notGoster eski çağrılar için (geriye dönük uyumluluk)
 window.notGoster = function(btn) {
     const not = btn.getAttribute('data-not');
     notGosterText(not);
@@ -1025,7 +901,6 @@ function renderPagination(pagination) {
 
     const { sayfa, toplamSayfa, toplam, sayfaBasina } = pagination;
 
-    // Bilgi metni
     const info = document.createElement('div');
     info.className = 'pagination-info';
     const baslangic = (sayfa - 1) * sayfaBasina + 1;
@@ -1033,11 +908,9 @@ function renderPagination(pagination) {
     info.textContent = `${toplam} randevudan ${baslangic}–${bitis} gösteriliyor`;
     container.appendChild(info);
 
-    // Butonlar
     const btnGroup = document.createElement('div');
     btnGroup.className = 'pagination-btns';
 
-    // Önceki
     const prevBtn = document.createElement('button');
     prevBtn.className = 'page-btn' + (sayfa === 1 ? ' disabled' : '');
     prevBtn.innerHTML = '<i class="fa-solid fa-chevron-left"></i>';
@@ -1045,14 +918,9 @@ function renderPagination(pagination) {
     prevBtn.onclick = () => { panelState.sayfa = sayfa - 1; yukleRandevular(); };
     btnGroup.appendChild(prevBtn);
 
-    // Sayfa numaraları (pencere: maks 5)
     const pencere = 2;
     for (let i = 1; i <= toplamSayfa; i++) {
-        if (
-            i === 1 ||
-            i === toplamSayfa ||
-            (i >= sayfa - pencere && i <= sayfa + pencere)
-        ) {
+        if (i === 1 || i === toplamSayfa || (i >= sayfa - pencere && i <= sayfa + pencere)) {
             const btn = document.createElement('button');
             btn.className = 'page-btn' + (i === sayfa ? ' active' : '');
             btn.textContent = i;
@@ -1069,7 +937,6 @@ function renderPagination(pagination) {
         }
     }
 
-    // Sonraki
     const nextBtn = document.createElement('button');
     nextBtn.className = 'page-btn' + (sayfa === toplamSayfa ? ' disabled' : '');
     nextBtn.innerHTML = '<i class="fa-solid fa-chevron-right"></i>';
@@ -1107,11 +974,9 @@ async function randevuDurumGuncelle(id, yeniDurum) {
             showToast('Hata: ' + result.message, 'error');
         }
     } catch (err) {
-        console.error('Güncelleme hatası:', err);
         showToast('Sunucu hatası', 'error');
     }
 }
-// global erişim için (geriye dönük uyumluluk)
 window.randevuDurumGuncelle = randevuDurumGuncelle;
 
 async function randevuSil(id) {
@@ -1140,16 +1005,12 @@ async function randevuSil(id) {
             showToast('Hata: ' + result.message, 'error');
         }
     } catch (err) {
-        console.error('Silme hatası:', err);
         showToast('Sunucu hatası', 'error');
     }
 }
 window.randevuSil = randevuSil;
 
 
-// ---------------------------------------------------------
-// 3. MODAL LOGIC (Service Details)
-// ---------------------------------------------------------
 const serviceContents = {
     'muayene': { title: 'Muayene ve Teşhis', body: '<p>Ağız ve diş sağlığının temeli doğru teşhisle atılır. Panoramik röntgen ve detaylı ağız içi muayene ile sorunlar erken tespit edilir.</p>' },
     'implant': { title: 'Dental İmplant', body: '<p>Eksik dişlerinizi tamamlamak için çene kemiğine yerleştirilen titanyum ve zirkonyum vidalardır. Doğal dişe en yakın alternatiftir.</p>' },

@@ -1,4 +1,4 @@
-const fetch = global.fetch;
+﻿const fetch = global.fetch;
 
 /**
  * Hastaya randevu bilgilendirme maili gönderir.
@@ -59,7 +59,7 @@ const sendAppointmentEmail = async (ad, email, tarih, saat) => {
                 <!-- Header -->
                 <div class="header">
                     <h1>Dr. Muhammed Emin Başyıldız</h1>
-                    <p>Diş Sağlığı Polikliniği</p>
+                    <p>Diş Sağlığı Kliniği</p>
                 </div>
                 
                 <!-- Content -->

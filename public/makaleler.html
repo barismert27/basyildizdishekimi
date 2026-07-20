@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Makaleler | Dr. Muhammed Emin Başyıldız</title>
+    <meta name="description" content="Dr. Muhammed Emin Başyıldız'ın ağız ve diş sağlığı üzerine yazdığı makaleler, bilimsel içerikler ve hasta rehberleri.">
+    <link rel="canonical" href="https://www.muhammeteminbasyildiz.com/makaleler.html">
+
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://www.muhammeteminbasyildiz.com/makaleler.html">
+    <meta property="og:title" content="Makaleler | Dr. Muhammed Emin Başyıldız">
+    <meta property="og:description" content="Ağız ve diş sağlığına dair uzman görüşleri, rehberler ve bilimsel içerikler.">
+    <meta property="og:image" content="https://www.muhammeteminbasyildiz.com/video/logo.jpeg">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon.png">
+    <link rel="apple-touch-icon" href="favicon.png">
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+        .makale-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 28px;
+            margin-top: 40px;
+            margin-bottom: 60px;
+        }
+
+        .makale-card {
+            background: #fff;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.07);
+            border: 1px solid #f0f4f8;
+            transition: transform 0.28s cubic-bezier(.34,1.56,.64,1), box-shadow 0.28s ease;
+            cursor: pointer;
+        }
+
+        .makale-card:hover {
+            transform: translateY(-7px);
+            box-shadow: 0 16px 42px rgba(0,59,92,0.13);
+        }
+
+        .makale-card-img {
+            width: 100%;
+            height: 210px;
+            background: linear-gradient(135deg, #e0f2fe, #bae6fd);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #0369a1;
+            font-size: 46px;
+            overflow: hidden;
+        }
+
+        .makale-card-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.4s ease;
+        }
+
+        .makale-card:hover .makale-card-img img {
+            transform: scale(1.06);
+        }
+
+        .makale-card-body {
+            padding: 24px;
+        }
+
+        .makale-card-meta {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .makale-card-date {
+            font-size: 12px;
+            color: var(--gray);
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .makale-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 3px 10px;
+            border-radius: 20px;
+            background: #e0f2fe;
+            color: #0369a1;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .makale-card-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--dark);
+            margin-bottom: 10px;
+            line-height: 1.4;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .makale-card-excerpt {
+            font-size: 13.5px;
+            color: var(--gray);
+            line-height: 1.75;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            margin-bottom: 18px;
+        }
+
+        .makale-read-more {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--primary);
+            transition: gap 0.2s;
+        }
+
+        .makale-card:hover .makale-read-more { gap: 11px; }
+
+        /* EMPTY STATE */
+        .makale-empty {
+            text-align: center;
+            padding: 80px 20px;
+            color: var(--gray);
+        }
+
+        .makale-empty i {
+            font-size: 54px;
+            opacity: 0.22;
+            display: block;
+            margin-bottom: 18px;
+        }
+
+        .makale-empty h3 {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--dark);
+        }
+
+        .makale-empty p { font-size: 14px; }
+
+        /* MODAL */
+        .makale-modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.65);
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
+            z-index: 1000;
+            display: none;
+            align-items: flex-start;
+            justify-content: center;
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        .makale-modal-overlay.open { display: flex; }
+
+        .makale-modal-box {
+            background: #fff;
+            border-radius: 24px;
+            width: 100%;
+            max-width: 740px;
+            margin: auto;
+            box-shadow: 0 24px 70px rgba(0,0,0,0.2);
+            animation: modalIn 0.28s cubic-bezier(.34,1.56,.64,1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        @keyframes modalIn {
+            from { opacity: 0; transform: translateY(24px) scale(0.96); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        .makale-modal-kapak {
+            width: 100%;
+            max-height: 320px;
+            object-fit: cover;
+        }
+
+        .makale-modal-close {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(0,0,0,0.45);
+            border: 2px solid rgba(255,255,255,0.3);
+            color: #fff;
+            font-size: 16px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.2s;
+            z-index: 10;
+        }
+
+        .makale-modal-close:hover { background: rgba(0,0,0,0.7); }
+
+        .makale-modal-body {
+            padding: 32px 36px 36px;
+        }
+
+        .makale-modal-meta {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-bottom: 14px;
+        }
+
+        .makale-modal-title {
+            font-size: 24px;
+            font-weight: 800;
+            color: var(--dark);
+            font-family: 'Poppins', sans-serif;
+            margin-bottom: 6px;
+            line-height: 1.35;
+        }
+
+        .makale-modal-date {
+            font-size: 13px;
+            color: var(--gray);
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .makale-modal-divider {
+            height: 2px;
+            background: linear-gradient(90deg, var(--primary), transparent);
+            margin-bottom: 24px;
+            border-radius: 2px;
+        }
+
+        .makale-modal-icerik {
+            font-size: 15.5px;
+            line-height: 2;
+            color: #374151;
+            white-space: pre-wrap;
+        }
+
+        @media (max-width: 600px) {
+            .makale-modal-body { padding: 22px 20px 28px; }
+            .makale-modal-title { font-size: 19px; }
+            .makale-card-img { height: 170px; }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- HEADER -->
+    <header class="header">
+        <div class="container header-content">
+            <div class="logo-container">
+                <img src="video/logo.jpeg" alt="Logo" class="logo-img">
+                <h1 class="logo">Dr. Muhammed Emin Başyıldız<span>.</span></h1>
+            </div>
+            <nav class="nav">
+                <a href="index.html" class="nav-btn" data-i18n="nav-home">Ana Sayfa</a>
+                <a href="hakkimizda.html" class="nav-btn" data-i18n="nav-about">Hakkımızda</a>
+                <a href="hizmetler.html" class="nav-btn" data-i18n="nav-services">Hizmetler</a>
+                <a href="galeri.html" class="nav-btn" data-i18n="nav-gallery">Galeri</a>
+                <a href="makaleler.html" class="nav-btn active" data-i18n="nav-articles">Makaleler</a>
+                <a href="#contact" class="nav-btn" data-i18n="nav-contact">İletişim</a>
+            </nav>
+            <div class="header-right">
+                <div class="lang-selector">
+                    <button class="lang-btn" id="lang-menu-btn">
+                        <i class="fa-solid fa-globe"></i> <span id="current-lang">TR</span> <i class="fa-solid fa-chevron-down"></i>
+                    </button>
+                    <div class="lang-dropdown" id="lang-dropdown">
+                        <a href="#" onclick="changeLanguage('tr'); return false;">Türkçe</a>
+                        <a href="#" onclick="changeLanguage('en'); return false;">English</a>
+                        <a href="#" onclick="changeLanguage('ar'); return false;">العربية</a>
+                        <a href="#" onclick="changeLanguage('de'); return false;">Deutsch</a>
+                    </div>
+                </div>
+                <a href="tel:05350645684" class="header-phone"><i class="fa-solid fa-phone"></i> 0535 064 56 84</a>
+                <a href="randevu.html" class="btn-cta" data-i18n="btn-cta">Hemen Randevu Al</a>
+            </div>
+            <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Menü">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- MOBILE DRAWER -->
+    <div class="mobile-overlay" id="mobile-overlay"></div>
+    <div class="mobile-drawer" id="mobile-drawer">
+        <div class="drawer-header">
+            <div class="logo-container">
+                <img src="video/logo.jpeg" alt="Logo" class="logo-img">
+                <span class="logo">Dr. Muhammed Emin Başyıldız<span>.</span></span>
+            </div>
+            <button class="drawer-close-btn" id="drawer-close-btn" aria-label="Kapat">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+        <div class="drawer-body">
+            <nav class="drawer-nav">
+                <a href="index.html" class="drawer-nav-btn" data-i18n-nav="home"><i class="fa-solid fa-house"></i> <span data-i18n="nav-home">Ana Sayfa</span></a>
+                <a href="hakkimizda.html" class="drawer-nav-btn" data-i18n-nav="about"><i class="fa-solid fa-circle-info"></i> <span data-i18n="nav-about">Hakkımızda</span></a>
+                <a href="hizmetler.html" class="drawer-nav-btn" data-i18n-nav="services"><i class="fa-solid fa-tooth"></i> <span data-i18n="nav-services">Hizmetler</span></a>
+                <a href="galeri.html" class="drawer-nav-btn" data-i18n-nav="gallery"><i class="fa-solid fa-image"></i> <span data-i18n="nav-gallery">Galeri</span></a>
+                <a href="makaleler.html" class="drawer-nav-btn active" data-i18n-nav="articles"><i class="fa-solid fa-newspaper"></i> <span data-i18n="nav-articles">Makaleler</span></a>
+                <a href="#contact" class="drawer-nav-btn" data-i18n-nav="contact"><i class="fa-solid fa-location-dot"></i> <span data-i18n="nav-contact">İletişim</span></a>
+            </nav>
+            <div class="drawer-lang-section">
+                <div class="lang-title"><i class="fa-solid fa-globe"></i> Dil / Language</div>
+                <div class="drawer-lang-links">
+                    <a href="#" data-lang="tr" onclick="changeLanguage('tr'); return false;">Türkçe</a>
+                    <a href="#" data-lang="en" onclick="changeLanguage('en'); return false;">English</a>
+                    <a href="#" data-lang="ar" onclick="changeLanguage('ar'); return false;">العربية</a>
+                    <a href="#" data-lang="de" onclick="changeLanguage('de'); return false;">Deutsch</a>
+                </div>
+            </div>
+        </div>
+        <div class="drawer-footer">
+            <a href="tel:05350645684" class="drawer-phone"><i class="fa-solid fa-phone"></i> 0535 064 56 84</a>
+            <a href="randevu.html" class="drawer-btn-cta" data-i18n="btn-cta">Hemen Randevu Al</a>
+        </div>
+    </div>
+
+    <main class="main">
+        <div class="page active">
+
+            <!-- PAGE HEADER -->
+            <section class="section-header-bg" style="padding: 60px 0 20px; text-align: center;">
+                <div class="container">
+                    <span class="badge">✍️ Doktor Köşesi</span>
+                    <h1>Dr. Başyıldız'ın Makaleleri</h1>
+                    <p style="max-width: 580px; margin: 12px auto 0; color: var(--gray);">
+                        Ağız ve diş sağlığına dair uzman görüşleri, hasta rehberleri ve bilimsel içerikler.
+                    </p>
+                </div>
+            </section>
+
+            <!-- MAKALELER -->
+            <section class="services" style="background: var(--light); padding: 20px 0 70px;">
+                <div class="container">
+                    <div id="makale-grid" class="makale-grid">
+                        <div class="makale-empty">
+                            <i class="fa-solid fa-spinner fa-spin" style="opacity:0.5;"></i>
+                            <h3>Yükleniyor...</h3>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+    </main>
+
+    <!-- MAKALE DETAY MODAL -->
+    <div class="makale-modal-overlay" id="makale-modal">
+        <div class="makale-modal-box" id="makale-modal-box">
+            <button class="makale-modal-close" id="makale-modal-close"><i class="fa-solid fa-xmark"></i></button>
+            <img id="modal-kapak" class="makale-modal-kapak" src="" alt="" style="display:none;">
+            <div class="makale-modal-body">
+                <div class="makale-modal-meta">
+                    <span class="makale-tag"><i class="fa-solid fa-user-doctor"></i> Dr. M. Emin Başyıldız</span>
+                </div>
+                <h2 class="makale-modal-title" id="modal-baslik"></h2>
+                <div class="makale-modal-date" id="modal-tarih"></div>
+                <div class="makale-modal-divider"></div>
+                <div class="makale-modal-icerik" id="modal-icerik"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="footer" id="contact">
+        <div class="container footer-content">
+            <div class="footer-col">
+                <h3>Dr. Muhammed Emin Başyıldız.</h3>
+                <p style="opacity: 0.7; color: #cbd5e1;">Modern diş hekimliğinin güvenilir adresi.</p>
+                <div class="footer-social">
+                    <a href="https://www.instagram.com/dt.muhammetemin/" target="_blank" class="social-icon"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="#" class="social-icon"><i class="fa-brands fa-facebook-f"></i></a>
+                    <a href="#" class="social-icon"><i class="fa-brands fa-linkedin-in"></i></a>
+                </div>
+            </div>
+            <div class="footer-col">
+                <h4 data-i18n="footer-quick">Hızlı Bağlantılar</h4>
+                <ul>
+                    <li><a href="index.html" data-i18n="nav-home">Ana Sayfa</a></li>
+                    <li><a href="hakkimizda.html" data-i18n="nav-about">Hakkımızda</a></li>
+                    <li><a href="hizmetler.html" data-i18n="nav-services">Hizmetler</a></li>
+                    <li><a href="galeri.html" data-i18n="nav-gallery">Galeri</a></li>
+                    <li><a href="makaleler.html" data-i18n="nav-articles">Makaleler</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4 data-i18n="footer-contact">İletişim</h4>
+                <ul>
+                    <li><i class="fa-solid fa-phone"></i> +90 535 064 56 84</li>
+                    <li><i class="fa-solid fa-envelope"></i> info@muhammeteminbasyildiz.com</li>
+                    <li><i class="fa-solid fa-location-dot"></i> Pırlanta düğün salonu yanı, 60. Yıl, Yavuz Sultan Selim Cd. No:107A, 27100 Şahinbey/Gaziantep</li>
+                    <li><i class="fa-solid fa-clock"></i> Hafta içi: 09:30 - 23:00<br>Cumartesi: 10:00 - 18:00</li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 Dr. Muhammed Emin Başyıldız Diş Kliniği. <span data-i18n="footer-copyright">Tüm hakları saklıdır.</span></p>
+        </div>
+    </footer>
+
+    <a href="tel:05350645684" class="phone-float-btn" title="Hemen Arayın"><i class="fa-solid fa-phone"></i></a>
+    <a href="https://wa.me/905350645684" target="_blank" class="whatsapp-btn" title="WhatsApp ile İletişime Geçin"><i class="fa-brands fa-whatsapp"></i></a>
+
+    <script src="translations.js"></script>
+    <script src="theme-lang.js"></script>
+    <script src="script.js"></script>
+    <script>
+        async function yukleMaraleler() {
+            const grid = document.getElementById('makale-grid');
+            try {
+                const res = await fetch('/api/articles');
+                const result = await res.json();
+
+                if (!result.success || result.data.length === 0) {
+                    grid.innerHTML = `
+                        <div class="makale-empty" style="grid-column:1/-1;">
+                            <i class="fa-solid fa-newspaper"></i>
+                            <h3>Henüz Makale Yok</h3>
+                            <p>Doktor yakında ilk makalesini yayınlayacak.</p>
+                        </div>`;
+                    return;
+                }
+
+                grid.innerHTML = '';
+                result.data.forEach(a => {
+                    const date = new Date(a.olusturma_tarihi).toLocaleDateString('tr-TR', {
+                        day: '2-digit', month: 'long', year: 'numeric'
+                    });
+                    const excerpt = a.icerik.length > 200
+                        ? a.icerik.substring(0, 200) + '...'
+                        : a.icerik;
+
+                    const card = document.createElement('div');
+                    card.className = 'makale-card';
+                    card.innerHTML = `
+                        ${a.kapak_resmi
+                            ? `<div class="makale-card-img"><img src="${a.kapak_resmi}" alt="${a.baslik}" loading="lazy"></div>`
+                            : `<div class="makale-card-img"><i class="fa-solid fa-newspaper"></i></div>`
+                        }
+                        <div class="makale-card-body">
+                            <div class="makale-card-meta">
+                                <span class="makale-tag"><i class="fa-solid fa-user-doctor"></i> Dr. Başyıldız</span>
+                                <span class="makale-card-date"><i class="fa-regular fa-calendar"></i> ${date}</span>
+                            </div>
+                            <div class="makale-card-title">${a.baslik}</div>
+                            <div class="makale-card-excerpt">${excerpt}</div>
+                            <span class="makale-read-more">Devamını Oku <i class="fa-solid fa-arrow-right"></i></span>
+                        </div>
+                    `;
+                    card.addEventListener('click', () => makaleAc(a));
+                    grid.appendChild(card);
+                });
+            } catch (err) {
+                grid.innerHTML = `
+                    <div class="makale-empty" style="grid-column:1/-1;">
+                        <i class="fa-solid fa-triangle-exclamation"></i>
+                        <h3>Yüklenemedi</h3>
+                        <p>Lütfen sayfayı yenileyin.</p>
+                    </div>`;
+            }
+        }
+
+        function makaleAc(a) {
+            const modal = document.getElementById('makale-modal');
+            const kapak = document.getElementById('modal-kapak');
+            const date = new Date(a.olusturma_tarihi).toLocaleDateString('tr-TR', {
+                weekday: 'long', day: '2-digit', month: 'long', year: 'numeric'
+            });
+
+            kapak.src = a.kapak_resmi || '';
+            kapak.style.display = a.kapak_resmi ? 'block' : 'none';
+            document.getElementById('modal-baslik').textContent = a.baslik;
+            document.getElementById('modal-tarih').innerHTML =
+                `<i class="fa-regular fa-calendar"></i> ${date}`;
+            document.getElementById('modal-icerik').textContent = a.icerik;
+
+            modal.classList.add('open');
+            document.body.style.overflow = 'hidden';
+            modal.scrollTop = 0;
+        }
+
+        document.getElementById('makale-modal-close').addEventListener('click', () => {
+            document.getElementById('makale-modal').classList.remove('open');
+            document.body.style.overflow = '';
+        });
+
+        document.getElementById('makale-modal').addEventListener('click', (e) => {
+            if (e.target === document.getElementById('makale-modal')) {
+                document.getElementById('makale-modal').classList.remove('open');
+                document.body.style.overflow = '';
+            }
+        });
+
+        yukleMaraleler();
+    </script>
+</body>
+
+</html>

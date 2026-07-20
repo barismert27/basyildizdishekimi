@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="tr">
 
 <head>
@@ -7,152 +7,1533 @@
     <title>Yönetim Paneli | Dr. Muhammed Emin Başyıldız</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@500;600;700;800&display=swap"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="icon" type="image/x-icon" href="/favicon.ico">
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png">
     <link rel="apple-touch-icon" href="/favicon.png">
-    <link rel="stylesheet" href="/style.css">
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        :root {
+            --sidebar-w: 260px;
+            --topbar-h: 70px;
+            --bg: #0f1117;
+            --bg2: #161b27;
+            --bg3: #1e2436;
+            --surface: #252d3d;
+            --surface2: #2d3650;
+            --border: rgba(255,255,255,0.07);
+            --text: #e8eaf0;
+            --text-muted: #8892a4;
+            --accent: #00b4d8;
+            --accent2: #7c3aed;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --radius: 14px;
+            --radius-sm: 8px;
+            --shadow: 0 4px 24px rgba(0,0,0,0.35);
+            --shadow-lg: 0 8px 40px rgba(0,0,0,0.5);
+            --transition: 0.2s ease;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            display: flex;
+            overflow-x: hidden;
+        }
+
+        /* ─── SIDEBAR ─── */
+        .p-sidebar {
+            position: fixed;
+            left: 0; top: 0; bottom: 0;
+            width: var(--sidebar-w);
+            background: var(--bg2);
+            border-right: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            z-index: 100;
+            transition: transform var(--transition);
+        }
+
+        .p-sidebar-brand {
+            padding: 24px 20px 20px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .p-sidebar-logo {
+            width: 42px;
+            height: 42px;
+            border-radius: 10px;
+            object-fit: cover;
+            border: 2px solid var(--accent);
+        }
+
+        .p-sidebar-brand-text h2 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--text);
+            line-height: 1.2;
+        }
+
+        .p-sidebar-brand-text span {
+            font-size: 11px;
+            color: var(--accent);
+            font-weight: 500;
+        }
+
+        .p-sidebar-nav {
+            flex: 1;
+            padding: 16px 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            overflow-y: auto;
+        }
+
+        .p-nav-label {
+            font-size: 10px;
+            font-weight: 600;
+            letter-spacing: 1.2px;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            padding: 12px 8px 6px;
+        }
+
+        .p-nav-btn {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 11px 14px;
+            border-radius: var(--radius-sm);
+            border: none;
+            background: transparent;
+            color: var(--text-muted);
+            font-size: 13.5px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all var(--transition);
+            text-decoration: none;
+            width: 100%;
+            text-align: left;
+        }
+
+        .p-nav-btn i {
+            width: 18px;
+            text-align: center;
+            font-size: 14px;
+        }
+
+        .p-nav-btn:hover {
+            background: var(--surface);
+            color: var(--text);
+        }
+
+        .p-nav-btn.active {
+            background: linear-gradient(135deg, rgba(0,180,216,0.2), rgba(124,58,237,0.15));
+            color: var(--accent);
+            border: 1px solid rgba(0,180,216,0.25);
+        }
+
+        .p-sidebar-footer {
+            padding: 16px 12px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .p-sidebar-footer a,
+        .p-sidebar-footer button {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 14px;
+            border-radius: var(--radius-sm);
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all var(--transition);
+            border: none;
+            text-decoration: none;
+            width: 100%;
+            color: var(--text-muted);
+            background: transparent;
+        }
+
+        .p-sidebar-footer a:hover { background: var(--surface); color: var(--text); }
+        .p-sidebar-footer .logout-btn:hover { background: rgba(239,68,68,0.15); color: var(--danger); }
+
+        /* ─── MAIN CONTENT ─── */
+        .p-main {
+            margin-left: var(--sidebar-w);
+            flex: 1;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* ─── TOPBAR ─── */
+        .p-topbar {
+            height: var(--topbar-h);
+            background: var(--bg2);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 28px;
+            position: sticky;
+            top: 0;
+            z-index: 50;
+        }
+
+        .p-topbar-title {
+            font-family: 'Poppins', sans-serif;
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        .p-topbar-actions {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .p-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 9px 18px;
+            border-radius: var(--radius-sm);
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all var(--transition);
+            border: none;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .p-btn-primary {
+            background: linear-gradient(135deg, var(--accent), #0096c7);
+            color: #fff;
+            box-shadow: 0 4px 15px rgba(0,180,216,0.35);
+        }
+
+        .p-btn-primary:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 6px 20px rgba(0,180,216,0.5);
+        }
+
+        .p-btn-ghost {
+            background: var(--surface);
+            color: var(--text-muted);
+            border: 1px solid var(--border);
+        }
+
+        .p-btn-ghost:hover { color: var(--text); background: var(--surface2); }
+
+        /* ─── CONTENT AREA ─── */
+        .p-content {
+            flex: 1;
+            padding: 28px;
+        }
+
+        /* ─── STATS ─── */
+        .p-stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            margin-bottom: 28px;
+        }
+
+        .p-stat-card {
+            background: var(--bg3);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 22px;
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            transition: transform var(--transition), box-shadow var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .p-stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 3px;
+        }
+
+        .p-stat-card.total::before { background: linear-gradient(90deg, var(--accent), #0096c7); }
+        .p-stat-card.pending::before { background: linear-gradient(90deg, var(--warning), #d97706); }
+        .p-stat-card.approved::before { background: linear-gradient(90deg, var(--success), #059669); }
+
+        .p-stat-card:hover { transform: translateY(-2px); box-shadow: var(--shadow); }
+
+        .p-stat-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            flex-shrink: 0;
+        }
+
+        .p-stat-card.total .p-stat-icon { background: rgba(0,180,216,0.15); color: var(--accent); }
+        .p-stat-card.pending .p-stat-icon { background: rgba(245,158,11,0.15); color: var(--warning); }
+        .p-stat-card.approved .p-stat-icon { background: rgba(16,185,129,0.15); color: var(--success); }
+
+        .p-stat-info { flex: 1; }
+
+        .p-stat-val {
+            font-family: 'Poppins', sans-serif;
+            font-size: 30px;
+            font-weight: 700;
+            line-height: 1;
+            color: var(--text);
+            display: block;
+        }
+
+        .p-stat-label {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-top: 4px;
+            font-weight: 500;
+        }
+
+        /* ─── PANEL SECTIONS ─── */
+        .p-section { display: none; }
+        .p-section.active { display: block; }
+
+        /* ─── SECTION HEADER ─── */
+        .p-section-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .p-section-title {
+            font-family: 'Poppins', sans-serif;
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        /* ─── TOOLBAR ─── */
+        .p-toolbar {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            background: var(--bg3);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 14px 18px;
+            margin-bottom: 16px;
+        }
+
+        .p-search {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex: 1;
+            min-width: 200px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            padding: 9px 14px;
+        }
+
+        .p-search i { color: var(--text-muted); font-size: 13px; }
+
+        .p-search input {
+            border: none;
+            background: transparent;
+            color: var(--text);
+            font-size: 13px;
+            font-family: 'Inter', sans-serif;
+            outline: none;
+            width: 100%;
+        }
+
+        .p-search input::placeholder { color: var(--text-muted); }
+
+        .p-filter-select {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            color: var(--text);
+            font-size: 13px;
+            font-family: 'Inter', sans-serif;
+            padding: 9px 14px;
+            cursor: pointer;
+            outline: none;
+        }
+
+        .p-filter-select option { background: var(--bg3); }
+
+        /* ─── VIEW TABS ─── */
+        .p-view-tabs {
+            display: flex;
+            gap: 6px;
+            background: var(--bg3);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 6px;
+            margin-bottom: 16px;
+            width: fit-content;
+        }
+
+        .p-view-tab {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 9px 18px;
+            border-radius: var(--radius-sm);
+            border: none;
+            background: transparent;
+            color: var(--text-muted);
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all var(--transition);
+            font-family: 'Inter', sans-serif;
+        }
+
+        .p-view-tab.active {
+            background: var(--surface2);
+            color: var(--accent);
+        }
+
+        .p-view-tab:hover:not(.active) { color: var(--text); }
+
+        .p-view-pane { display: none; }
+        .p-view-pane.active { display: block; }
+
+        /* ─── TABLE / LIST ─── */
+        .p-randevu-table-header {
+            display: grid;
+            grid-template-columns: 2fr 1fr 2fr 1.2fr 1.2fr;
+            gap: 12px;
+            padding: 10px 18px;
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 0.8px;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 6px;
+        }
+
+        .p-randevu-satir {
+            display: grid;
+            grid-template-columns: 2fr 1fr 2fr 1.2fr 1.2fr;
+            gap: 12px;
+            align-items: center;
+            padding: 14px 18px;
+            background: var(--bg3);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            margin-bottom: 6px;
+            transition: background var(--transition), transform var(--transition);
+        }
+
+        .p-randevu-satir:hover {
+            background: var(--surface);
+            transform: translateX(2px);
+        }
+
+        .p-hasta-ad {
+            font-size: 13.5px;
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        .p-tarih-saat {
+            font-size: 13px;
+            color: var(--accent);
+            font-weight: 500;
+        }
+
+        .p-iletisim-link {
+            font-size: 12.5px;
+            color: var(--text-muted);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            transition: color var(--transition);
+        }
+
+        .p-iletisim-link:hover { color: var(--accent); }
+
+        .p-durum-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 5px 11px;
+            border-radius: 20px;
+            font-size: 11.5px;
+            font-weight: 600;
+        }
+
+        .p-durum-beklemede { background: rgba(245,158,11,0.15); color: var(--warning); }
+        .p-durum-onaylandi { background: rgba(16,185,129,0.15); color: var(--success); }
+        .p-durum-iptal { background: rgba(239,68,68,0.12); color: var(--danger); }
+
+        .p-islem-btns { display: flex; gap: 6px; align-items: center; }
+
+        .p-btn-icon {
+            width: 32px; height: 32px;
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--border);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all var(--transition);
+            background: var(--surface);
+            color: var(--text-muted);
+        }
+
+        .p-btn-icon:hover { transform: scale(1.1); }
+        .p-btn-icon.onayla:hover { background: rgba(16,185,129,0.2); color: var(--success); border-color: var(--success); }
+        .p-btn-icon.iptal:hover { background: rgba(245,158,11,0.2); color: var(--warning); border-color: var(--warning); }
+        .p-btn-icon.sil:hover { background: rgba(239,68,68,0.2); color: var(--danger); border-color: var(--danger); }
+        .p-btn-icon.not-btn:hover { background: rgba(0,180,216,0.2); color: var(--accent); border-color: var(--accent); }
+
+        /* ─── EMPTY / LOADING STATES ─── */
+        .p-empty {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--text-muted);
+        }
+
+        .p-empty i { font-size: 40px; margin-bottom: 16px; display: block; opacity: 0.4; }
+        .p-empty p { font-size: 14px; }
+
+        /* ─── PAGINATION ─── */
+        .p-pagination {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 16px;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .p-pagination-info {
+            font-size: 12.5px;
+            color: var(--text-muted);
+        }
+
+        .p-pagination-btns { display: flex; gap: 6px; }
+
+        .p-page-btn {
+            min-width: 34px;
+            height: 34px;
+            padding: 0 10px;
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--border);
+            background: var(--surface);
+            color: var(--text-muted);
+            font-size: 13px;
+            cursor: pointer;
+            transition: all var(--transition);
+            font-family: 'Inter', sans-serif;
+        }
+
+        .p-page-btn:hover:not(:disabled) { background: var(--surface2); color: var(--text); }
+        .p-page-btn.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+        .p-page-btn:disabled { opacity: 0.35; cursor: not-allowed; }
+
+        /* ─── CALENDAR ─── */
+        .p-cal-container {
+            background: var(--bg3);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            overflow: hidden;
+        }
+
+        .p-cal-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 18px 22px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .p-cal-month {
+            font-family: 'Poppins', sans-serif;
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        .p-cal-nav {
+            width: 34px; height: 34px;
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--border);
+            background: var(--surface);
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: all var(--transition);
+            display: flex; align-items: center; justify-content: center;
+        }
+
+        .p-cal-nav:hover { color: var(--accent); border-color: var(--accent); }
+
+        .p-cal-weekdays {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            background: var(--surface);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .p-cal-weekdays div {
+            text-align: center;
+            padding: 10px;
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 0.8px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+        }
+
+        .p-cal-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 1px;
+            background: var(--border);
+        }
+
+        .p-cal-day {
+            background: var(--bg3);
+            min-height: 90px;
+            padding: 8px;
+            cursor: pointer;
+            transition: background var(--transition);
+            position: relative;
+        }
+
+        .p-cal-day:hover { background: var(--surface); }
+        .p-cal-day.other-month { opacity: 0.3; }
+        .p-cal-day.today .p-day-num { background: var(--accent); color: #fff; border-radius: 50%; width: 26px; height: 26px; display: flex; align-items: center; justify-content: center; }
+        .p-cal-day.selected { background: rgba(0,180,216,0.08); outline: 2px solid var(--accent); outline-offset: -2px; }
+
+        .p-day-num {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-muted);
+            margin-bottom: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 26px;
+            height: 26px;
+        }
+
+        .p-day-events { display: flex; flex-direction: column; gap: 2px; }
+
+        .p-day-event {
+            font-size: 10px;
+            padding: 2px 5px;
+            border-radius: 3px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .p-day-event.pending { background: rgba(245,158,11,0.2); color: var(--warning); }
+        .p-day-event.approved { background: rgba(16,185,129,0.2); color: var(--success); }
+        .p-day-event.cancelled { background: rgba(239,68,68,0.12); color: var(--danger); }
+
+        .p-day-dots { display: none; gap: 3px; margin-top: 4px; }
+        .p-cal-dot { width: 6px; height: 6px; border-radius: 50%; }
+        .p-cal-dot.pending { background: var(--warning); }
+        .p-cal-dot.approved { background: var(--success); }
+        .p-cal-dot.cancelled { background: var(--danger); }
+
+        .p-cal-detail {
+            background: var(--surface);
+            border-top: 1px solid var(--border);
+            padding: 20px 22px;
+        }
+
+        .p-cal-detail-title {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-muted);
+            margin-bottom: 14px;
+        }
+
+        /* ─── ARTICLE CARDS IN PANEL ─── */
+        .p-articles-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 18px;
+            margin-top: 4px;
+        }
+
+        .p-article-card {
+            background: var(--bg3);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            overflow: hidden;
+            transition: transform var(--transition), box-shadow var(--transition);
+        }
+
+        .p-article-card:hover { transform: translateY(-3px); box-shadow: var(--shadow); }
+
+        .p-article-card-img {
+            width: 100%;
+            height: 160px;
+            object-fit: cover;
+            background: var(--surface);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-muted);
+            font-size: 30px;
+        }
+
+        .p-article-card-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .p-article-card-body {
+            padding: 16px;
+        }
+
+        .p-article-card-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text);
+            margin-bottom: 6px;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .p-article-card-date {
+            font-size: 11.5px;
+            color: var(--text-muted);
+            margin-bottom: 12px;
+        }
+
+        .p-article-card-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .p-article-del-btn {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 7px 14px;
+            border-radius: var(--radius-sm);
+            border: 1px solid rgba(239,68,68,0.3);
+            background: rgba(239,68,68,0.1);
+            color: var(--danger);
+            font-size: 12px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all var(--transition);
+        }
+
+        .p-article-del-btn:hover { background: rgba(239,68,68,0.2); }
+
+        /* ─── MODAL ─── */
+        .p-modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.7);
+            backdrop-filter: blur(6px);
+            z-index: 999;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .p-modal-overlay.open { display: flex; }
+
+        .p-modal {
+            background: var(--bg2);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            width: 100%;
+            max-width: 680px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: var(--shadow-lg);
+            animation: modalIn 0.25s ease;
+        }
+
+        @keyframes modalIn {
+            from { opacity: 0; transform: translateY(20px) scale(0.97); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        .p-modal-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px 24px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .p-modal-title {
+            font-family: 'Poppins', sans-serif;
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .p-modal-title i { color: var(--accent); }
+
+        .p-modal-close {
+            width: 34px; height: 34px;
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--border);
+            background: var(--surface);
+            color: var(--text-muted);
+            cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 14px;
+            transition: all var(--transition);
+        }
+
+        .p-modal-close:hover { color: var(--danger); border-color: var(--danger); }
+
+        .p-modal-body { padding: 24px; }
+
+        /* ─── FORM ELEMENTS ─── */
+        .p-form-group {
+            margin-bottom: 18px;
+        }
+
+        .p-form-label {
+            display: block;
+            font-size: 12.5px;
+            font-weight: 600;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .p-form-input,
+        .p-form-textarea {
+            width: 100%;
+            background: var(--bg3);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            color: var(--text);
+            font-size: 13.5px;
+            font-family: 'Inter', sans-serif;
+            padding: 11px 14px;
+            outline: none;
+            transition: border-color var(--transition);
+        }
+
+        .p-form-input:focus,
+        .p-form-textarea:focus { border-color: var(--accent); }
+
+        .p-form-textarea {
+            resize: vertical;
+            min-height: 160px;
+            line-height: 1.7;
+        }
+
+        /* ─── IMAGE UPLOAD ZONE ─── */
+        .p-upload-zone {
+            border: 2px dashed var(--border);
+            border-radius: var(--radius);
+            padding: 30px 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all var(--transition);
+            background: var(--bg3);
+            position: relative;
+        }
+
+        .p-upload-zone:hover, .p-upload-zone.drag-over {
+            border-color: var(--accent);
+            background: rgba(0,180,216,0.05);
+        }
+
+        .p-upload-zone input[type="file"] {
+            position: absolute;
+            inset: 0;
+            opacity: 0;
+            cursor: pointer;
+        }
+
+        .p-upload-zone i { font-size: 32px; color: var(--accent); margin-bottom: 10px; display: block; }
+        .p-upload-zone p { font-size: 13px; color: var(--text-muted); }
+        .p-upload-zone span { font-size: 11.5px; color: var(--text-muted); opacity: 0.6; }
+
+        .p-upload-preview {
+            width: 100%;
+            max-height: 200px;
+            object-fit: cover;
+            border-radius: var(--radius-sm);
+            margin-top: 12px;
+            display: none;
+        }
+
+        .p-modal-footer {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            padding: 18px 24px;
+            border-top: 1px solid var(--border);
+        }
+
+        /* ─── NOT MODAL ─── */
+        .p-not-modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.6);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .p-not-modal-box {
+            background: var(--bg2);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 24px;
+            max-width: 480px;
+            width: 100%;
+        }
+
+        .p-not-modal-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
+            font-weight: 600;
+            color: var(--accent);
+            gap: 10px;
+        }
+
+        .p-not-modal-icerik {
+            font-size: 14px;
+            color: var(--text);
+            line-height: 1.7;
+        }
+
+        /* ─── MOBILE TOGGLE ─── */
+        .p-menu-toggle {
+            display: none;
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            z-index: 200;
+            width: 46px;
+            height: 46px;
+            border-radius: 12px;
+            background: var(--accent);
+            border: none;
+            color: #fff;
+            font-size: 18px;
+            cursor: pointer;
+            box-shadow: 0 4px 16px rgba(0,180,216,0.4);
+        }
+
+        .p-sidebar-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.6);
+            z-index: 99;
+        }
+
+        /* ─── TOAST ─── */
+        .toast-container {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .toast {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 13px 18px;
+            border-radius: var(--radius-sm);
+            font-size: 13.5px;
+            font-weight: 500;
+            color: #fff;
+            animation: slideUp 0.3s ease;
+            box-shadow: var(--shadow);
+            min-width: 260px;
+            max-width: 380px;
+        }
+
+        @keyframes slideUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeOut { to { opacity: 0; transform: translateY(8px); } }
+
+        .toast.success { background: linear-gradient(135deg, #059669, #10b981); }
+        .toast.error { background: linear-gradient(135deg, #dc2626, #ef4444); }
+        .toast.info { background: linear-gradient(135deg, #0369a1, #0ea5e9); }
+
+        /* ─── RESPONSIVE ─── */
+        @media (max-width: 900px) {
+            .p-sidebar {
+                transform: translateX(-100%);
+            }
+
+            .p-sidebar.open {
+                transform: translateX(0);
+            }
+
+            .p-sidebar-overlay.open { display: block; }
+            .p-menu-toggle { display: flex; align-items: center; justify-content: center; }
+            .p-main { margin-left: 0; }
+
+            .p-stats-grid { grid-template-columns: 1fr; gap: 10px; }
+
+            .p-randevu-table-header { display: none; }
+
+            .p-randevu-satir {
+                grid-template-columns: 1fr;
+                gap: 8px;
+            }
+
+            .p-cal-day { min-height: 50px; }
+            .p-day-events { display: none; }
+            .p-day-dots { display: flex; }
+
+            .p-articles-grid { grid-template-columns: 1fr; }
+        }
+
+        @media (max-width: 600px) {
+            .p-content { padding: 16px; }
+            .p-topbar { padding: 0 16px; }
+        }
+    </style>
 </head>
 
 <body>
 
-    <!-- HEADER -->
-    <header class="panel-topbar">
-        <div class="panel-topbar-inner">
-            <div class="logo-container">
-                <img src="/video/logo.jpeg" alt="Logo" class="logo-img">
-                <div class="panel-brand">
-                    <h1 class="logo">Dr. Muhammed Emin Başyıldız<span>.</span></h1>
-                    <span class="panel-brand-sub">Yönetim Paneli</span>
-                </div>
+    <!-- SIDEBAR OVERLAY (mobile) -->
+    <div class="p-sidebar-overlay" id="p-sidebar-overlay"></div>
+
+    <!-- SIDEBAR -->
+    <aside class="p-sidebar" id="p-sidebar">
+        <div class="p-sidebar-brand">
+            <img src="/video/logo.jpeg" alt="Logo" class="p-sidebar-logo">
+            <div class="p-sidebar-brand-text">
+                <h2>Dr. M. Emin Başyıldız</h2>
+                <span>Yönetim Paneli</span>
             </div>
-            <nav class="panel-nav-actions">
-                <a href="/index.html" class="panel-nav-link">
-                    <i class="fa-solid fa-arrow-left"></i>
-                    Siteye Dön
-                </a>
-                <button id="logout-btn" class="panel-nav-link panel-nav-logout">
-                    <i class="fa-solid fa-right-from-bracket"></i>
-                    Çıkış
-                </button>
-            </nav>
         </div>
-    </header>
 
-    <main class="main panel-main">
-        <div class="page active">
-            <div class="panel-container">
+        <nav class="p-sidebar-nav">
+            <div class="p-nav-label">Ana Menü</div>
+            <button class="p-nav-btn active" data-section="randevular" id="nav-randevular">
+                <i class="fa-solid fa-calendar-check"></i> Randevular
+            </button>
+            <button class="p-nav-btn" data-section="makaleler" id="nav-makaleler">
+                <i class="fa-solid fa-newspaper"></i> Makaleler
+            </button>
+        </nav>
 
-                <!-- STATS -->
-                <div class="stats-grid">
-                    <div class="stat-box">
-                        <div class="stat-icon-wrap stat-icon-total">
-                            <i class="fa-solid fa-calendar-check"></i>
-                        </div>
-                        <div class="stat-info">
-                            <span class="stat-val" id="toplam-randevu">0</span>
-                            <span class="stat-key">Toplam Randevu</span>
-                        </div>
-                    </div>
-                    <div class="stat-box pending">
-                        <div class="stat-icon-wrap stat-icon-pending">
-                            <i class="fa-solid fa-hourglass-half"></i>
-                        </div>
-                        <div class="stat-info">
-                            <span class="stat-val" id="bekleyen-randevu">0</span>
-                            <span class="stat-key">Bekleyen</span>
-                        </div>
-                    </div>
-                    <div class="stat-box approved">
-                        <div class="stat-icon-wrap stat-icon-approved">
-                            <i class="fa-solid fa-circle-check"></i>
-                        </div>
-                        <div class="stat-info">
-                            <span class="stat-val" id="onaylanan-randevu">0</span>
-                            <span class="stat-key">Onaylanan</span>
-                        </div>
-                    </div>
-                </div>
+        <div class="p-sidebar-footer">
+            <a href="/index.html">
+                <i class="fa-solid fa-arrow-left"></i> Siteye Dön
+            </a>
+            <button class="logout-btn" id="logout-btn">
+                <i class="fa-solid fa-right-from-bracket"></i> Çıkış Yap
+            </button>
+        </div>
+    </aside>
 
-                <!-- GÖRÜNÜM DEĞİŞTİRİCİ (TABS) -->
-                <div class="panel-view-tabs">
-                    <button class="view-tab-btn active" data-view="agenda" id="tab-agenda-btn">
-                        <i class="fa-solid fa-list-ul"></i>
-                        <span>Ajanda / Liste Görünümü</span>
-                    </button>
-                    <button class="view-tab-btn" data-view="calendar" id="tab-calendar-btn">
-                        <i class="fa-solid fa-calendar-days"></i>
-                        <span>Takvim Görünümü</span>
-                    </button>
-                </div>
+    <!-- MAIN -->
+    <main class="p-main">
 
-                <!-- KONTROL BARI -->
-                <div class="panel-toolbar" id="panel-toolbar-el">
-                    <div class="kontrol-arama">
-                        <i class="fa-solid fa-magnifying-glass"></i>
-                        <input type="text" id="arama-input" placeholder="Hasta adı veya telefon ara..."
-                            autocomplete="off">
-                    </div>
-                    <div class="panel-filters">
-                        <div class="filtre-group">
-                            <i class="fa-solid fa-filter filtre-icon"></i>
-                            <select id="durum-filtre">
-                                <option value="">Tüm Durumlar</option>
-                                <option value="approved">Onaylanan</option>
-                                <option value="pending">Bekleyen</option>
-                                <option value="cancelled">İptal</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- GÖRÜNÜM İÇERİKLERİ -->
-                <div class="panel-view-content">
-                    <!-- 1. AJANDA / LİSTE GÖRÜNÜMÜ -->
-                    <div id="view-agenda" class="view-panel-pane active">
-                        <!-- RANDEVU LİSTESİ -->
-                        <div id="randevu-listesi" class="randevu-listesi">
-                            <div class="empty-state">Yükleniyor...</div>
-                        </div>
-                        <!-- SAYFALAMA -->
-                        <div id="pagination-container" class="pagination-container"></div>
-                    </div>
-
-                    <!-- 2. TAKVİM GÖRÜNÜMÜ -->
-                    <div id="view-calendar" class="view-panel-pane">
-                        <div class="calendar-container">
-                            <div class="calendar-header">
-                                <button id="cal-prev-btn" class="cal-nav-btn" type="button"><i class="fa-solid fa-chevron-left"></i></button>
-                                <h3 id="cal-month-title" class="cal-month-title">-</h3>
-                                <button id="cal-next-btn" class="cal-nav-btn" type="button"><i class="fa-solid fa-chevron-right"></i></button>
-                            </div>
-                            <div class="calendar-grid-wrapper">
-                                <div class="calendar-weekdays">
-                                    <div>Pzt</div><div>Sal</div><div>Çar</div><div>Per</div><div>Cum</div><div>Cmt</div><div>Paz</div>
-                                </div>
-                                <div id="calendar-days" class="calendar-days-grid"></div>
-                            </div>
-                        </div>
-                        <!-- Takvim Detay Alanı (Mobilde/Masaüstünde tıklanan günün randevuları) -->
-                        <div id="calendar-day-details" class="calendar-day-details">
-                            <div class="day-details-header">
-                                <h4 id="selected-day-title">Randevuları görmek için takvimden bir gün seçin</h4>
-                            </div>
-                            <div id="selected-day-appointments" class="selected-day-appointments-list">
-                                <div class="empty-state-sm">Seçilen gün için randevu bulunmuyor.</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
+        <!-- TOPBAR -->
+        <header class="p-topbar">
+            <span class="p-topbar-title" id="p-topbar-title">Randevular</span>
+            <div class="p-topbar-actions">
+                <button class="p-btn p-btn-primary" id="makale-yaz-btn" style="display:none;">
+                    <i class="fa-solid fa-pen-to-square"></i> Makale Yaz
+                </button>
             </div>
+        </header>
+
+        <!-- CONTENT -->
+        <div class="p-content">
+
+            <!-- STATS -->
+            <div class="p-stats-grid">
+                <div class="p-stat-card total">
+                    <div class="p-stat-icon"><i class="fa-solid fa-calendar-check"></i></div>
+                    <div class="p-stat-info">
+                        <span class="p-stat-val" id="toplam-randevu">0</span>
+                        <span class="p-stat-label">Toplam Randevu</span>
+                    </div>
+                </div>
+                <div class="p-stat-card pending">
+                    <div class="p-stat-icon"><i class="fa-solid fa-hourglass-half"></i></div>
+                    <div class="p-stat-info">
+                        <span class="p-stat-val" id="bekleyen-randevu">0</span>
+                        <span class="p-stat-label">Bekleyen</span>
+                    </div>
+                </div>
+                <div class="p-stat-card approved">
+                    <div class="p-stat-icon"><i class="fa-solid fa-circle-check"></i></div>
+                    <div class="p-stat-info">
+                        <span class="p-stat-val" id="onaylanan-randevu">0</span>
+                        <span class="p-stat-label">Onaylanan</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ── RANDEVULAR SEKSİYONU ── -->
+            <div class="p-section active" id="section-randevular">
+
+                <div class="p-view-tabs">
+                    <button class="p-view-tab active" id="tab-agenda-btn">
+                        <i class="fa-solid fa-list-ul"></i> Liste
+                    </button>
+                    <button class="p-view-tab" id="tab-calendar-btn">
+                        <i class="fa-solid fa-calendar-days"></i> Takvim
+                    </button>
+                </div>
+
+                <!-- LISTE GÖRÜNÜMÜ -->
+                <div class="p-view-pane active" id="view-agenda">
+                    <div class="p-toolbar" id="panel-toolbar-el">
+                        <div class="p-search">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                            <input type="text" id="arama-input" placeholder="Hasta adı veya telefon ara..." autocomplete="off">
+                        </div>
+                        <select id="durum-filtre" class="p-filter-select">
+                            <option value="">Tüm Durumlar</option>
+                            <option value="approved">Onaylanan</option>
+                            <option value="pending">Bekleyen</option>
+                            <option value="cancelled">İptal</option>
+                        </select>
+                        <select id="tarih-filtre" class="p-filter-select">
+                            <option value="">Tüm Tarihler</option>
+                            <option value="bugun">Bugün</option>
+                            <option value="yarin">Yarın</option>
+                            <option value="gecmis">Geçmiş</option>
+                        </select>
+                    </div>
+
+                    <div id="randevu-listesi"></div>
+                    <div id="pagination-container" class="p-pagination"></div>
+                </div>
+
+                <!-- TAKVİM GÖRÜNÜMÜ -->
+                <div class="p-view-pane" id="view-calendar">
+                    <div class="p-cal-container">
+                        <div class="p-cal-header">
+                            <button id="cal-prev-btn" class="p-cal-nav" type="button"><i class="fa-solid fa-chevron-left"></i></button>
+                            <h3 id="cal-month-title" class="p-cal-month">-</h3>
+                            <button id="cal-next-btn" class="p-cal-nav" type="button"><i class="fa-solid fa-chevron-right"></i></button>
+                        </div>
+                        <div class="p-cal-weekdays">
+                            <div>Pzt</div><div>Sal</div><div>Çar</div><div>Per</div><div>Cum</div><div>Cmt</div><div>Paz</div>
+                        </div>
+                        <div id="calendar-days" class="p-cal-grid"></div>
+                        <div class="p-cal-detail">
+                            <div class="p-cal-detail-title" id="selected-day-title">Randevuları görmek için takvimden bir gün seçin</div>
+                            <div id="selected-day-appointments">
+                                <div class="p-empty"><i class="fa-regular fa-calendar"></i><p>Seçilen gün için randevu bulunmuyor.</p></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ── MAKALELER SEKSİYONU ── -->
+            <div class="p-section" id="section-makaleler">
+                <div class="p-section-header">
+                    <h2 class="p-section-title"><i class="fa-solid fa-newspaper" style="color:var(--accent);margin-right:8px;"></i>Makaleler</h2>
+                </div>
+                <div id="p-article-list" class="p-articles-grid">
+                    <div class="p-empty"><i class="fa-solid fa-spinner fa-spin"></i><p>Yükleniyor...</p></div>
+                </div>
+            </div>
+
         </div>
     </main>
 
-    <script src="/script.js?v=3.0"></script>
+    <!-- MOBILE TOGGLE -->
+    <button class="p-menu-toggle" id="p-menu-toggle">
+        <i class="fa-solid fa-bars"></i>
+    </button>
+
+    <!-- ─── MAKale YAZMA MODAL ─── -->
+    <div class="p-modal-overlay" id="makale-modal">
+        <div class="p-modal">
+            <div class="p-modal-header">
+                <div class="p-modal-title">
+                    <i class="fa-solid fa-pen-to-square"></i> Yeni Makale Yaz
+                </div>
+                <button class="p-modal-close" id="makale-modal-close"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <form id="makale-form" enctype="multipart/form-data">
+                <div class="p-modal-body">
+                    <div class="p-form-group">
+                        <label class="p-form-label">Makale Başlığı *</label>
+                        <input type="text" id="makale-baslik" name="baslik" class="p-form-input" placeholder="Örn: İmplant Tedavisinde Yeni Teknolojiler" required>
+                    </div>
+                    <div class="p-form-group">
+                        <label class="p-form-label">Kapak Görseli</label>
+                        <div class="p-upload-zone" id="upload-zone">
+                            <input type="file" id="makale-kapak" name="kapak" accept="image/*">
+                            <i class="fa-solid fa-cloud-arrow-up"></i>
+                            <p>Görseli buraya sürükleyin veya seçin</p>
+                            <span>JPG, PNG, WEBP — Maks. 10MB</span>
+                        </div>
+                        <img id="kapak-preview" class="p-upload-preview" alt="Kapak önizleme">
+                    </div>
+                    <div class="p-form-group">
+                        <label class="p-form-label">Makale İçeriği *</label>
+                        <textarea id="makale-icerik" name="icerik" class="p-form-textarea" placeholder="Makale içeriğini buraya yazın..." required></textarea>
+                    </div>
+                </div>
+                <div class="p-modal-footer">
+                    <button type="button" class="p-btn p-btn-ghost" id="makale-iptal-btn">İptal</button>
+                    <button type="submit" class="p-btn p-btn-primary" id="makale-kaydet-btn">
+                        <i class="fa-solid fa-floppy-disk"></i> Yayınla
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="/script.js"></script>
+    <script>
+        // ─── PANEL NAV ───
+        const navBtns = document.querySelectorAll('.p-nav-btn[data-section]');
+        const sections = document.querySelectorAll('.p-section');
+        const makaleYazBtn = document.getElementById('makale-yaz-btn');
+        const topbarTitle = document.getElementById('p-topbar-title');
+        const titles = { randevular: 'Randevular', makaleler: 'Makaleler' };
+
+        navBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const sec = btn.dataset.section;
+                navBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                sections.forEach(s => s.classList.remove('active'));
+                document.getElementById('section-' + sec).classList.add('active');
+                topbarTitle.textContent = titles[sec] || sec;
+                makaleYazBtn.style.display = sec === 'makaleler' ? 'inline-flex' : 'none';
+                if (sec === 'makaleler') yuklePanel_Makaleler();
+                closeSidebar();
+            });
+        });
+
+        // ─── MOBILE SIDEBAR ───
+        const sidebar = document.getElementById('p-sidebar');
+        const overlay = document.getElementById('p-sidebar-overlay');
+        const menuToggle = document.getElementById('p-menu-toggle');
+
+        menuToggle.addEventListener('click', () => sidebar.classList.toggle('open') + overlay.classList.toggle('open'));
+        overlay.addEventListener('click', closeSidebar);
+
+        function closeSidebar() {
+            sidebar.classList.remove('open');
+            overlay.classList.remove('open');
+        }
+
+        // ─── MAKALE MODAL ───
+        const makaleModal = document.getElementById('makale-modal');
+        makaleYazBtn.addEventListener('click', () => makaleModal.classList.add('open'));
+        document.getElementById('makale-modal-close').addEventListener('click', () => makaleModal.classList.remove('open'));
+        document.getElementById('makale-iptal-btn').addEventListener('click', () => makaleModal.classList.remove('open'));
+        makaleModal.addEventListener('click', e => { if (e.target === makaleModal) makaleModal.classList.remove('open'); });
+
+        // ─── IMAGE PREVIEW ───
+        const kapakInput = document.getElementById('makale-kapak');
+        const kapakPreview = document.getElementById('kapak-preview');
+        const uploadZone = document.getElementById('upload-zone');
+
+        kapakInput.addEventListener('change', () => {
+            const file = kapakInput.files[0];
+            if (file) {
+                kapakPreview.src = URL.createObjectURL(file);
+                kapakPreview.style.display = 'block';
+            }
+        });
+
+        uploadZone.addEventListener('dragover', e => { e.preventDefault(); uploadZone.classList.add('drag-over'); });
+        uploadZone.addEventListener('dragleave', () => uploadZone.classList.remove('drag-over'));
+        uploadZone.addEventListener('drop', e => {
+            e.preventDefault();
+            uploadZone.classList.remove('drag-over');
+            const file = e.dataTransfer.files[0];
+            if (file && file.type.startsWith('image/')) {
+                kapakInput.files = e.dataTransfer.files;
+                kapakPreview.src = URL.createObjectURL(file);
+                kapakPreview.style.display = 'block';
+            }
+        });
+
+        // ─── MAKALE FORM SUBMIT ───
+        document.getElementById('makale-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const btn = document.getElementById('makale-kaydet-btn');
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Yükleniyor...';
+
+            const formData = new FormData(e.target);
+            try {
+                const token = localStorage.getItem('adminToken');
+                const headers = {};
+                if (token) headers['Authorization'] = 'Bearer ' + token;
+
+                const res = await fetch('/api/articles', {
+                    method: 'POST',
+                    headers,
+                    credentials: 'include',
+                    body: formData
+                });
+                const result = await res.json();
+                if (result.success) {
+                    showToast('Makale başarıyla yayınlandı!', 'success');
+                    makaleModal.classList.remove('open');
+                    e.target.reset();
+                    kapakPreview.style.display = 'none';
+                    yuklePanel_Makaleler();
+                } else {
+                    showToast(result.message || 'Hata oluştu', 'error');
+                }
+            } catch (err) {
+                showToast('Sunucu hatası', 'error');
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fa-solid fa-floppy-disk"></i> Yayınla';
+            }
+        });
+
+        // ─── MAKALELER YÜKLE (PANEL) ───
+        async function yuklePanel_Makaleler() {
+            const container = document.getElementById('p-article-list');
+            container.innerHTML = '<div class="p-empty"><i class="fa-solid fa-spinner fa-spin"></i><p>Yükleniyor...</p></div>';
+            try {
+                const res = await fetch('/api/articles');
+                const result = await res.json();
+                if (!result.success || result.data.length === 0) {
+                    container.innerHTML = '<div class="p-empty"><i class="fa-solid fa-file-circle-xmark"></i><p>Henüz makale yok. İlk makaleyi yazın!</p></div>';
+                    return;
+                }
+                container.innerHTML = '';
+                result.data.forEach(a => {
+                    const card = document.createElement('div');
+                    card.className = 'p-article-card';
+                    const imgHtml = a.kapak_resmi
+                        ? `<div class="p-article-card-img"><img src="${a.kapak_resmi}" alt="${a.baslik}"></div>`
+                        : `<div class="p-article-card-img"><i class="fa-solid fa-newspaper"></i></div>`;
+                    const date = new Date(a.olusturma_tarihi).toLocaleDateString('tr-TR', { day:'2-digit', month:'long', year:'numeric' });
+                    card.innerHTML = `
+                        ${imgHtml}
+                        <div class="p-article-card-body">
+                            <div class="p-article-card-title">${a.baslik}</div>
+                            <div class="p-article-card-date"><i class="fa-regular fa-clock"></i> ${date}</div>
+                            <div class="p-article-card-actions">
+                                <button class="p-article-del-btn" data-id="${a.id}">
+                                    <i class="fa-solid fa-trash"></i> Sil
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                    card.querySelector('.p-article-del-btn').addEventListener('click', () => makaleSil(a.id));
+                    container.appendChild(card);
+                });
+            } catch (err) {
+                container.innerHTML = '<div class="p-empty"><i class="fa-solid fa-triangle-exclamation"></i><p>Yüklenemedi.</p></div>';
+            }
+        }
+
+        async function makaleSil(id) {
+            if (!confirm('Bu makaleyi silmek istediğinize emin misiniz?')) return;
+            try {
+                const token = localStorage.getItem('adminToken');
+                const headers = {};
+                if (token) headers['Authorization'] = 'Bearer ' + token;
+                const res = await fetch('/api/articles/' + id, {
+                    method: 'DELETE',
+                    headers,
+                    credentials: 'include'
+                });
+                const result = await res.json();
+                if (result.success) {
+                    showToast('Makale silindi.', 'success');
+                    yuklePanel_Makaleler();
+                } else {
+                    showToast(result.message || 'Hata', 'error');
+                }
+            } catch (err) {
+                showToast('Sunucu hatası', 'error');
+            }
+        }
+
+        // ─── RANDEVU LISTESI CUSTOM RENDER ───
+        const origRenderRandevular = window.renderRandevular;
+
+        function renderRandevular(randevular) {
+            const listDiv = document.getElementById('randevu-listesi');
+            if (!listDiv) return;
+            listDiv.innerHTML = '';
+
+            if (randevular.length === 0) {
+                listDiv.innerHTML = '<div class="p-empty"><i class="fa-solid fa-calendar-xmark"></i><p>Bu kriterlere uygun randevu bulunamadı.</p></div>';
+                return;
+            }
+
+            const header = document.createElement('div');
+            header.className = 'p-randevu-table-header';
+            header.innerHTML = '<div>Hasta</div><div>Saat</div><div>İletişim</div><div>Durum</div><div>İşlem</div>';
+            listDiv.appendChild(header);
+
+            randevular.forEach(r => {
+                const durumText = { pending: 'Beklemede', approved: 'Onaylandı', cancelled: 'İptal' };
+                const durumClass = { pending: 'p-durum-beklemede', approved: 'p-durum-onaylandi', cancelled: 'p-durum-iptal' };
+                const durumIcon = { pending: 'fa-hourglass-half', approved: 'fa-circle-check', cancelled: 'fa-circle-xmark' };
+
+                const row = document.createElement('div');
+                row.className = 'p-randevu-satir';
+
+                const emailText = r.email ? (r.email.length > 22 ? r.email.substring(0, 22) + '…' : r.email) : '—';
+
+                row.innerHTML = `
+                    <div>
+                        <strong class="p-hasta-ad">${r.ad}</strong>
+                        ${r.notlar ? `<button class="p-btn-icon not-btn" title="Notu Gör" style="margin-top:4px;width:auto;padding:0 8px;gap:4px;font-size:11px;"><i class="fa-solid fa-note-sticky"></i> Not</button>` : ''}
+                    </div>
+                    <div class="p-tarih-saat"><i class="fa-regular fa-clock"></i> ${r.saat}</div>
+                    <div>
+                        <a href="tel:${r.telefon}" class="p-iletisim-link"><i class="fa-solid fa-phone"></i> ${r.telefon}</a>
+                        <div style="font-size:12px;color:var(--text-muted);margin-top:3px;"><i class="fa-regular fa-envelope" style="margin-right:4px;"></i>${emailText}</div>
+                    </div>
+                    <div><span class="p-durum-badge ${durumClass[r.durum]}"><i class="fa-solid ${durumIcon[r.durum]}"></i> ${durumText[r.durum]}</span></div>
+                    <div class="p-islem-btns">
+                        ${r.durum === 'pending' ? `
+                            <button class="p-btn-icon onayla" title="Onayla" data-action="approved" data-id="${r.id}"><i class="fa-solid fa-check"></i></button>
+                            <button class="p-btn-icon iptal" title="Reddet" data-action="cancelled" data-id="${r.id}"><i class="fa-solid fa-xmark"></i></button>
+                        ` : ''}
+                        ${r.durum === 'approved' ? `
+                            <button class="p-btn-icon iptal" title="İptal Et" data-action="cancelled" data-id="${r.id}"><i class="fa-solid fa-ban"></i></button>
+                        ` : ''}
+                        <button class="p-btn-icon sil" title="Sil" data-delete="${r.id}"><i class="fa-solid fa-trash"></i></button>
+                    </div>
+                `;
+
+                if (r.notlar) {
+                    row.querySelector('.not-btn')?.addEventListener('click', () => notGosterText(r.notlar));
+                }
+                row.querySelectorAll('[data-action]').forEach(btn => {
+                    btn.addEventListener('click', () => randevuDurumGuncelle(btn.dataset.id, btn.dataset.action));
+                });
+                row.querySelectorAll('[data-delete]').forEach(btn => {
+                    btn.addEventListener('click', () => randevuSil(btn.dataset.delete));
+                });
+
+                listDiv.appendChild(row);
+            });
+        }
+
+        window.renderRandevular = renderRandevular;
+
+        // ─── PAGINATION OVERRIDE ───
+        function renderPagination(pagination) {
+            const container = document.getElementById('pagination-container');
+            if (!container) return;
+            container.innerHTML = '';
+            if (!pagination || pagination.toplamSayfa <= 1) return;
+
+            const { sayfa, toplamSayfa, toplam, sayfaBasina } = pagination;
+            const baslangic = (sayfa - 1) * sayfaBasina + 1;
+            const bitis = Math.min(sayfa * sayfaBasina, toplam);
+
+            const info = document.createElement('div');
+            info.className = 'p-pagination-info';
+            info.textContent = `${toplam} randevudan ${baslangic}–${bitis} gösteriliyor`;
+            container.appendChild(info);
+
+            const btnGroup = document.createElement('div');
+            btnGroup.className = 'p-pagination-btns';
+
+            const prev = document.createElement('button');
+            prev.className = 'p-page-btn';
+            prev.innerHTML = '<i class="fa-solid fa-chevron-left"></i>';
+            prev.disabled = sayfa === 1;
+            prev.onclick = () => { panelState.sayfa = sayfa - 1; yukleRandevular(); };
+            btnGroup.appendChild(prev);
+
+            for (let i = 1; i <= toplamSayfa; i++) {
+                if (i === 1 || i === toplamSayfa || (i >= sayfa - 2 && i <= sayfa + 2)) {
+                    const btn = document.createElement('button');
+                    btn.className = 'p-page-btn' + (i === sayfa ? ' active' : '');
+                    btn.textContent = i;
+                    btn.onclick = () => { panelState.sayfa = i; yukleRandevular(); };
+                    btnGroup.appendChild(btn);
+                } else if (i === sayfa - 3 || i === sayfa + 3) {
+                    const el = document.createElement('span');
+                    el.style.cssText = 'color:var(--text-muted);padding:0 4px;line-height:34px;';
+                    el.textContent = '…';
+                    btnGroup.appendChild(el);
+                }
+            }
+
+            const next = document.createElement('button');
+            next.className = 'p-page-btn';
+            next.innerHTML = '<i class="fa-solid fa-chevron-right"></i>';
+            next.disabled = sayfa === toplamSayfa;
+            next.onclick = () => { panelState.sayfa = sayfa + 1; yukleRandevular(); };
+            btnGroup.appendChild(next);
+
+            container.appendChild(btnGroup);
+        }
+
+        window.renderPagination = renderPagination;
+
+        // ─── CALENDAR OVERRIDE (stiller için) ───
+        const origCreateDayBox = window.createDayBox;
+        // Takvim için CSS class'larını yeni panele uyumlu yap
+        document.addEventListener('DOMContentLoaded', () => {
+            // Calendar days grid class override
+            const calDays = document.getElementById('calendar-days');
+        });
+    </script>
 </body>
 
 </html>
