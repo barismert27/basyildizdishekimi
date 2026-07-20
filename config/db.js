@@ -36,7 +36,7 @@ async function initDb() {
             console.log("✅ Default admin kullanıcısı oluşturuldu: admin / 12345");
         }
 
-        // Randevular tablosu
+         // Randevular tablosu
         await pool.query(`
             CREATE TABLE IF NOT EXISTS randevular (
                 id INT AUTO_INCREMENT PRIMARY KEY,
@@ -47,9 +47,19 @@ async function initDb() {
                 saat VARCHAR(5) NOT NULL,
                 notlar TEXT,
                 durum ENUM('pending', 'approved', 'cancelled') DEFAULT 'pending',
+                toplam_tutar DECIMAL(10, 2) DEFAULT 0.00,
+                odenen_tutar DECIMAL(10, 2) DEFAULT 0.00,
                 olusturma_tarihi TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             )
         `);
+
+        // Kolonların sonradan eklenmesi durumu için ALTER TABLE (Garantiye almak amacıyla)
+        try {
+            await pool.query("ALTER TABLE randevular ADD COLUMN toplam_tutar DECIMAL(10, 2) DEFAULT 0.00");
+        } catch (err) {}
+        try {
+            await pool.query("ALTER TABLE randevular ADD COLUMN odenen_tutar DECIMAL(10, 2) DEFAULT 0.00");
+        } catch (err) {}
 
         // Eski sistemde kalan tüm UNIQUE kısıtlamalarını dinamik olarak bulup kaldırıyoruz.
         // Bu sayede aynı saate (biri iptal edilmişse) tekrar randevu kaydı (INSERT) atılabilir.

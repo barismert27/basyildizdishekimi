@@ -1042,6 +1042,55 @@
             .p-content { padding: 16px; }
             .p-topbar { padding: 0 16px; }
         }
+
+        /* ─── ADD / EDIT APPOINTMENT MODAL STYLES ─── */
+        .p-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            height: 40px;
+            padding: 0 16px;
+            background: var(--accent);
+            color: #fff;
+            font-size: 13.5px;
+            font-weight: 600;
+            border: none;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            transition: all var(--transition);
+        }
+        .p-btn:hover {
+            background: #0096b4;
+            transform: translateY(-2px);
+        }
+        .p-btn.secondary {
+            background: rgba(255,255,255,0.08);
+            border: 1px solid var(--border);
+            color: var(--text);
+        }
+        .p-btn.secondary:hover {
+            background: rgba(255,255,255,0.12);
+        }
+        .p-btn-card-billing {
+            background: rgba(0,180,216,0.12);
+            color: var(--accent);
+            border: none;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 600;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            transition: all 0.2s;
+            margin-top: 5px;
+        }
+        .p-btn-card-billing:hover {
+            background: var(--accent);
+            color: #fff;
+        }
     </style>
 </head>
 
@@ -1152,6 +1201,9 @@
                             <option value="yarin">Yarın</option>
                             <option value="gecmis">Geçmiş</option>
                         </select>
+                        <button class="p-btn" id="admin-yeni-randevu-btn" type="button" style="margin-left: auto;">
+                            <i class="fa-solid fa-plus"></i> Yeni Randevu Ekle
+                        </button>
                     </div>
 
                     <div id="randevu-listesi"></div>
@@ -1233,6 +1285,127 @@
                     <button type="submit" class="p-btn p-btn-primary" id="makale-kaydet-btn">
                         <i class="fa-solid fa-floppy-disk"></i> Yayınla
                     </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ─── YENİ RANDEVU EKLEME MODAL (ADMİN) ─── -->
+    <div class="p-modal-overlay" id="admin-randevu-modal">
+        <div class="p-modal" style="max-width: 500px;">
+            <div class="p-modal-header">
+                <div class="p-modal-title">
+                    <i class="fa-solid fa-calendar-plus"></i> Yeni Randevu Ekle
+                </div>
+                <button class="p-modal-close" id="admin-randevu-modal-close"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <form id="admin-randevu-form">
+                <div class="p-modal-body">
+                    <div class="p-form-group">
+                        <label class="p-form-label">Hasta Adı Soyadı *</label>
+                        <input type="text" name="ad" class="p-form-input" placeholder="Örn: Ahmet Yılmaz" required>
+                    </div>
+                    <div class="p-form-group">
+                        <label class="p-form-label">Telefon Numarası *</label>
+                        <input type="tel" name="telefon" class="p-form-input" placeholder="Örn: 05321234567" required>
+                    </div>
+                    <div class="p-form-group">
+                        <label class="p-form-label">E-posta Adresi</label>
+                        <input type="email" name="email" class="p-form-input" placeholder="Örn: ahmet@mail.com">
+                    </div>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                        <div class="p-form-group">
+                            <label class="p-form-label">Randevu Tarihi *</label>
+                            <input type="date" name="tarih" id="admin-randevu-tarih" class="p-form-input" required>
+                        </div>
+                        <div class="p-form-group">
+                            <label class="p-form-label">Randevu Saati *</label>
+                            <select name="saat" id="admin-randevu-saat" class="p-form-input" required>
+                                <option value="">Seçiniz</option>
+                                <option value="09:00">09:00</option>
+                                <option value="09:30">09:30</option>
+                                <option value="10:00">10:00</option>
+                                <option value="10:30">10:30</option>
+                                <option value="11:00">11:00</option>
+                                <option value="11:30">11:30</option>
+                                <option value="12:00">12:00</option>
+                                <option value="12:30">12:30</option>
+                                <option value="14:00">14:00</option>
+                                <option value="14:30">14:30</option>
+                                <option value="15:00">15:00</option>
+                                <option value="15:30">15:30</option>
+                                <option value="16:00">16:00</option>
+                                <option value="16:30">16:30</option>
+                                <option value="17:00">17:00</option>
+                                <option value="17:30">17:30</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="p-form-group">
+                        <label class="p-form-label">Notlar / Şikayet</label>
+                        <textarea name="notlar" class="p-form-textarea" placeholder="Hasta şikayeti veya işlem notu..."></textarea>
+                    </div>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                        <div class="p-form-group">
+                            <label class="p-form-label">Toplam Tutar (TL)</label>
+                            <input type="number" step="0.01" name="toplam_tutar" class="p-form-input" value="0.00">
+                        </div>
+                        <div class="p-form-group">
+                            <label class="p-form-label">Ödenen Tutar (TL)</label>
+                            <input type="number" step="0.01" name="odenen_tutar" class="p-form-input" value="0.00">
+                        </div>
+                    </div>
+                    <div class="p-form-group">
+                        <label class="p-form-label">Randevu Durumu</label>
+                        <select name="durum" class="p-form-input">
+                            <option value="approved">Onaylı (Randevu Kesinleşti)</option>
+                            <option value="pending">Beklemede</option>
+                            <option value="cancelled">İptal Edildi</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="p-modal-footer">
+                    <button type="button" class="p-btn secondary" id="admin-randevu-iptal-btn">İptal</button>
+                    <button type="submit" class="p-btn">Randevuyu Ekle</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ─── HASTA BİLGİ VE ÖDEME TAKİP MODAL (ADMİN) ─── -->
+    <div class="p-modal-overlay" id="admin-odeme-modal">
+        <div class="p-modal" style="max-width: 460px;">
+            <div class="p-modal-header">
+                <div class="p-modal-title">
+                    <i class="fa-solid fa-file-invoice-dollar"></i> Hasta Bilgi &amp; Ödeme Takip
+                </div>
+                <button class="p-modal-close" id="admin-odeme-modal-close"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <form id="admin-odeme-form">
+                <input type="hidden" id="odeme-randevu-id" name="id">
+                <div class="p-modal-body">
+                    <div style="background: rgba(255,255,255,0.03); border: 1px solid var(--border); padding: 14px; border-radius: var(--radius-sm); margin-bottom: 20px;">
+                        <h4 style="margin-bottom: 6px; color: var(--accent);" id="odeme-hasta-ad">-</h4>
+                        <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 4px;" id="odeme-hasta-tel">-</p>
+                        <p style="font-size: 13px; color: var(--text-muted);" id="odeme-hasta-tarih">-</p>
+                    </div>
+                    
+                    <div class="p-form-group">
+                        <label class="p-form-label">Toplam Ödenecek Tutar (TL) *</label>
+                        <input type="number" step="0.01" id="odeme-toplam" name="toplam_tutar" class="p-form-input" required>
+                    </div>
+                    <div class="p-form-group">
+                        <label class="p-form-label">Bugüne Kadar Ödenen Tutar (TL) *</label>
+                        <input type="number" step="0.01" id="odeme-odenen" name="odenen_tutar" class="p-form-input" required>
+                    </div>
+                    <div style="background: rgba(16,185,129,0.08); border: 1px solid rgba(16,185,129,0.2); padding: 14px; border-radius: var(--radius-sm); display: flex; justify-content: space-between; align-items: center;">
+                        <span style="font-size: 13.5px; font-weight: 600; color: var(--success);">Kalan Borç Tutarı:</span>
+                        <strong style="font-size: 18px; font-weight: 700; color: #fff;" id="odeme-kalan">0.00 TL</strong>
+                    </div>
+                </div>
+                <div class="p-modal-footer">
+                    <button type="button" class="p-btn secondary" id="admin-odeme-iptal-btn">Vazgeç</button>
+                    <button type="submit" class="p-btn">Ödemeyi Güncelle</button>
                 </div>
             </form>
         </div>
@@ -1414,6 +1587,8 @@
             if (!listDiv) return;
             listDiv.innerHTML = '';
 
+            window.localAppointments = randevular;
+
             if (randevular.length === 0) {
                 listDiv.innerHTML = '<div class="p-empty"><i class="fa-solid fa-calendar-xmark"></i><p>Bu kriterlere uygun randevu bulunamadı.</p></div>';
                 return;
@@ -1433,11 +1608,18 @@
                 row.className = 'p-randevu-satir';
 
                 const emailText = r.email ? (r.email.length > 22 ? r.email.substring(0, 22) + '…' : r.email) : '—';
+                
+                const toplamVal = r.toplam_tutar ? parseFloat(r.toplam_tutar) : 0;
+                const odenenVal = r.odenen_tutar ? parseFloat(r.odenen_tutar) : 0;
+                const kalanVal = toplamVal - odenenVal;
 
                 row.innerHTML = `
                     <div>
                         <strong class="p-hasta-ad">${r.ad}</strong>
                         ${r.notlar ? `<button class="p-btn-icon not-btn" title="Notu Gör" style="margin-top:4px;width:auto;padding:0 8px;gap:4px;font-size:11px;"><i class="fa-solid fa-note-sticky"></i> Not</button>` : ''}
+                        <button class="p-btn-card-billing" data-billing-id="${r.id}" type="button">
+                            <i class="fa-solid fa-wallet"></i> Ödenen: ${odenenVal.toFixed(2)} TL / Kalan: ${kalanVal.toFixed(2)} TL
+                        </button>
                     </div>
                     <div class="p-tarih-saat"><i class="fa-regular fa-clock"></i> ${r.saat}</div>
                     <div>
@@ -1453,6 +1635,7 @@
                         ${r.durum === 'approved' ? `
                             <button class="p-btn-icon iptal" title="İptal Et" data-action="cancelled" data-id="${r.id}"><i class="fa-solid fa-ban"></i></button>
                         ` : ''}
+                        <button class="p-btn-icon odeme-btn" title="Ödeme Bilgisi" data-billing-id="${r.id}" type="button"><i class="fa-solid fa-file-invoice-dollar"></i></button>
                         <button class="p-btn-icon sil" title="Sil" data-delete="${r.id}"><i class="fa-solid fa-trash"></i></button>
                     </div>
                 `;
@@ -1466,12 +1649,35 @@
                 row.querySelectorAll('[data-delete]').forEach(btn => {
                     btn.addEventListener('click', () => randevuSil(btn.dataset.delete));
                 });
+                row.querySelectorAll('[data-billing-id]').forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        const app = window.localAppointments.find(item => item.id === parseInt(btn.dataset.billingId));
+                        if (app) odemeModalAc(app);
+                    });
+                });
 
                 listDiv.appendChild(row);
             });
         }
 
         window.renderRandevular = renderRandevular;
+
+        function odemeModalAc(r) {
+            const modal = document.getElementById('admin-odeme-modal');
+            document.getElementById('odeme-randevu-id').value = r.id;
+            document.getElementById('odeme-hasta-ad').textContent = r.ad;
+            document.getElementById('odeme-hasta-tel').textContent = `Telefon: ${r.telefon}`;
+            const dateStr = new Date(r.tarih).toLocaleDateString('tr-TR', { day: '2-digit', month: 'long', year: 'numeric' });
+            document.getElementById('odeme-hasta-tarih').textContent = `Randevu: ${dateStr} - Saat: ${r.saat}`;
+            
+            const toplam = r.toplam_tutar ? parseFloat(r.toplam_tutar) : 0;
+            const odenen = r.odenen_tutar ? parseFloat(r.odenen_tutar) : 0;
+            document.getElementById('odeme-toplam').value = toplam.toFixed(2);
+            document.getElementById('odeme-odenen').value = odenen.toFixed(2);
+            document.getElementById('odeme-kalan').textContent = `${(toplam - odenen).toFixed(2)} TL`;
+            
+            modal.classList.add('open');
+        }
 
         // ─── PAGINATION OVERRIDE ───
         function renderPagination(pagination) {
@@ -1532,6 +1738,185 @@
         document.addEventListener('DOMContentLoaded', () => {
             // Calendar days grid class override
             const calDays = document.getElementById('calendar-days');
+        });
+
+        // ─── RANDEVU SEÇİLEN GÜN DETAY OVERRIDE ───
+        function renderSelectedDayAppointments(appointments, date) {
+            const detailList = document.getElementById('selected-day-appointments');
+            const detailTitle = document.getElementById('selected-day-title');
+            if (!detailList || !detailTitle) return;
+
+            const dateStr = date.toLocaleDateString('tr-TR', { day: '2-digit', month: 'long', year: 'numeric', weekday: 'long' });
+            detailTitle.innerHTML = `<i class="fa-solid fa-calendar-day" style="color:#00b4d8;margin-right:8px;"></i> ${dateStr} Randevuları`;
+
+            detailList.innerHTML = '';
+
+            if (appointments.length === 0) {
+                detailList.innerHTML = '<div class="p-empty"><i class="fa-solid fa-calendar-xmark"></i><p>Seçilen gün için kayıtlı randevu bulunmuyor.</p></div>';
+                return;
+            }
+
+            appointments.forEach(r => {
+                const durumText = { pending: 'Beklemede', approved: 'Onaylandı', cancelled: 'İptal' };
+                const durumClass = { pending: 'p-durum-beklemede', approved: 'p-durum-onaylandi', cancelled: 'p-durum-iptal' };
+                const durumIcon = { pending: 'fa-hourglass-half', approved: 'fa-circle-check', cancelled: 'fa-circle-xmark' };
+
+                const card = document.createElement('div');
+                card.className = 'p-randevu-satir';
+                card.style.cssText = 'flex-direction: column; align-items: stretch; gap: 10px; padding: 16px; margin-bottom: 12px;';
+
+                const toplamVal = r.toplam_tutar ? parseFloat(r.toplam_tutar) : 0;
+                const odenenVal = r.odenen_tutar ? parseFloat(r.odenen_tutar) : 0;
+                const kalanVal = toplamVal - odenenVal;
+
+                card.innerHTML = `
+                    <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px dashed var(--border); padding-bottom:8px;">
+                        <div>
+                            <strong class="p-hasta-ad" style="font-size:15px;">${r.ad}</strong>
+                            ${r.notlar ? `<button class="p-btn-icon not-btn" title="Notu Gör" style="margin-left:8px;display:inline-flex;width:auto;padding:0 8px;gap:4px;font-size:11px;"><i class="fa-solid fa-note-sticky"></i> Not</button>` : ''}
+                        </div>
+                        <span class="p-durum-badge ${durumClass[r.durum]}"><i class="fa-solid ${durumIcon[r.durum]}"></i> ${durumText[r.durum]}</span>
+                    </div>
+                    <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px; font-size:13px; color:var(--text-muted);">
+                        <div><i class="fa-regular fa-clock"></i> Saat: <strong>${r.saat}</strong></div>
+                        <div><i class="fa-solid fa-phone"></i> Tel: <a href="tel:${r.telefon}" class="p-iletisim-link">${r.telefon}</a></div>
+                        <div style="grid-column: span 2;"><i class="fa-solid fa-wallet"></i> Ödeme: <button class="p-btn-card-billing" data-billing-id="${r.id}" type="button">Ödenen: ${odenenVal.toFixed(2)} TL / Kalan: ${kalanVal.toFixed(2)} TL</button></div>
+                    </div>
+                    <div style="display:flex; justify-content:flex-end; gap:8px; margin-top:4px;">
+                        ${r.durum === 'pending' ? `
+                            <button class="p-btn-icon onayla" title="Onayla" data-action="approved" data-id="${r.id}"><i class="fa-solid fa-check"></i></button>
+                            <button class="p-btn-icon iptal" title="Reddet" data-action="cancelled" data-id="${r.id}"><i class="fa-solid fa-xmark"></i></button>
+                        ` : ''}
+                        ${r.durum === 'approved' ? `
+                            <button class="p-btn-icon iptal" title="İptal Et" data-action="cancelled" data-id="${r.id}"><i class="fa-solid fa-ban"></i></button>
+                        ` : ''}
+                        <button class="p-btn-icon odeme-btn" title="Hasta Detayı & Ödeme Takibi" data-billing-id="${r.id}" type="button"><i class="fa-solid fa-file-invoice-dollar"></i></button>
+                        <button class="p-btn-icon sil" title="Sil" data-delete="${r.id}"><i class="fa-solid fa-trash"></i></button>
+                    </div>
+                `;
+
+                if (r.notlar) {
+                    card.querySelector('.not-btn')?.addEventListener('click', () => notGosterText(r.notlar));
+                }
+                card.querySelectorAll('[data-action]').forEach(btn => {
+                    btn.addEventListener('click', () => randevuDurumGuncelle(btn.dataset.id, btn.dataset.action));
+                });
+                card.querySelectorAll('[data-delete]').forEach(btn => {
+                    btn.addEventListener('click', () => randevuSil(btn.dataset.delete));
+                });
+                card.querySelectorAll('[data-billing-id]').forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        const app = appointments.find(item => item.id === parseInt(btn.dataset.billingId));
+                        if (app) odemeModalAc(app);
+                    });
+                });
+
+                detailList.appendChild(card);
+            });
+        }
+        window.renderSelectedDayAppointments = renderSelectedDayAppointments;
+
+        // ─── ÖDEME BİLGİSİ DİNAMİK HESAPLAMA VE GÜNCELLEME ───
+        const odemeToplamEl = document.getElementById('odeme-toplam');
+        const odemeOdenenEl = document.getElementById('odeme-odenen');
+        const odemeKalanEl = document.getElementById('odeme-kalan');
+
+        function odemeHesapla() {
+            const toplam = parseFloat(odemeToplamEl.value) || 0;
+            const odenen = parseFloat(odemeOdenenEl.value) || 0;
+            odemeKalanEl.textContent = `${(toplam - odenen).toFixed(2)} TL`;
+        }
+        odemeToplamEl.addEventListener('input', odemeHesapla);
+        odemeOdenenEl.addEventListener('input', odemeHesapla);
+
+        document.getElementById('admin-odeme-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const id = document.getElementById('odeme-randevu-id').value;
+            const toplam_tutar = parseFloat(odemeToplamEl.value) || 0;
+            const odenen_tutar = parseFloat(odemeOdenenEl.value) || 0;
+
+            try {
+                const token = localStorage.getItem('adminToken');
+                const headers = { 'Content-Type': 'application/json' };
+                if (token) headers['Authorization'] = 'Bearer ' + token;
+
+                const res = await fetch(`/api/appointments/admin/${id}`, {
+                    method: 'PUT',
+                    headers,
+                    credentials: 'include',
+                    body: JSON.stringify({ toplam_tutar, odenen_tutar })
+                });
+                const result = await res.json();
+                if (result.success) {
+                    showToast('Hasta ödeme bilgileri güncellendi.', 'success');
+                    document.getElementById('admin-odeme-modal').classList.remove('open');
+                    
+                    if (typeof yukleRandevular === 'function') yukleRandevular();
+                    if (typeof yukleTakvimRandevulari === 'function') yukleTakvimRandevulari();
+                    if (typeof yukleGenelIstatistikler === 'function') yukleGenelIstatistikler();
+                } else {
+                    showToast(result.message || 'Güncelleme başarısız', 'error');
+                }
+            } catch (err) {
+                showToast('Bağlantı hatası', 'error');
+            }
+        });
+
+        // ─── YENİ RANDEVU MODAL TOGGLE & SUBMIT ───
+        const adminRandevuModal = document.getElementById('admin-randevu-modal');
+        const adminRandevuForm = document.getElementById('admin-randevu-form');
+        const yeniRandevuBtn = document.getElementById('admin-yeni-randevu-btn');
+
+        if (yeniRandevuBtn) {
+            yeniRandevuBtn.addEventListener('click', () => {
+                adminRandevuForm.reset();
+                const bugunStr = new Date().toISOString().split('T')[0];
+                document.getElementById('admin-randevu-tarih').value = bugunStr;
+                adminRandevuModal.classList.add('open');
+            });
+        }
+
+        document.getElementById('admin-randevu-modal-close').addEventListener('click', () => adminRandevuModal.classList.remove('open'));
+        document.getElementById('admin-randevu-iptal-btn').addEventListener('click', () => adminRandevuModal.classList.remove('open'));
+        adminRandevuModal.addEventListener('click', e => { if (e.target === adminRandevuModal) adminRandevuModal.classList.remove('open'); });
+
+        const odemeModal = document.getElementById('admin-odeme-modal');
+        document.getElementById('admin-odeme-modal-close').addEventListener('click', () => odemeModal.classList.remove('open'));
+        document.getElementById('admin-odeme-iptal-btn').addEventListener('click', () => odemeModal.classList.remove('open'));
+        odemeModal.addEventListener('click', e => { if (e.target === odemeModal) odemeModal.classList.remove('open'); });
+
+        adminRandevuForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const formData = new FormData(adminRandevuForm);
+            const data = Object.fromEntries(formData.entries());
+            data.toplam_tutar = parseFloat(data.toplam_tutar) || 0;
+            data.odenen_tutar = parseFloat(data.odenen_tutar) || 0;
+
+            try {
+                const token = localStorage.getItem('adminToken');
+                const headers = { 'Content-Type': 'application/json' };
+                if (token) headers['Authorization'] = 'Bearer ' + token;
+
+                const res = await fetch('/api/appointments/admin', {
+                    method: 'POST',
+                    headers,
+                    credentials: 'include',
+                    body: JSON.stringify(data)
+                });
+                const result = await res.json();
+                if (result.success) {
+                    showToast('Randevu başarıyla eklendi.', 'success');
+                    adminRandevuModal.classList.remove('open');
+                    
+                    if (typeof yukleRandevular === 'function') yukleRandevular();
+                    if (typeof yukleTakvimRandevulari === 'function') yukleTakvimRandevulari();
+                    if (typeof yukleGenelIstatistikler === 'function') yukleGenelIstatistikler();
+                } else {
+                    showToast(result.message || 'Randevu eklenemedi', 'error');
+                }
+            } catch (err) {
+                showToast('Bağlantı hatası', 'error');
+            }
         });
     </script>
 </body>

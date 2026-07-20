@@ -223,3 +223,82 @@ exports.deleteAppointment = async (req, res) => {
         res.status(500).json({ success: false, message: err.sqlMessage || "Sunucu hatası" });
     }
 };
+
+// PROTECTED: Admin tarafından doğrudan randevu ekleme
+exports.createAppointmentAdmin = async (req, res) => {
+    try {
+        const { ad, telefon, email, tarih, saat, notlar, durum, toplam_tutar, odenen_tutar } = req.body;
+
+        if (!ad || !telefon || !tarih || !saat) {
+            return res.status(400).json({ success: false, message: "Zorunlu alanlar eksik" });
+        }
+
+        // Çakışma kontrolü (eğer approved olarak ekleniyorsa)
+        if (durum === 'approved') {
+            const [exists] = await pool.query(
+                `SELECT id FROM randevular WHERE tarih = ? AND saat = ? AND durum = 'approved'`,
+                [tarih, saat]
+            );
+            if (exists.length > 0) {
+                return res.status(400).json({ success: false, message: "Bu tarih ve saat zaten onaylı başka bir randevuyla dolu!" });
+            }
+        }
+
+        const [result] = await pool.query(
+            `INSERT INTO randevular (ad, telefon, email, tarih, saat, notlar, durum, toplam_tutar, odenen_tutar) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+            [ad, telefon, email || null, tarih, saat, notlar || null, durum || 'approved', toplam_tutar || 0.00, odenen_tutar || 0.00]
+        );
+
+        res.json({ success: true, message: "Randevu başarıyla eklendi.", id: result.insertId });
+    } catch (err) {
+        console.error("createAppointmentAdmin ERROR:", err);
+        res.status(500).json({ success: false, message: err.sqlMessage || "Sunucu hatası" });
+    }
+};
+
+// PROTECTED: Randevu güncelle (tüm detaylar ve ödeme bilgileri dahil)
+exports.updateAppointment = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { ad, telefon, email, tarih, saat, notlar, durum, toplam_tutar, odenen_tutar } = req.body;
+        const randevuId = parseInt(id);
+
+        const [exists] = await pool.query("SELECT * FROM randevular WHERE id = ?", [randevuId]);
+        if (exists.length === 0) {
+            return res.status(404).json({ success: false, message: "Randevu bulunamadı" });
+        }
+
+        // Çakışma kontrolü (eğer tarih veya saat güncelleniyorsa ve onaylanmışsa)
+        if (durum === 'approved' || (exists[0].durum === 'approved' && !durum)) {
+            const finalTarih = tarih || exists[0].tarih;
+            const finalSaat = saat || exists[0].saat;
+            const [cakisma] = await pool.query(
+                `SELECT id FROM randevular WHERE tarih = ? AND saat = ? AND durum = 'approved' AND id != ?`,
+                [finalTarih, finalSaat, randevuId]
+            );
+            if (cakisma.length > 0) {
+                return res.status(400).json({ success: false, message: "Bu tarih ve saat zaten onaylı başka bir randevuyla dolu!" });
+            }
+        }
+
+        await pool.query(
+            `UPDATE randevular SET 
+                ad = COALESCE(?, ad),
+                telefon = COALESCE(?, telefon),
+                email = ?,
+                tarih = COALESCE(?, tarih),
+                saat = COALESCE(?, saat),
+                notlar = ?,
+                durum = COALESCE(?, durum),
+                toplam_tutar = COALESCE(?, toplam_tutar),
+                odenen_tutar = COALESCE(?, odenen_tutar)
+            WHERE id = ?`,
+            [ad, telefon, email, tarih, saat, notlar, durum, toplam_tutar, odenen_tutar, randevuId]
+        );
+
+        res.json({ success: true, message: "Randevu başarıyla güncellendi." });
+    } catch (err) {
+        console.error("updateAppointment ERROR:", err);
+        res.status(500).json({ success: false, message: err.sqlMessage || "Sunucu hatası" });
+    }
+};

@@ -469,8 +469,16 @@ async function yukleRandevular() {
         const result = await response.json();
 
         if (result.success) {
-            renderRandevular(result.data);
-            renderPagination(result.pagination);
+            if (typeof window.renderRandevular === 'function') {
+                window.renderRandevular(result.data);
+            } else {
+                renderRandevular(result.data);
+            }
+            if (typeof window.renderPagination === 'function') {
+                window.renderPagination(result.pagination);
+            } else {
+                renderPagination(result.pagination);
+            }
         }
 
     } catch (err) {
@@ -666,7 +674,11 @@ async function yukleTakvimRandevulari() {
             if (selectedDateStr) {
                 const targetDate = new Date(selectedDateStr);
                 const dayApps = calendarAppointments.filter(app => app.tarih.split('T')[0] === selectedDateStr);
-                renderSelectedDayAppointments(dayApps, targetDate);
+                if (typeof window.renderSelectedDayAppointments === 'function') {
+                    window.renderSelectedDayAppointments(dayApps, targetDate);
+                } else {
+                    renderSelectedDayAppointments(dayApps, targetDate);
+                }
             }
         }
     } catch (err) {
@@ -695,19 +707,21 @@ function renderCalendar() {
     const totalDays = new Date(year, month + 1, 0).getDate();
     const prevMonthTotalDays = new Date(year, month, 0).getDate();
 
+    const getDayBox = window.createDayBox || createDayBox;
+
     for (let i = startDayOffset; i > 0; i--) {
         const dayNum = prevMonthTotalDays - i + 1;
-        daysGrid.appendChild(createDayBox(year, month - 1, dayNum, true));
+        daysGrid.appendChild(getDayBox(year, month - 1, dayNum, true));
     }
 
     for (let i = 1; i <= totalDays; i++) {
-        daysGrid.appendChild(createDayBox(year, month, i, false));
+        daysGrid.appendChild(getDayBox(year, month, i, false));
     }
 
     const totalRendered = startDayOffset + totalDays;
     const remaining = totalRendered % 7 === 0 ? 0 : 7 - (totalRendered % 7);
     for (let i = 1; i <= remaining; i++) {
-        daysGrid.appendChild(createDayBox(year, month + 1, i, true));
+        daysGrid.appendChild(getDayBox(year, month + 1, i, true));
     }
 }
 
@@ -759,7 +773,11 @@ function createDayBox(year, month, day, isOtherMonth) {
         if (prevSelected) prevSelected.classList.remove('selected');
         dayBox.classList.add('selected');
         selectedDateStr = dateKeyStr;
-        renderSelectedDayAppointments(dayAppointments, targetDate);
+        if (typeof window.renderSelectedDayAppointments === 'function') {
+            window.renderSelectedDayAppointments(dayAppointments, targetDate);
+        } else {
+            renderSelectedDayAppointments(dayAppointments, targetDate);
+        }
     });
 
     return dayBox;
