@@ -112,5 +112,8 @@ document.addEventListener('DOMContentLoaded', () => {
             document.documentElement.removeAttribute('dir');
             document.body.style.textAlign = 'left';
         }
+
+        // Emit an event so dynamic content (like articles) can know the language changed
+        document.dispatchEvent(new CustomEvent('languageChanged', { detail: { lang: lang } }));
     }
 });

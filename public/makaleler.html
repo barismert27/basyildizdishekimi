@@ -434,51 +434,103 @@
     <script src="theme-lang.js"></script>
     <script src="script.js"></script>
     <script>
-        async function yukleMaraleler() {
+        let allArticles = [];
+        let isTranslating = false;
+
+        async function autoTranslate(text, targetLang) {
+            if (targetLang === 'tr' || !text) return text;
+            try {
+                const params = new URLSearchParams();
+                params.append('q', text);
+                const res = await fetch(`https://translate.googleapis.com/translate_a/single?client=gtx&sl=tr&tl=${targetLang}&dt=t`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: params
+                });
+                const data = await res.json();
+                return data[0].map(x => x[0]).join('');
+            } catch(e) {
+                console.error("Çeviri hatası:", e);
+                return text;
+            }
+        }
+
+        async function renderArticles(lang) {
+            const grid = document.getElementById('makale-grid');
+            if (allArticles.length === 0) {
+                grid.innerHTML = `
+                    <div class="makale-empty" style="grid-column:1/-1;">
+                        <i class="fa-solid fa-newspaper"></i>
+                        <h3 data-i18n="articles-empty-title">Henüz Makale Yok</h3>
+                        <p data-i18n="articles-empty-desc">Doktor yakında ilk makalesini yayınlayacak.</p>
+                    </div>`;
+                return;
+            }
+
+            grid.innerHTML = `
+                <div class="makale-empty" style="grid-column:1/-1;">
+                    <i class="fa-solid fa-spinner fa-spin" style="opacity:0.5;"></i>
+                    <h3 style="margin-top:15px;">${lang === 'tr' ? 'Yükleniyor...' : 'Translating / Çevriliyor...'}</h3>
+                </div>`;
+
+            isTranslating = true;
+            
+            // Çevirileri paralel yapmak için Promise.all
+            const translatedArticles = await Promise.all(allArticles.map(async (a) => {
+                const tBaslik = await autoTranslate(a.baslik, lang);
+                const tIcerik = await autoTranslate(a.icerik, lang);
+                return { ...a, tBaslik, tIcerik };
+            }));
+
+            grid.innerHTML = '';
+            
+            translatedArticles.forEach(a => {
+                const date = new Date(a.olusturma_tarihi).toLocaleDateString(lang === 'tr' ? 'tr-TR' : 'en-US', {
+                    day: '2-digit', month: 'long', year: 'numeric'
+                });
+                
+                const excerpt = a.tIcerik.length > 200
+                    ? a.tIcerik.substring(0, 200) + '...'
+                    : a.tIcerik;
+
+                const card = document.createElement('div');
+                card.className = 'makale-card';
+                card.innerHTML = `
+                    ${a.kapak_resmi
+                        ? `<div class="makale-card-img"><img src="${a.kapak_resmi}" alt="${a.tBaslik}" loading="lazy"></div>`
+                        : `<div class="makale-card-img"><i class="fa-solid fa-newspaper"></i></div>`
+                    }
+                    <div class="makale-card-body">
+                        <div class="makale-card-meta">
+                            <span class="makale-tag"><i class="fa-solid fa-user-doctor"></i> Dr. Başyıldız</span>
+                            <span class="makale-card-date"><i class="fa-regular fa-calendar"></i> ${date}</span>
+                        </div>
+                        <div class="makale-card-title">${a.tBaslik}</div>
+                        <div class="makale-card-excerpt">${excerpt}</div>
+                        <span class="makale-read-more">${lang === 'tr' ? 'Devamını Oku' : (lang === 'ar' ? 'اقرأ المزيد' : (lang === 'de' ? 'Weiterlesen' : 'Read More'))} <i class="fa-solid fa-arrow-${lang === 'ar' ? 'left' : 'right'}"></i></span>
+                    </div>
+                `;
+                card.addEventListener('click', () => makaleAc(a, lang));
+                grid.appendChild(card);
+            });
+            isTranslating = false;
+        }
+
+        async function yukleMakaleler() {
             const grid = document.getElementById('makale-grid');
             try {
                 const res = await fetch('/api/articles');
                 const result = await res.json();
 
-                if (!result.success || result.data.length === 0) {
-                    grid.innerHTML = `
-                        <div class="makale-empty" style="grid-column:1/-1;">
-                            <i class="fa-solid fa-newspaper"></i>
-                            <h3>Henüz Makale Yok</h3>
-                            <p>Doktor yakında ilk makalesini yayınlayacak.</p>
-                        </div>`;
-                    return;
+                if (result.success && result.data) {
+                    allArticles = result.data;
+                } else {
+                    allArticles = [];
                 }
-
-                grid.innerHTML = '';
-                result.data.forEach(a => {
-                    const date = new Date(a.olusturma_tarihi).toLocaleDateString('tr-TR', {
-                        day: '2-digit', month: 'long', year: 'numeric'
-                    });
-                    const excerpt = a.icerik.length > 200
-                        ? a.icerik.substring(0, 200) + '...'
-                        : a.icerik;
-
-                    const card = document.createElement('div');
-                    card.className = 'makale-card';
-                    card.innerHTML = `
-                        ${a.kapak_resmi
-                            ? `<div class="makale-card-img"><img src="${a.kapak_resmi}" alt="${a.baslik}" loading="lazy"></div>`
-                            : `<div class="makale-card-img"><i class="fa-solid fa-newspaper"></i></div>`
-                        }
-                        <div class="makale-card-body">
-                            <div class="makale-card-meta">
-                                <span class="makale-tag"><i class="fa-solid fa-user-doctor"></i> Dr. Başyıldız</span>
-                                <span class="makale-card-date"><i class="fa-regular fa-calendar"></i> ${date}</span>
-                            </div>
-                            <div class="makale-card-title">${a.baslik}</div>
-                            <div class="makale-card-excerpt">${excerpt}</div>
-                            <span class="makale-read-more">Devamını Oku <i class="fa-solid fa-arrow-right"></i></span>
-                        </div>
-                    `;
-                    card.addEventListener('click', () => makaleAc(a));
-                    grid.appendChild(card);
-                });
+                
+                const currentLang = localStorage.getItem('lang') || 'tr';
+                await renderArticles(currentLang);
+                
             } catch (err) {
                 grid.innerHTML = `
                     <div class="makale-empty" style="grid-column:1/-1;">
@@ -489,19 +541,19 @@
             }
         }
 
-        function makaleAc(a) {
+        function makaleAc(a, lang) {
             const modal = document.getElementById('makale-modal');
             const kapak = document.getElementById('modal-kapak');
-            const date = new Date(a.olusturma_tarihi).toLocaleDateString('tr-TR', {
+            const date = new Date(a.olusturma_tarihi).toLocaleDateString(lang === 'tr' ? 'tr-TR' : 'en-US', {
                 weekday: 'long', day: '2-digit', month: 'long', year: 'numeric'
             });
 
             kapak.src = a.kapak_resmi || '';
             kapak.style.display = a.kapak_resmi ? 'block' : 'none';
-            document.getElementById('modal-baslik').textContent = a.baslik;
+            document.getElementById('modal-baslik').textContent = a.tBaslik;
             document.getElementById('modal-tarih').innerHTML =
                 `<i class="fa-regular fa-calendar"></i> ${date}`;
-            document.getElementById('modal-icerik').textContent = a.icerik;
+            document.getElementById('modal-icerik').textContent = a.tIcerik;
 
             modal.classList.add('open');
             document.body.style.overflow = 'hidden';
@@ -520,7 +572,14 @@
             }
         });
 
-        yukleMaraleler();
+        // Dil değiştiğinde makaleleri otomatik çevirerek yeniden renderla
+        document.addEventListener('languageChanged', (e) => {
+            if (!isTranslating && allArticles.length > 0) {
+                renderArticles(e.detail.lang);
+            }
+        });
+
+        yukleMakaleler();
     </script>
 </body>
 
