@@ -68,7 +68,8 @@ exports.createAppointment = async (req, res) => {
 
     } catch (err) {
         console.error("ERROR:", err);
-        res.status(500).json({ success: false, message: "Sunucu hatası" });
+        // Hatanın tam nedenini görebilmemiz için geçici olarak frontend'e detaylı hata mesajı dönüyoruz
+        res.status(500).json({ success: false, message: "Sunucu hatası: " + (err.sqlMessage || err.message || "Bilinmeyen Hata") + (err.code ? " (" + err.code + ")" : "") });
     }
 };
 
