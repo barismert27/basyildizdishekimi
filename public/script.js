@@ -881,26 +881,50 @@ function notGosterText(not) {
 
     const modal = document.createElement('div');
     modal.id = 'not-modal';
-    modal.className = 'not-modal-overlay';
+    modal.style.cssText = 'position: fixed; inset: 0; background: rgba(15, 23, 42, 0.4); backdrop-filter: blur(8px); z-index: 99999; display: flex; align-items: center; justify-content: center; padding: 20px; animation: fadeIn 0.3s ease; transition: opacity 0.2s ease;';
+    
     const box = document.createElement('div');
-    box.className = 'not-modal-box';
+    box.style.cssText = 'background: white; border-radius: 20px; width: 100%; max-width: 420px; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); overflow: hidden; transform: translateY(0) scale(1); animation: modalPop 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); transition: all 0.2s ease;';
+    
     box.innerHTML = `
-        <div class="not-modal-header">
-            <i class="fa-solid fa-note-sticky"></i>
-            <span>Hasta Notu</span>
+        <div style="display: flex; align-items: center; justify-content: space-between; padding: 18px 24px; border-bottom: 1px solid #f1f5f9; background: #f8fafc;">
+            <div style="display: flex; align-items: center; gap: 12px; color: #0f172a; font-weight: 600; font-size: 16px;">
+                <div style="width: 36px; height: 36px; border-radius: 10px; background: #e0f2fe; color: #0284c7; display: flex; align-items: center; justify-content: center; font-size: 16px;">
+                    <i class="fa-solid fa-note-sticky"></i>
+                </div>
+                Hasta Notu
+            </div>
+            <button class="not-modal-kapat" style="background: transparent; border: none; width: 32px; height: 32px; font-size: 18px; color: #94a3b8; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s; border-radius: 8px;" onmouseover="this.style.color='#ef4444'; this.style.backgroundColor='#fee2e2'" onmouseout="this.style.color='#94a3b8'; this.style.backgroundColor='transparent'">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
         </div>
-        <p class="not-modal-icerik"></p>
+        <div style="padding: 24px; font-size: 15px; color: #334155; line-height: 1.6; white-space: pre-wrap;"></div>
     `;
-    box.querySelector('.not-modal-icerik').textContent = not;
+    box.querySelector('div:nth-child(2)').textContent = not;
 
-    const kapatBtn = document.createElement('button');
-    kapatBtn.className = 'not-modal-kapat';
-    kapatBtn.innerHTML = '<i class="fa-solid fa-xmark"></i>';
-    kapatBtn.addEventListener('click', () => modal.remove());
-    box.querySelector('.not-modal-header').appendChild(kapatBtn);
+    const kapatBtn = box.querySelector('.not-modal-kapat');
+    const closeIt = () => {
+        modal.style.opacity = '0';
+        box.style.transform = 'scale(0.95) translateY(10px)';
+        setTimeout(() => modal.remove(), 200);
+    };
+    kapatBtn.addEventListener('click', closeIt);
 
     modal.appendChild(box);
-    modal.addEventListener('click', (e) => { if (e.target === modal) modal.remove(); });
+    modal.addEventListener('click', (e) => { 
+        if (e.target === modal) closeIt();
+    });
+    
+    if (!document.getElementById('not-modal-style')) {
+        const style = document.createElement('style');
+        style.id = 'not-modal-style';
+        style.innerHTML = `
+            @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+            @keyframes modalPop { from { opacity: 0; transform: scale(0.95) translateY(10px); } to { opacity: 1; transform: scale(1) translateY(0); } }
+        `;
+        document.head.appendChild(style);
+    }
+
     document.body.appendChild(modal);
 }
 

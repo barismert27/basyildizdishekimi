@@ -4,16 +4,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Yönetim Paneli | Dr. Muhammed Emin Başyıldız</title>
+    <title>Yönetim Paneli | Dr. Muhammet Emin Başyıldız</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@500;600;700;800&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@500;600;700;800&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="icon" type="image/x-icon" href="/favicon.ico">
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png">
     <link rel="apple-touch-icon" href="/favicon.png">
     <style>
-        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
 
         :root {
             --sidebar-w: 260px;
@@ -33,8 +41,8 @@
             --danger: #ef4444;
             --radius: 14px;
             --radius-sm: 8px;
-            --shadow: 0 4px 20px rgba(0,0,0,0.05);
-            --shadow-lg: 0 8px 30px rgba(0,0,0,0.08);
+            --shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+            --shadow-lg: 0 8px 30px rgba(0, 0, 0, 0.08);
             --transition: 0.2s ease;
         }
 
@@ -50,7 +58,9 @@
         /* ─── SIDEBAR ─── */
         .p-sidebar {
             position: fixed;
-            left: 0; top: 0; bottom: 0;
+            left: 0;
+            top: 0;
+            bottom: 0;
             width: var(--sidebar-w);
             background: var(--bg2);
             border-right: 1px solid var(--border);
@@ -138,9 +148,9 @@
         }
 
         .p-nav-btn.active {
-            background: linear-gradient(135deg, rgba(0,180,216,0.2), rgba(124,58,237,0.15));
+            background: linear-gradient(135deg, rgba(0, 180, 216, 0.2), rgba(124, 58, 237, 0.15));
             color: var(--accent);
-            border: 1px solid rgba(0,180,216,0.25);
+            border: 1px solid rgba(0, 180, 216, 0.25);
         }
 
         .p-sidebar-footer {
@@ -169,8 +179,15 @@
             background: transparent;
         }
 
-        .p-sidebar-footer a:hover { background: var(--surface); color: var(--text); }
-        .p-sidebar-footer .logout-btn:hover { background: rgba(239,68,68,0.15); color: var(--danger); }
+        .p-sidebar-footer a:hover {
+            background: var(--surface);
+            color: var(--text);
+        }
+
+        .p-sidebar-footer .logout-btn:hover {
+            background: rgba(239, 68, 68, 0.15);
+            color: var(--danger);
+        }
 
         /* ─── MAIN CONTENT ─── */
         .p-main {
@@ -225,12 +242,12 @@
         .p-btn-primary {
             background: linear-gradient(135deg, var(--accent), #0096c7);
             color: #fff;
-            box-shadow: 0 4px 15px rgba(0,180,216,0.35);
+            box-shadow: 0 4px 15px rgba(0, 180, 216, 0.35);
         }
 
         .p-btn-primary:hover {
             transform: translateY(-1px);
-            box-shadow: 0 6px 20px rgba(0,180,216,0.5);
+            box-shadow: 0 6px 20px rgba(0, 180, 216, 0.5);
         }
 
         .p-btn-ghost {
@@ -239,7 +256,10 @@
             border: 1px solid var(--border);
         }
 
-        .p-btn-ghost:hover { color: var(--text); background: var(--surface2); }
+        .p-btn-ghost:hover {
+            color: var(--text);
+            background: var(--surface2);
+        }
 
         /* ─── CONTENT AREA ─── */
         .p-content {
@@ -271,15 +291,28 @@
         .p-stat-card::before {
             content: '';
             position: absolute;
-            top: 0; left: 0; right: 0;
+            top: 0;
+            left: 0;
+            right: 0;
             height: 3px;
         }
 
-        .p-stat-card.total::before { background: linear-gradient(90deg, var(--accent), #0096c7); }
-        .p-stat-card.pending::before { background: linear-gradient(90deg, var(--warning), #d97706); }
-        .p-stat-card.approved::before { background: linear-gradient(90deg, var(--success), #059669); }
+        .p-stat-card.total::before {
+            background: linear-gradient(90deg, var(--accent), #0096c7);
+        }
 
-        .p-stat-card:hover { transform: translateY(-2px); box-shadow: var(--shadow); }
+        .p-stat-card.pending::before {
+            background: linear-gradient(90deg, var(--warning), #d97706);
+        }
+
+        .p-stat-card.approved::before {
+            background: linear-gradient(90deg, var(--success), #059669);
+        }
+
+        .p-stat-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
+        }
 
         .p-stat-icon {
             width: 50px;
@@ -292,11 +325,24 @@
             flex-shrink: 0;
         }
 
-        .p-stat-card.total .p-stat-icon { background: rgba(0,180,216,0.15); color: var(--accent); }
-        .p-stat-card.pending .p-stat-icon { background: rgba(245,158,11,0.15); color: var(--warning); }
-        .p-stat-card.approved .p-stat-icon { background: rgba(16,185,129,0.15); color: var(--success); }
+        .p-stat-card.total .p-stat-icon {
+            background: rgba(0, 180, 216, 0.15);
+            color: var(--accent);
+        }
 
-        .p-stat-info { flex: 1; }
+        .p-stat-card.pending .p-stat-icon {
+            background: rgba(245, 158, 11, 0.15);
+            color: var(--warning);
+        }
+
+        .p-stat-card.approved .p-stat-icon {
+            background: rgba(16, 185, 129, 0.15);
+            color: var(--success);
+        }
+
+        .p-stat-info {
+            flex: 1;
+        }
 
         .p-stat-val {
             font-family: 'Poppins', sans-serif;
@@ -315,8 +361,13 @@
         }
 
         /* ─── PANEL SECTIONS ─── */
-        .p-section { display: none; }
-        .p-section.active { display: block; }
+        .p-section {
+            display: none;
+        }
+
+        .p-section.active {
+            display: block;
+        }
 
         /* ─── SECTION HEADER ─── */
         .p-section-header {
@@ -360,7 +411,10 @@
             padding: 9px 14px;
         }
 
-        .p-search i { color: var(--text-muted); font-size: 13px; }
+        .p-search i {
+            color: var(--text-muted);
+            font-size: 13px;
+        }
 
         .p-search input {
             border: none;
@@ -372,7 +426,9 @@
             width: 100%;
         }
 
-        .p-search input::placeholder { color: var(--text-muted); }
+        .p-search input::placeholder {
+            color: var(--text-muted);
+        }
 
         .p-filter-select {
             background: var(--surface);
@@ -386,7 +442,9 @@
             outline: none;
         }
 
-        .p-filter-select option { background: var(--bg3); }
+        .p-filter-select option {
+            background: var(--bg3);
+        }
 
         /* ─── VIEW TABS ─── */
         .p-view-tabs {
@@ -421,10 +479,17 @@
             color: var(--accent);
         }
 
-        .p-view-tab:hover:not(.active) { color: var(--text); }
+        .p-view-tab:hover:not(.active) {
+            color: var(--text);
+        }
 
-        .p-view-pane { display: none; }
-        .p-view-pane.active { display: block; }
+        .p-view-pane {
+            display: none;
+        }
+
+        .p-view-pane.active {
+            display: block;
+        }
 
         /* ─── TABLE / LIST ─── */
         .p-randevu-table-header {
@@ -481,7 +546,9 @@
             transition: color var(--transition);
         }
 
-        .p-iletisim-link:hover { color: var(--accent); }
+        .p-iletisim-link:hover {
+            color: var(--accent);
+        }
 
         .p-durum-badge {
             display: inline-flex;
@@ -493,17 +560,35 @@
             font-weight: 600;
         }
 
-        .p-durum-beklemede { background: rgba(245,158,11,0.15); color: var(--warning); }
-        .p-durum-onaylandi { background: rgba(16,185,129,0.15); color: var(--success); }
-        .p-durum-iptal { background: rgba(239,68,68,0.12); color: var(--danger); }
+        .p-durum-beklemede {
+            background: rgba(245, 158, 11, 0.15);
+            color: var(--warning);
+        }
 
-        .p-islem-btns { display: flex; gap: 6px; align-items: center; }
+        .p-durum-onaylandi {
+            background: rgba(16, 185, 129, 0.15);
+            color: var(--success);
+        }
+
+        .p-durum-iptal {
+            background: rgba(239, 68, 68, 0.12);
+            color: var(--danger);
+        }
+
+        .p-islem-btns {
+            display: flex;
+            gap: 6px;
+            align-items: center;
+        }
 
         .p-btn-icon {
-            width: 32px; height: 32px;
+            width: 32px;
+            height: 32px;
             border-radius: var(--radius-sm);
             border: 1px solid var(--border);
-            display: flex; align-items: center; justify-content: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             font-size: 12px;
             cursor: pointer;
             transition: all var(--transition);
@@ -511,11 +596,33 @@
             color: var(--text-muted);
         }
 
-        .p-btn-icon:hover { transform: scale(1.1); }
-        .p-btn-icon.onayla:hover { background: rgba(16,185,129,0.2); color: var(--success); border-color: var(--success); }
-        .p-btn-icon.iptal:hover { background: rgba(245,158,11,0.2); color: var(--warning); border-color: var(--warning); }
-        .p-btn-icon.sil:hover { background: rgba(239,68,68,0.2); color: var(--danger); border-color: var(--danger); }
-        .p-btn-icon.not-btn:hover { background: rgba(0,180,216,0.2); color: var(--accent); border-color: var(--accent); }
+        .p-btn-icon:hover {
+            transform: scale(1.1);
+        }
+
+        .p-btn-icon.onayla:hover {
+            background: rgba(16, 185, 129, 0.2);
+            color: var(--success);
+            border-color: var(--success);
+        }
+
+        .p-btn-icon.iptal:hover {
+            background: rgba(245, 158, 11, 0.2);
+            color: var(--warning);
+            border-color: var(--warning);
+        }
+
+        .p-btn-icon.sil:hover {
+            background: rgba(239, 68, 68, 0.2);
+            color: var(--danger);
+            border-color: var(--danger);
+        }
+
+        .p-btn-icon.not-btn:hover {
+            background: rgba(0, 180, 216, 0.2);
+            color: var(--accent);
+            border-color: var(--accent);
+        }
 
         /* ─── EMPTY / LOADING STATES ─── */
         .p-empty {
@@ -524,8 +631,16 @@
             color: var(--text-muted);
         }
 
-        .p-empty i { font-size: 40px; margin-bottom: 16px; display: block; opacity: 0.4; }
-        .p-empty p { font-size: 14px; }
+        .p-empty i {
+            font-size: 40px;
+            margin-bottom: 16px;
+            display: block;
+            opacity: 0.4;
+        }
+
+        .p-empty p {
+            font-size: 14px;
+        }
 
         /* ─── PAGINATION ─── */
         .p-pagination {
@@ -542,7 +657,10 @@
             color: var(--text-muted);
         }
 
-        .p-pagination-btns { display: flex; gap: 6px; }
+        .p-pagination-btns {
+            display: flex;
+            gap: 6px;
+        }
 
         .p-page-btn {
             min-width: 34px;
@@ -558,9 +676,21 @@
             font-family: 'Inter', sans-serif;
         }
 
-        .p-page-btn:hover:not(:disabled) { background: var(--surface2); color: var(--text); }
-        .p-page-btn.active { background: var(--accent); color: #fff; border-color: var(--accent); }
-        .p-page-btn:disabled { opacity: 0.35; cursor: not-allowed; }
+        .p-page-btn:hover:not(:disabled) {
+            background: var(--surface2);
+            color: var(--text);
+        }
+
+        .p-page-btn.active {
+            background: var(--accent);
+            color: #fff;
+            border-color: var(--accent);
+        }
+
+        .p-page-btn:disabled {
+            opacity: 0.35;
+            cursor: not-allowed;
+        }
 
         /* ─── CALENDAR ─── */
         .p-cal-container {
@@ -586,17 +716,23 @@
         }
 
         .p-cal-nav {
-            width: 34px; height: 34px;
+            width: 34px;
+            height: 34px;
             border-radius: var(--radius-sm);
             border: 1px solid var(--border);
             background: var(--surface);
             color: var(--text-muted);
             cursor: pointer;
             transition: all var(--transition);
-            display: flex; align-items: center; justify-content: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
-        .p-cal-nav:hover { color: var(--accent); border-color: var(--accent); }
+        .p-cal-nav:hover {
+            color: var(--accent);
+            border-color: var(--accent);
+        }
 
         .p-cal-weekdays {
             display: grid;
@@ -622,7 +758,8 @@
             background: var(--border);
         }
 
-        .p-cal-day, .calendar-day-box {
+        .p-cal-day,
+        .calendar-day-box {
             background: var(--bg3);
             min-height: 90px;
             padding: 8px;
@@ -631,12 +768,37 @@
             position: relative;
         }
 
-        .p-cal-day:hover, .calendar-day-box:hover { background: var(--surface); }
-        .p-cal-day.other-month, .calendar-day-box.other-month { opacity: 0.3; }
-        .p-cal-day.today .p-day-num, .calendar-day-box.today .day-number { background: var(--accent); color: #fff; border-radius: 50%; width: 26px; height: 26px; display: flex; align-items: center; justify-content: center; }
-        .p-cal-day.selected, .calendar-day-box.selected { background: rgba(0,180,216,0.08); outline: 2px solid var(--accent); outline-offset: -2px; }
+        .p-cal-day:hover,
+        .calendar-day-box:hover {
+            background: var(--surface);
+        }
 
-        .p-day-num, .day-number {
+        .p-cal-day.other-month,
+        .calendar-day-box.other-month {
+            opacity: 0.3;
+        }
+
+        .p-cal-day.today .p-day-num,
+        .calendar-day-box.today .day-number {
+            background: var(--accent);
+            color: #fff;
+            border-radius: 50%;
+            width: 26px;
+            height: 26px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .p-cal-day.selected,
+        .calendar-day-box.selected {
+            background: rgba(0, 180, 216, 0.08);
+            outline: 2px solid var(--accent);
+            outline-offset: -2px;
+        }
+
+        .p-day-num,
+        .day-number {
             font-size: 12px;
             font-weight: 600;
             color: var(--text-muted);
@@ -648,9 +810,15 @@
             height: 26px;
         }
 
-        .p-day-events, .calendar-day-events { display: flex; flex-direction: column; gap: 2px; }
+        .p-day-events,
+        .calendar-day-events {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
 
-        .p-day-event, .calendar-day-event {
+        .p-day-event,
+        .calendar-day-event {
             font-size: 10px;
             padding: 2px 5px;
             border-radius: 3px;
@@ -659,15 +827,52 @@
             text-overflow: ellipsis;
         }
 
-        .p-day-event.pending, .calendar-day-event.pending { background: rgba(245,158,11,0.2); color: var(--warning); }
-        .p-day-event.approved, .calendar-day-event.approved { background: rgba(16,185,129,0.2); color: var(--success); }
-        .p-day-event.cancelled, .calendar-day-event.cancelled { background: rgba(239,68,68,0.12); color: var(--danger); }
+        .p-day-event.pending,
+        .calendar-day-event.pending {
+            background: rgba(245, 158, 11, 0.2);
+            color: var(--warning);
+        }
 
-        .p-day-dots, .calendar-day-dots { display: none; gap: 3px; margin-top: 4px; }
-        .p-cal-dot, .cal-dot { width: 6px; height: 6px; border-radius: 50%; }
-        .p-cal-dot.pending, .cal-dot.pending { background: var(--warning); }
-        .p-cal-dot.approved, .cal-dot.approved { background: var(--success); }
-        .p-cal-dot.cancelled, .cal-dot.cancelled { background: var(--danger); }
+        .p-day-event.approved,
+        .calendar-day-event.approved {
+            background: rgba(16, 185, 129, 0.2);
+            color: var(--success);
+        }
+
+        .p-day-event.cancelled,
+        .calendar-day-event.cancelled {
+            background: rgba(239, 68, 68, 0.12);
+            color: var(--danger);
+        }
+
+        .p-day-dots,
+        .calendar-day-dots {
+            display: none;
+            gap: 3px;
+            margin-top: 4px;
+        }
+
+        .p-cal-dot,
+        .cal-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+        }
+
+        .p-cal-dot.pending,
+        .cal-dot.pending {
+            background: var(--warning);
+        }
+
+        .p-cal-dot.approved,
+        .cal-dot.approved {
+            background: var(--success);
+        }
+
+        .p-cal-dot.cancelled,
+        .cal-dot.cancelled {
+            background: var(--danger);
+        }
 
         .p-cal-detail {
             background: var(--surface);
@@ -698,7 +903,10 @@
             transition: transform var(--transition), box-shadow var(--transition);
         }
 
-        .p-article-card:hover { transform: translateY(-3px); box-shadow: var(--shadow); }
+        .p-article-card:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow);
+        }
 
         .p-article-card-img {
             width: 100%;
@@ -750,8 +958,8 @@
             gap: 6px;
             padding: 7px 14px;
             border-radius: var(--radius-sm);
-            border: 1px solid rgba(239,68,68,0.3);
-            background: rgba(239,68,68,0.1);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            background: rgba(239, 68, 68, 0.1);
             color: var(--danger);
             font-size: 12px;
             font-weight: 500;
@@ -759,13 +967,15 @@
             transition: all var(--transition);
         }
 
-        .p-article-del-btn:hover { background: rgba(239,68,68,0.2); }
+        .p-article-del-btn:hover {
+            background: rgba(239, 68, 68, 0.2);
+        }
 
         /* ─── MODAL ─── */
         .p-modal-overlay {
             position: fixed;
             inset: 0;
-            background: rgba(0,0,0,0.7);
+            background: rgba(0, 0, 0, 0.7);
             backdrop-filter: blur(6px);
             z-index: 999;
             display: none;
@@ -774,7 +984,9 @@
             padding: 20px;
         }
 
-        .p-modal-overlay.open { display: flex; }
+        .p-modal-overlay.open {
+            display: flex;
+        }
 
         .p-modal {
             background: var(--bg2);
@@ -789,8 +1001,15 @@
         }
 
         @keyframes modalIn {
-            from { opacity: 0; transform: translateY(20px) scale(0.97); }
-            to { opacity: 1; transform: translateY(0) scale(1); }
+            from {
+                opacity: 0;
+                transform: translateY(20px) scale(0.97);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
         }
 
         .p-modal-header {
@@ -811,23 +1030,33 @@
             gap: 10px;
         }
 
-        .p-modal-title i { color: var(--accent); }
+        .p-modal-title i {
+            color: var(--accent);
+        }
 
         .p-modal-close {
-            width: 34px; height: 34px;
+            width: 34px;
+            height: 34px;
             border-radius: var(--radius-sm);
             border: 1px solid var(--border);
             background: var(--surface);
             color: var(--text-muted);
             cursor: pointer;
-            display: flex; align-items: center; justify-content: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             font-size: 14px;
             transition: all var(--transition);
         }
 
-        .p-modal-close:hover { color: var(--danger); border-color: var(--danger); }
+        .p-modal-close:hover {
+            color: var(--danger);
+            border-color: var(--danger);
+        }
 
-        .p-modal-body { padding: 24px; }
+        .p-modal-body {
+            padding: 24px;
+        }
 
         /* ─── FORM ELEMENTS ─── */
         .p-form-group {
@@ -859,7 +1088,9 @@
         }
 
         .p-form-input:focus,
-        .p-form-textarea:focus { border-color: var(--accent); }
+        .p-form-textarea:focus {
+            border-color: var(--accent);
+        }
 
         .p-form-textarea {
             resize: vertical;
@@ -879,9 +1110,10 @@
             position: relative;
         }
 
-        .p-upload-zone:hover, .p-upload-zone.drag-over {
+        .p-upload-zone:hover,
+        .p-upload-zone.drag-over {
             border-color: var(--accent);
-            background: rgba(0,180,216,0.05);
+            background: rgba(0, 180, 216, 0.05);
         }
 
         .p-upload-zone input[type="file"] {
@@ -891,9 +1123,23 @@
             cursor: pointer;
         }
 
-        .p-upload-zone i { font-size: 32px; color: var(--accent); margin-bottom: 10px; display: block; }
-        .p-upload-zone p { font-size: 13px; color: var(--text-muted); }
-        .p-upload-zone span { font-size: 11.5px; color: var(--text-muted); opacity: 0.6; }
+        .p-upload-zone i {
+            font-size: 32px;
+            color: var(--accent);
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .p-upload-zone p {
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        .p-upload-zone span {
+            font-size: 11.5px;
+            color: var(--text-muted);
+            opacity: 0.6;
+        }
 
         .p-upload-preview {
             width: 100%;
@@ -916,7 +1162,7 @@
         .p-not-modal-overlay {
             position: fixed;
             inset: 0;
-            background: rgba(0,0,0,0.6);
+            background: rgba(0, 0, 0, 0.6);
             z-index: 1000;
             display: flex;
             align-items: center;
@@ -964,14 +1210,14 @@
             color: #fff;
             font-size: 18px;
             cursor: pointer;
-            box-shadow: 0 4px 16px rgba(0,180,216,0.4);
+            box-shadow: 0 4px 16px rgba(0, 180, 216, 0.4);
         }
 
         .p-sidebar-overlay {
             display: none;
             position: fixed;
             inset: 0;
-            background: rgba(0,0,0,0.6);
+            background: rgba(0, 0, 0, 0.6);
             z-index: 99;
         }
 
@@ -1001,12 +1247,36 @@
             max-width: 380px;
         }
 
-        @keyframes slideUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
-        @keyframes fadeOut { to { opacity: 0; transform: translateY(8px); } }
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(12px);
+            }
 
-        .toast.success { background: linear-gradient(135deg, #059669, #10b981); }
-        .toast.error { background: linear-gradient(135deg, #dc2626, #ef4444); }
-        .toast.info { background: linear-gradient(135deg, #0369a1, #0ea5e9); }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeOut {
+            to {
+                opacity: 0;
+                transform: translateY(8px);
+            }
+        }
+
+        .toast.success {
+            background: linear-gradient(135deg, #059669, #10b981);
+        }
+
+        .toast.error {
+            background: linear-gradient(135deg, #dc2626, #ef4444);
+        }
+
+        .toast.info {
+            background: linear-gradient(135deg, #0369a1, #0ea5e9);
+        }
 
         /* ─── RESPONSIVE ─── */
         @media (max-width: 900px) {
@@ -1018,29 +1288,62 @@
                 transform: translateX(0);
             }
 
-            .p-sidebar-overlay.open { display: block; }
-            .p-menu-toggle { display: flex; align-items: center; justify-content: center; }
-            .p-main { margin-left: 0; }
+            .p-sidebar-overlay.open {
+                display: block;
+            }
 
-            .p-stats-grid { grid-template-columns: 1fr; gap: 10px; }
+            .p-menu-toggle {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
 
-            .p-randevu-table-header { display: none; }
+            .p-main {
+                margin-left: 0;
+            }
+
+            .p-stats-grid {
+                grid-template-columns: 1fr;
+                gap: 10px;
+            }
+
+            .p-randevu-table-header {
+                display: none;
+            }
 
             .p-randevu-satir {
                 grid-template-columns: 1fr;
                 gap: 8px;
             }
 
-            .p-cal-day, .calendar-day-box { min-height: 50px; }
-            .p-day-events, .calendar-day-events { display: none; }
-            .p-day-dots, .calendar-day-dots { display: flex; }
+            .p-cal-day,
+            .calendar-day-box {
+                min-height: 50px;
+            }
 
-            .p-articles-grid { grid-template-columns: 1fr; }
+            .p-day-events,
+            .calendar-day-events {
+                display: none;
+            }
+
+            .p-day-dots,
+            .calendar-day-dots {
+                display: flex;
+            }
+
+            .p-articles-grid {
+                grid-template-columns: 1fr;
+            }
         }
 
         @media (max-width: 600px) {
-            .p-content { padding: 16px; }
-            .p-topbar { padding: 0 16px; }
+            .p-content {
+                padding: 16px;
+            }
+
+            .p-topbar {
+                padding: 0 16px;
+            }
         }
 
         /* ─── ADD / EDIT APPOINTMENT MODAL STYLES ─── */
@@ -1060,20 +1363,24 @@
             cursor: pointer;
             transition: all var(--transition);
         }
+
         .p-btn:hover {
             background: #0096b4;
             transform: translateY(-2px);
         }
+
         .p-btn.secondary {
-            background: rgba(255,255,255,0.08);
+            background: rgba(255, 255, 255, 0.08);
             border: 1px solid var(--border);
             color: var(--text);
         }
+
         .p-btn.secondary:hover {
-            background: rgba(255,255,255,0.12);
+            background: rgba(255, 255, 255, 0.12);
         }
+
         .p-btn-card-billing {
-            background: rgba(0,180,216,0.12);
+            background: rgba(0, 180, 216, 0.12);
             color: var(--accent);
             border: none;
             padding: 4px 10px;
@@ -1087,6 +1394,7 @@
             transition: all 0.2s;
             margin-top: 5px;
         }
+
         .p-btn-card-billing:hover {
             background: var(--accent);
             color: #fff;
@@ -1102,7 +1410,7 @@
     <!-- SIDEBAR -->
     <aside class="p-sidebar" id="p-sidebar">
         <div class="p-sidebar-brand">
-            <img src="/video/logo.jpeg" alt="Logo" class="p-sidebar-logo">
+            <img src="/video/logo.png" alt="Logo" class="p-sidebar-logo">
             <div class="p-sidebar-brand-text">
                 <h2>Dr. M. Emin Başyıldız</h2>
                 <span>Yönetim Paneli</span>
@@ -1190,7 +1498,8 @@
                     <div class="p-toolbar" id="panel-toolbar-el">
                         <div class="p-search">
                             <i class="fa-solid fa-magnifying-glass"></i>
-                            <input type="text" id="arama-input" placeholder="Hasta adı veya telefon ara..." autocomplete="off">
+                            <input type="text" id="arama-input" placeholder="Hasta adı veya telefon ara..."
+                                autocomplete="off">
                         </div>
                         <select id="durum-filtre" class="p-filter-select">
                             <option value="">Tüm Durumlar</option>
@@ -1217,18 +1526,29 @@
                 <div class="p-view-pane" id="view-calendar">
                     <div class="p-cal-container">
                         <div class="p-cal-header">
-                            <button id="cal-prev-btn" class="p-cal-nav" type="button"><i class="fa-solid fa-chevron-left"></i></button>
+                            <button id="cal-prev-btn" class="p-cal-nav" type="button"><i
+                                    class="fa-solid fa-chevron-left"></i></button>
                             <h3 id="cal-month-title" class="p-cal-month">-</h3>
-                            <button id="cal-next-btn" class="p-cal-nav" type="button"><i class="fa-solid fa-chevron-right"></i></button>
+                            <button id="cal-next-btn" class="p-cal-nav" type="button"><i
+                                    class="fa-solid fa-chevron-right"></i></button>
                         </div>
                         <div class="p-cal-weekdays">
-                            <div>Pzt</div><div>Sal</div><div>Çar</div><div>Per</div><div>Cum</div><div>Cmt</div><div>Paz</div>
+                            <div>Pzt</div>
+                            <div>Sal</div>
+                            <div>Çar</div>
+                            <div>Per</div>
+                            <div>Cum</div>
+                            <div>Cmt</div>
+                            <div>Paz</div>
                         </div>
                         <div id="calendar-days" class="p-cal-grid"></div>
                         <div class="p-cal-detail">
-                            <div class="p-cal-detail-title" id="selected-day-title">Randevuları görmek için takvimden bir gün seçin</div>
+                            <div class="p-cal-detail-title" id="selected-day-title">Randevuları görmek için takvimden
+                                bir gün seçin</div>
                             <div id="selected-day-appointments">
-                                <div class="p-empty"><i class="fa-regular fa-calendar"></i><p>Seçilen gün için randevu bulunmuyor.</p></div>
+                                <div class="p-empty"><i class="fa-regular fa-calendar"></i>
+                                    <p>Seçilen gün için randevu bulunmuyor.</p>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -1238,7 +1558,8 @@
             <!-- ── MAKALELER SEKSİYONU ── -->
             <div class="p-section" id="section-makaleler">
                 <div class="p-section-header">
-                    <h2 class="p-section-title"><i class="fa-solid fa-newspaper" style="color:var(--accent);margin-right:8px;"></i>Makaleler</h2>
+                    <h2 class="p-section-title"><i class="fa-solid fa-newspaper"
+                            style="color:var(--accent);margin-right:8px;"></i>Makaleler</h2>
                 </div>
                 <div id="p-article-list" class="p-articles-grid">
                 </div>
@@ -1246,12 +1567,14 @@
             <!-- ── ÖDEMELER SEKSİYONU ── -->
             <div class="p-section" id="section-odemeler">
                 <div class="p-section-header">
-                    <h2 class="p-section-title"><i class="fa-solid fa-wallet" style="color:var(--accent);margin-right:8px;"></i>Ödeme Takip</h2>
+                    <h2 class="p-section-title"><i class="fa-solid fa-wallet"
+                            style="color:var(--accent);margin-right:8px;"></i>Ödeme Takip</h2>
                 </div>
                 <div class="p-toolbar">
                     <div class="p-search">
                         <i class="fa-solid fa-magnifying-glass"></i>
-                        <input type="text" id="odeme-arama-input" placeholder="Hasta adı veya telefon ara..." autocomplete="off">
+                        <input type="text" id="odeme-arama-input" placeholder="Hasta adı veya telefon ara..."
+                            autocomplete="off">
                     </div>
                 </div>
                 <div id="odeme-listesi"></div>
@@ -1279,7 +1602,8 @@
                 <div class="p-modal-body">
                     <div class="p-form-group">
                         <label class="p-form-label">Makale Başlığı *</label>
-                        <input type="text" id="makale-baslik" name="baslik" class="p-form-input" placeholder="Örn: İmplant Tedavisinde Yeni Teknolojiler" required>
+                        <input type="text" id="makale-baslik" name="baslik" class="p-form-input"
+                            placeholder="Örn: İmplant Tedavisinde Yeni Teknolojiler" required>
                     </div>
                     <div class="p-form-group">
                         <label class="p-form-label">Kapak Görseli</label>
@@ -1293,7 +1617,8 @@
                     </div>
                     <div class="p-form-group">
                         <label class="p-form-label">Makale İçeriği *</label>
-                        <textarea id="makale-icerik" name="icerik" class="p-form-textarea" placeholder="Makale içeriğini buraya yazın..." required></textarea>
+                        <textarea id="makale-icerik" name="icerik" class="p-form-textarea"
+                            placeholder="Makale içeriğini buraya yazın..." required></textarea>
                     </div>
                 </div>
                 <div class="p-modal-footer">
@@ -1359,7 +1684,8 @@
                     </div>
                     <div class="p-form-group">
                         <label class="p-form-label">Notlar / Şikayet</label>
-                        <textarea name="notlar" class="p-form-textarea" placeholder="Hasta şikayeti veya işlem notu..."></textarea>
+                        <textarea name="notlar" class="p-form-textarea"
+                            placeholder="Hasta şikayeti veya işlem notu..."></textarea>
                     </div>
                     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
                         <div class="p-form-group">
@@ -1400,30 +1726,42 @@
             <form id="admin-odeme-form">
                 <input type="hidden" id="odeme-randevu-id" name="id">
                 <div class="p-modal-body">
-                    <div style="background: rgba(255,255,255,0.03); border: 1px solid var(--border); padding: 14px; border-radius: var(--radius-sm); margin-bottom: 20px;">
+                    <div
+                        style="background: rgba(255,255,255,0.03); border: 1px solid var(--border); padding: 14px; border-radius: var(--radius-sm); margin-bottom: 20px;">
                         <h4 style="margin-bottom: 6px; color: var(--accent);" id="odeme-hasta-ad">-</h4>
-                        <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 4px;" id="odeme-hasta-tel">-</p>
+                        <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 4px;" id="odeme-hasta-tel">-
+                        </p>
                         <p style="font-size: 13px; color: var(--text-muted);" id="odeme-hasta-tarih">-</p>
                     </div>
-                    
+
                     <div class="p-form-group">
                         <label class="p-form-label">Toplam Ödenecek Tutar (TL) *</label>
-                        <input type="number" step="0.01" id="odeme-toplam" name="toplam_tutar" class="p-form-input" required>
+                        <input type="number" step="0.01" id="odeme-toplam" name="toplam_tutar" class="p-form-input"
+                            required>
                     </div>
                     <div class="p-form-group">
                         <label class="p-form-label">Bugüne Kadar Ödenen Tutar (TL) *</label>
-                        <input type="number" step="0.01" id="odeme-odenen" name="odenen_tutar" class="p-form-input" required>
+                        <input type="number" step="0.01" id="odeme-odenen" name="odenen_tutar" class="p-form-input"
+                            required>
                     </div>
-                    <div class="p-form-group" style="background: rgba(0,180,216,0.05); border: 1px dashed rgba(0,180,216,0.3); padding: 12px; border-radius: var(--radius-sm); margin-bottom: 15px;">
-                        <label class="p-form-label" style="color: var(--accent); display: flex; align-items: center; gap: 6px; font-weight: 600;">
+                    <div class="p-form-group"
+                        style="background: rgba(0,180,216,0.05); border: 1px dashed rgba(0,180,216,0.3); padding: 12px; border-radius: var(--radius-sm); margin-bottom: 15px;">
+                        <label class="p-form-label"
+                            style="color: var(--accent); display: flex; align-items: center; gap: 6px; font-weight: 600;">
                             <i class="fa-solid fa-circle-plus"></i> Ödeme Ekle (Alınan Para)
                         </label>
-                        <input type="number" step="0.01" id="odeme-yeni-ekle" class="p-form-input" placeholder="Örn: 500.00" style="border-color: rgba(0,180,216,0.4);">
-                        <span style="font-size: 11px; color: var(--text-muted); margin-top: 4px; display: block;">Girilen miktar otomatik olarak yukarıdaki ödenen tutara eklenir.</span>
+                        <input type="number" step="0.01" id="odeme-yeni-ekle" class="p-form-input"
+                            placeholder="Örn: 500.00" style="border-color: rgba(0,180,216,0.4);">
+                        <span
+                            style="font-size: 11px; color: var(--text-muted); margin-top: 4px; display: block;">Girilen
+                            miktar otomatik olarak yukarıdaki ödenen tutara eklenir.</span>
                     </div>
-                    <div style="background: rgba(16,185,129,0.08); border: 1px solid rgba(16,185,129,0.2); padding: 14px; border-radius: var(--radius-sm); display: flex; justify-content: space-between; align-items: center;">
-                        <span style="font-size: 13.5px; font-weight: 600; color: var(--success);">Kalan Borç Tutarı:</span>
-                        <strong style="font-size: 18px; font-weight: 700; color: #fff;" id="odeme-kalan">0.00 TL</strong>
+                    <div
+                        style="background: rgba(16,185,129,0.08); border: 1px solid rgba(16,185,129,0.2); padding: 14px; border-radius: var(--radius-sm); display: flex; justify-content: space-between; align-items: center;">
+                        <span style="font-size: 13.5px; font-weight: 600; color: var(--success);">Kalan Borç
+                            Tutarı:</span>
+                        <strong style="font-size: 18px; font-weight: 700; color: #fff;" id="odeme-kalan">0.00
+                            TL</strong>
                     </div>
                 </div>
                 <div class="p-modal-footer">
@@ -1559,7 +1897,7 @@
                     const imgHtml = a.kapak_resmi
                         ? `<div class="p-article-card-img"><img src="${a.kapak_resmi}" alt="${a.baslik}"></div>`
                         : `<div class="p-article-card-img"><i class="fa-solid fa-newspaper"></i></div>`;
-                    const date = new Date(a.olusturma_tarihi).toLocaleDateString('tr-TR', { day:'2-digit', month:'long', year:'numeric' });
+                    const date = new Date(a.olusturma_tarihi).toLocaleDateString('tr-TR', { day: '2-digit', month: 'long', year: 'numeric' });
                     card.innerHTML = `
                         ${imgHtml}
                         <div class="p-article-card-body">
@@ -1632,7 +1970,7 @@
                 row.className = 'p-randevu-satir';
 
                 const emailText = r.email ? (r.email.length > 22 ? r.email.substring(0, 22) + '…' : r.email) : '—';
-                
+
                 const toplamVal = r.toplam_tutar ? parseFloat(r.toplam_tutar) : 0;
                 const odenenVal = r.odenen_tutar ? parseFloat(r.odenen_tutar) : 0;
                 const kalanVal = toplamVal - odenenVal;
@@ -1695,16 +2033,16 @@
             document.getElementById('odeme-hasta-tel').textContent = `Telefon: ${r.telefon}`;
             const dateStr = new Date(r.tarih).toLocaleDateString('tr-TR', { day: '2-digit', month: 'long', year: 'numeric' });
             document.getElementById('odeme-hasta-tarih').textContent = `Randevu: ${dateStr} - Saat: ${r.saat}`;
-            
+
             const toplam = r.toplam_tutar ? parseFloat(r.toplam_tutar) : 0;
             const odenen = r.odenen_tutar ? parseFloat(r.odenen_tutar) : 0;
             document.getElementById('odeme-toplam').value = toplam.toFixed(2);
             document.getElementById('odeme-odenen').value = odenen.toFixed(2);
             document.getElementById('odeme-kalan').textContent = `${(toplam - odenen).toFixed(2)} TL`;
-            
+
             document.getElementById('odeme-yeni-ekle').value = '';
             window.odemeBaseOdenen = odenen;
-            
+
             modal.classList.add('open');
         }
 
@@ -1858,7 +2196,7 @@
         const odemeYeniEkleEl = document.getElementById('odeme-yeni-ekle');
 
         odemeToplamEl.addEventListener('input', odemeHesapla);
-        
+
         odemeOdenenEl.addEventListener('input', () => {
             window.odemeBaseOdenen = parseFloat(odemeOdenenEl.value) || 0;
             odemeYeniEkleEl.value = '';
@@ -1892,7 +2230,7 @@
                 if (result.success) {
                     showToast('Hasta ödeme bilgileri güncellendi.', 'success');
                     document.getElementById('admin-odeme-modal').classList.remove('open');
-                    
+
                     if (typeof yukleRandevular === 'function') yukleRandevular();
                     if (typeof yukleTakvimRandevulari === 'function') yukleTakvimRandevulari();
                     if (typeof yukleGenelIstatistikler === 'function') yukleGenelIstatistikler();
@@ -1950,7 +2288,7 @@
                 if (result.success) {
                     showToast('Randevu başarıyla eklendi.', 'success');
                     adminRandevuModal.classList.remove('open');
-                    
+
                     if (typeof yukleRandevular === 'function') yukleRandevular();
                     if (typeof yukleTakvimRandevulari === 'function') yukleTakvimRandevulari();
                     if (typeof yukleGenelIstatistikler === 'function') yukleGenelIstatistikler();
@@ -2019,7 +2357,7 @@
                 row.className = 'p-randevu-satir';
 
                 const dateStr = new Date(r.tarih).toLocaleDateString('tr-TR', { day: '2-digit', month: 'long', year: 'numeric' });
-                
+
                 const toplamVal = r.toplam_tutar ? parseFloat(r.toplam_tutar) : 0;
                 const odenenVal = r.odenen_tutar ? parseFloat(r.odenen_tutar) : 0;
                 const kalanVal = toplamVal - odenenVal;
