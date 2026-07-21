@@ -58,7 +58,7 @@ const sendAppointmentEmail = async (ad, email, tarih, saat) => {
             <div class="wrapper">
                 <!-- Header -->
                 <div class="header">
-                    <h1>Dr. Muhammed Emin Başyıldız</h1>
+                    <h1>Dr. Muhammet Emin Başyıldız</h1>
                     <p>Diş Sağlığı Kliniği</p>
                 </div>
                 
@@ -82,7 +82,7 @@ const sendAppointmentEmail = async (ad, email, tarih, saat) => {
                     <!-- Location -->
                     <h3 class="location-title">Klinik Adresimiz</h3>
                     <div class="address-box">
-                        <strong>Dr. Muhammed Emin Başyıldız Diş Sağlığı Merkezi</strong><br>
+                        <strong>Dr. Muhammet Emin Başyıldız Diş Sağlığı Merkezi</strong><br>
                         Pırlanta düğün salonu yanı, 60. Yıl, Yavuz Sultan Selim Cd. No:107A<br>
                         27100 Şahinbey / Gaziantep<br><br>
                         İletişim: <strong>0535 064 56 84</strong>
@@ -112,9 +112,9 @@ const sendAppointmentEmail = async (ad, email, tarih, saat) => {
                 'content-type': 'application/json'
             },
             body: JSON.stringify({
-                sender: { name: 'Dr. Muhammed Emin Başyıldız', email: senderEmail },
+                sender: { name: 'Dr. Muhammet Emin Başyıldız', email: senderEmail },
                 to: [{ email: email, name: ad }],
-                subject: 'Randevu Talebiniz Alındı | Dr. Muhammed Emin Başyıldız Diş Sağlığı',
+                subject: 'Randevu Talebiniz Alındı | Dr. Muhammet Emin Başyıldız Diş Sağlığı',
                 htmlContent: htmlContent
             })
         });

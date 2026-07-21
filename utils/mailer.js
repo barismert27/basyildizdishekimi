@@ -12,7 +12,7 @@ const sendAppointmentEmail = async (ad, email, tarih, saat) => {
     if (!email) return;
 
     const mailOptions = {
-        from: `"Dr. Muhammed Emin Başyıldız Diş Sağlığı Kliniği" <${process.env.EMAIL_USER}>`,
+        from: `"Dr. Muhammet Emin Başyıldız Diş Sağlığı Kliniği" <${process.env.EMAIL_USER}>`,
         to: email,
         subject: 'Diş Kliniği - Randevunuz Onaylandı',
         html: `
@@ -20,7 +20,7 @@ const sendAppointmentEmail = async (ad, email, tarih, saat) => {
                 <div style="max-width: 600px; margin: 0 auto; background-color: #ffffff; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.05);">
                     <!-- Header -->
                     <div style="background-color: #00b4d8; padding: 30px 20px; text-align: center;">
-                        <h1 style="color: #ffffff; margin: 0; font-size: 24px; font-weight: 700; letter-spacing: 1px;">Dr. Muhammed Emin Başyıldız Diş Sağlığı Kliniği</h1>
+                        <h1 style="color: #ffffff; margin: 0; font-size: 24px; font-weight: 700; letter-spacing: 1px;">Dr. Muhammet Emin Başyıldız Diş Sağlığı Kliniği</h1>
                     </div>
                     
                     <!-- Content -->
