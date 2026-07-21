@@ -1,5 +1,5 @@
 const { pool } = require('../config/db');
-const { sendAppointmentEmail } = require('../utils/mailConfig');
+
 
 // PUBLIC: Yeni randevu talebi oluştur
 exports.createAppointment = async (req, res) => {
@@ -62,8 +62,7 @@ exports.createAppointment = async (req, res) => {
         );
         const insertId = result.insertId;
 
-        // Randevu başarıyla veritabanına kaydedildikten sonra arka planda mail gönder
-        sendAppointmentEmail(temizAd, email ? email.trim() : null, tarih, saat);
+
 
         res.json({ success: true, message: "Randevu talebiniz alınmıştır.", id: insertId });
 

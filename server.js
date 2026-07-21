@@ -6,6 +6,14 @@ const cookieParser = require('cookie-parser');
 const fs = require('fs');
 const { initDb } = require('./config/db');
 
+// Global hata yakalayıcılar: Sunucunun çökmesini engeller
+process.on('uncaughtException', (err) => {
+    console.error('🔥 Kritik Hata (uncaughtException):', err);
+});
+process.on('unhandledRejection', (reason, promise) => {
+    console.error('🔥 Kritik Hata (unhandledRejection):', reason);
+});
+
 const uploadsDir = path.join(__dirname, 'public/uploads');
 if (!fs.existsSync(uploadsDir)) {
     fs.mkdirSync(uploadsDir, { recursive: true });
