@@ -350,9 +350,9 @@
             <!-- PAGE HEADER -->
             <section class="section-header-bg" style="padding: 60px 0 20px; text-align: center;">
                 <div class="container">
-                    <span class="badge">✍️ Doktor Köşesi</span>
-                    <h1>Dr. Başyıldız'ın Makaleleri</h1>
-                    <p style="max-width: 580px; margin: 12px auto 0; color: var(--gray);">
+                    <span class="badge" data-i18n="makaleler-badge">✍️ Doktor Köşesi</span>
+                    <h1 data-i18n="makaleler-title">Dr. Başyıldız'ın Makaleleri</h1>
+                    <p style="max-width: 580px; margin: 12px auto 0; color: var(--gray);" data-i18n="makaleler-desc">
                         Ağız ve diş sağlığına dair uzman görüşleri, hasta rehberleri ve bilimsel içerikler.
                     </p>
                 </div>
@@ -457,12 +457,14 @@
 
         async function renderArticles(lang) {
             const grid = document.getElementById('makale-grid');
+            const trans = window.translations ? window.translations[lang] : window.translations['tr'];
+            
             if (allArticles.length === 0) {
                 grid.innerHTML = `
                     <div class="makale-empty" style="grid-column:1/-1;">
                         <i class="fa-solid fa-newspaper"></i>
-                        <h3 data-i18n="articles-empty-title">Henüz Makale Yok</h3>
-                        <p data-i18n="articles-empty-desc">Doktor yakında ilk makalesini yayınlayacak.</p>
+                        <h3>${trans['articles-empty-title'] || 'Henüz Makale Yok'}</h3>
+                        <p>${trans['articles-empty-desc'] || 'Doktor yakında ilk makalesini yayınlayacak.'}</p>
                     </div>`;
                 return;
             }

@@ -97,6 +97,12 @@ const translations = {
         "app-form-select": "Seçiniz",
         "app-form-notes": "Notlar",
         "btn-app-submit": "Randevuyu Onayla",
+        // makaleler page specific
+        "makaleler-badge": "✍️ Doktor Köşesi",
+        "makaleler-title": "Dr. Başyıldız'ın Makaleleri",
+        "makaleler-desc": "Ağız ve diş sağlığına dair uzman görüşleri, hasta rehberleri ve bilimsel içerikler.",
+        "articles-empty-title": "Henüz Makale Yok",
+        "articles-empty-desc": "Doktor yakında ilk makalesini yayınlayacak."
     },
     en: {
         "nav-home": "Home Page",
@@ -191,6 +197,11 @@ const translations = {
         "app-form-select": "Select",
         "app-form-notes": "Notes",
         "btn-app-submit": "Confirm Appointment",
+        "makaleler-badge": "✍️ Doctor's Corner",
+        "makaleler-title": "Dr. Başyıldız's Articles",
+        "makaleler-desc": "Expert opinions, patient guides, and scientific content on oral and dental health.",
+        "articles-empty-title": "No Articles Yet",
+        "articles-empty-desc": "The doctor will publish his first article soon."
     },
     ar: {
         "nav-home": "الصفحة الرئيسية",
@@ -285,6 +296,11 @@ const translations = {
         "app-form-select": "اختر",
         "app-form-notes": "ملاحظات",
         "btn-app-submit": "تأكيد الموعد",
+        "makaleler-badge": "✍️ زاوية الطبيب",
+        "makaleler-title": "مقالات د. باشيلدز",
+        "makaleler-desc": "آراء الخبراء وأدلة المرضى والمحتوى العلمي حول صحة الفم والأسنان.",
+        "articles-empty-title": "لا توجد مقالات بعد",
+        "articles-empty-desc": "سينشر الطبيب مقالته الأولى قريباً."
     },
     de: {
         "nav-home": "Startseite",
@@ -379,6 +395,11 @@ const translations = {
         "app-form-select": "Wählen",
         "app-form-notes": "Notizen",
         "btn-app-submit": "Termin bestätigen",
+        "makaleler-badge": "✍️ Arzteecke",
+        "makaleler-title": "Artikel von Dr. Başyıldız",
+        "makaleler-desc": "Expertenmeinungen, Patientenratgeber und wissenschaftliche Inhalte zur Mund- und Zahngesundheit.",
+        "articles-empty-title": "Noch keine Artikel",
+        "articles-empty-desc": "Der Arzt wird bald seinen ersten Artikel veröffentlichen."
     }
 };
 
