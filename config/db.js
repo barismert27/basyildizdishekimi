@@ -8,8 +8,9 @@ const pool = mysql.createPool({
     port: process.env.DB_PORT || 3306,
     password: process.env.DB_PASS || process.env.DB_PASSWORD || '',
     database: process.env.DB_NAME || 'randevu',
+    charset: 'utf8mb4',
     waitForConnections: true,
-    connectionLimit: 10,
+    connectionLimit: 100,
     queueLimit: 0
 });
 
@@ -86,6 +87,15 @@ async function initDb() {
                 olusturma_tarihi TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             )
         `);
+
+        // Türkçe karakter (UTF-8) sorunlarını kalıcı olarak çözmek için tabloların karakter setini utf8mb4'e çeviriyoruz
+        try {
+            await pool.query("ALTER TABLE randevular CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci");
+            await pool.query("ALTER TABLE makaleler CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci");
+            console.log('✅ Tablolar utf8mb4 formatına dönüştürüldü (Türkçe karakter desteği aktif).');
+        } catch (err) {
+            console.log('⚠️ Tablo utf8mb4 dönüştürme atlandı:', err.message);
+        }
 
         console.log('✅ Veritabanı tabloları başarılı şekilde kontrol edildi/oluşturuldu.');
     } catch (err) {
