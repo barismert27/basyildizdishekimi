@@ -1059,6 +1059,17 @@
         }
 
         /* ─── FORM ELEMENTS ─── */
+        .p-form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+        @media (max-width: 600px) {
+            .p-form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+
         .p-form-group {
             margin-bottom: 18px;
         }
@@ -1654,7 +1665,7 @@
                         <label class="p-form-label">E-posta Adresi</label>
                         <input type="email" name="email" class="p-form-input" placeholder="Örn: ahmet@mail.com">
                     </div>
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                    <div class="p-form-row">
                         <div class="p-form-group">
                             <label class="p-form-label">Randevu Tarihi *</label>
                             <input type="date" name="tarih" id="admin-randevu-tarih" class="p-form-input" required>
@@ -1687,7 +1698,7 @@
                         <textarea name="notlar" class="p-form-textarea"
                             placeholder="Hasta şikayeti veya işlem notu..."></textarea>
                     </div>
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                    <div class="p-form-row">
                         <div class="p-form-group">
                             <label class="p-form-label">Toplam Tutar (TL)</label>
                             <input type="number" step="0.01" name="toplam_tutar" class="p-form-input" value="0.00">

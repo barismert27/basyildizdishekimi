@@ -175,7 +175,35 @@ document.addEventListener('DOMContentLoaded', () => {
         tarihInput.addEventListener('change', async (e) => {
             const secilenTarih = e.target.value;
             if (secilenTarih) {
-                await saatleriGetir(secilenTarih);
+                const dateObj = new Date(secilenTarih);
+                if (dateObj.getDay() === 0) {
+                    showToast('Pazar günleri kliniğimiz kapalıdır. Lütfen başka bir tarih seçiniz.', 'error');
+                    e.target.value = '';
+                    saatSelect.innerHTML = '<option value="">Seçiniz</option>';
+                    return;
+                }
+                await saatleriGetir(secilenTarih, 'saat');
+            }
+        });
+    }
+
+    const adminTarihInput = document.getElementById('admin-randevu-tarih');
+    const adminSaatSelect = document.getElementById('admin-randevu-saat');
+    if (adminTarihInput && adminSaatSelect) {
+        const bugun = new Date().toISOString().split('T')[0];
+        adminTarihInput.setAttribute('min', bugun);
+
+        adminTarihInput.addEventListener('change', async (e) => {
+            const secilenTarih = e.target.value;
+            if (secilenTarih) {
+                const dateObj = new Date(secilenTarih);
+                if (dateObj.getDay() === 0) {
+                    showToast('Pazar günleri kliniğimiz kapalıdır. Lütfen başka bir tarih seçiniz.', 'error');
+                    e.target.value = '';
+                    adminSaatSelect.innerHTML = '<option value="">Seçiniz</option>';
+                    return;
+                }
+                await saatleriGetir(secilenTarih, 'admin-randevu-saat');
             }
         });
     }
@@ -292,8 +320,9 @@ function showToast(message, type = 'info') {
 }
 
 
-async function saatleriGetir(tarih) {
-    const saatSelect = document.getElementById('saat');
+async function saatleriGetir(tarih, selectId = 'saat') {
+    const saatSelect = document.getElementById(selectId);
+    if (!saatSelect) return;
     saatSelect.innerHTML = '<option value="">Yükleniyor...</option>';
     saatSelect.disabled = true;
 

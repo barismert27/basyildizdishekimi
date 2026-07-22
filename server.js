@@ -58,6 +58,12 @@ app.get('/ping', async (req, res) => {
     }
 });
 
+// Global Error Handler
+app.use((err, req, res, next) => {
+    console.error('Sunucu Hatası:', err);
+    res.status(500).json({ success: false, message: err.message || 'Sunucu hatası oluştu' });
+});
+
 // Veritabanını Başlat ve Sunucuyu Dinle
 initDb()
     .then(() => {
