@@ -14,9 +14,9 @@ set -euo pipefail
 # ------------------------------------------------------------------------------
 
 # Veritabanı Bağlantı Bilgileri
-DB_USER="${DB_USER:-root}"
+DB_USER="${DB_USER:-avnadmin}"
 DB_PASS="${DB_PASS:-YeniGucluSifreniz123!}"
-DB_NAME="${DB_NAME:-randevu}"
+DB_NAME="${DB_NAME:-defaultdb}"
 DB_HOST="${DB_HOST:-localhost}"
 
 # Telegram Bot Bilgileri
