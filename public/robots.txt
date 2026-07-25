@@ -1,5 +1,9 @@
 User-agent: *
 Allow: /
+Allow: /favicon.ico
+Allow: /favicon.png
+Allow: /favicon.*
+Allow: /video/
 Disallow: /api/
 Disallow: /yonetim-paneli
 Disallow: /login
